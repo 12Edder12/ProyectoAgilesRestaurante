@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:bbb/models/pedido.dart';
 import 'package:bbb/constants/globals.dart' as globals;
+import 'package:bbb/constants/colors.dart';
 
 class CustomDialog extends StatefulWidget {
   final List<Pedido> pedidos;
@@ -26,7 +27,7 @@ class _CustomDialogState extends State<CustomDialog> {
           margin: const  EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: Colors.red),
+            border: Border.all(color: black),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -39,14 +40,14 @@ class _CustomDialogState extends State<CustomDialog> {
                     Text(
                       'Pedido Nº ${DateTime.now().millisecondsSinceEpoch}',
                       style:  const  TextStyle(
-                          color: Colors.black,
+                          color: black,
                           fontSize: 20,
                           fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                   ],
                 ),
-                backgroundColor: Colors.blue, // Cambia esto al color que desees
+                backgroundColor: kSecondaryColor, // Cambia esto al color que desees
                 elevation: 0,
                 leading: IconButton(
                   icon: const  Icon(Icons.close, color: Colors.black),
@@ -83,7 +84,7 @@ class _CustomDialogState extends State<CustomDialog> {
                               });
                             },
                             // Muestra un fondo rojo mientras el elemento se desliza.
-                            background: Container(color: Colors.red),
+                            background: Container(color: kPrimaryColor),
                             child: Card(
                               child: ListTile(
                                 title: Text(
@@ -172,7 +173,7 @@ class _CustomDialogState extends State<CustomDialog> {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                 backgroundColor: Colors.blue, // color del fondo
+                 backgroundColor: kSecondaryColor, // color del fondo
                   foregroundColor: Colors.white, // color del texto
                   shape: RoundedRectangleBorder(
                     borderRadius:
@@ -185,11 +186,11 @@ class _CustomDialogState extends State<CustomDialog> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                   const   Icon(Icons.check, color: Colors.white),
+                   const   Icon(Icons.check, color: black),
                     Container(
                       margin:  const EdgeInsets.only(left: 5),
                       child: const  Text('Confirmar Pedido',
-                          style: TextStyle(fontSize: 20)),
+                          style: TextStyle(fontSize: 20, color: black)),
                     ),
                   ],
                 ),
