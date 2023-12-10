@@ -88,9 +88,8 @@ Future <void> signOut() async {
                         height: 150,
                         child: Column(
                           children: <Widget>[
-                            Image.network(
-                              'https://ferrebaratilloimage.s3.us-east-2.amazonaws.com/127060.png',
-                              height: 90,
+                            Image.asset(
+                              'lib/img/mesas.png',
                             ),
                             const Text(
                               "ASIGNAR MESAS",
@@ -122,8 +121,8 @@ Future <void> signOut() async {
                         height: 150,
                         child: Column(
                           children: <Widget>[
-                            Image.network(
-                              'https://assets.stickpng.com/images/588a64e0d06f6719692a2d10.png',
+                            Image.asset(
+                              'lib/img/mesas.png',
                               height: 75,
                               alignment: Alignment.bottomCenter,
                             ),
@@ -163,8 +162,8 @@ Future <void> signOut() async {
                         height: 150,
                         child: Column(
                           children: <Widget>[
-                            Image.network(
-                              'https://cdn.icon-icons.com/icons2/1093/PNG/512/invoice_78456.png',
+                            Image.asset(
+                              'lib/img/mesas.png',
                               height: 90,
                             ),
                             const Text(

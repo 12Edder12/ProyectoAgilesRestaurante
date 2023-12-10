@@ -43,7 +43,7 @@ class _MesasState extends State<Mesas> {
         height: 150,
         child: Column(
           children: <Widget>[
-            Image.network(
+            Image.asset(
               imageUrl,
               height: 90,
             ),
@@ -90,9 +90,9 @@ class _MesasState extends State<Mesas> {
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: buildMesaButton(
-                        'https://ferrebaratilloimage.s3.us-east-2.amazonaws.com/127060.png',
+                         'lib/img/mesas.png',
                         "MESA 1",
-                        0,
+                        1,
                       ),
                     ),
                   ],
@@ -102,9 +102,9 @@ class _MesasState extends State<Mesas> {
                     Padding(
                       padding:const EdgeInsets.all(10),
                       child: buildMesaButton(
-                        'https://ferrebaratilloimage.s3.us-east-2.amazonaws.com/127060.png',
+                         'lib/img/mesas.png',
                         "MESA 2",
-                        1,
+                        2,
                       ),
                     ),
                   ],
@@ -119,9 +119,9 @@ class _MesasState extends State<Mesas> {
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: buildMesaButton(
-                        'https://ferrebaratilloimage.s3.us-east-2.amazonaws.com/127060.png',
+                        'lib/img/mesas.png',
                         "MESA 3",
-                        2,
+                        3,
                       ),
                     ),
                   ],
@@ -131,9 +131,9 @@ class _MesasState extends State<Mesas> {
                     Padding(
                       padding:const EdgeInsets.all(10),
                       child: buildMesaButton(
-                        'https://ferrebaratilloimage.s3.us-east-2.amazonaws.com/127060.png',
+                         'lib/img/mesas.png',
                         "MESA 4",
-                        3,
+                        4,
                       ),
                     ),
                   ],
@@ -147,9 +147,9 @@ class _MesasState extends State<Mesas> {
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: buildMesaButton(
-                        'https://ferrebaratilloimage.s3.us-east-2.amazonaws.com/127060.png',
+                        'lib/img/mesas.png',
                         "MESA 5",
-                        4,
+                        5,
                       ),
                     ),
                   ],
@@ -159,9 +159,9 @@ class _MesasState extends State<Mesas> {
                     Padding(
                       padding:const EdgeInsets.all(10),
                       child: buildMesaButton(
-                        'https://ferrebaratilloimage.s3.us-east-2.amazonaws.com/127060.png',
+                        'lib/img/mesas.png',
                         "MESA 6",
-                        5,
+                        6,
                       ),
                     ),
                   ],
