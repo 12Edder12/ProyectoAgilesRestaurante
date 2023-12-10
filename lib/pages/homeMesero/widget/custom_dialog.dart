@@ -202,7 +202,7 @@ class _CustomDialogState extends State<CustomDialog> {
                 onPressed: () async {
           // Crear un nuevo documento en la colección 'pedidos'
                 DocumentReference pedidoRef = await _firestore.collection('pedidos').add({
-                'num_mesa': 1,  // Puedes cambiar esto según el número de mesa
+                'num_mesa': globals.mesaOrden,  // Puedes cambiar esto según el número de mesa
                 'detalle_pedido': {
                  for (Pedido pedido in widget.pedidos)
                 pedido.food.id: {
