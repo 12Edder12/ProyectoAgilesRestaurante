@@ -173,7 +173,9 @@ class _MesasState extends State<Mesas> {
                 alignment: Alignment.bottomCenter,
                 child: ElevatedButton(
                   onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const HomeMesero2()));
+                        Navigator.push(context, 
+                        MaterialPageRoute(
+                          builder: (context)=> const HomeMesero2()) ) ; 
                       },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,

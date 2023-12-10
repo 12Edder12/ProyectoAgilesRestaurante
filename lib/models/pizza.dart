@@ -141,40 +141,48 @@ static Future<List<Pizza>> generateRecommendFoods() async {
   }
 }
 
-  static List<Pizza>? generatePopularFood() {
-    return [
-      Pizza(
-          imgUrl: 'assets/images/dish4.png',
-          name: 'Tomato Chicken',
-          price: 12,
-          quantity: 1,
-          ingredients: [
-            {'Noodle': 'assets/images/ingre1.png'},
-            {'Shrimp': 'assets/images/ingre2.png'},
-            {'Egg': 'assets/images/ingre3.png'},
-            {'Scallion': 'assets/images/ingre4.png'},
-            {'Noodle': 'assets/images/ingre1.png'},
-          ],
-          about:
-              'Tomato Chicken Curry (Tamatar Murgh) is an Indian chicken curry cooked with lots of fresh tomatoes and mild spices. It goes very well with Indian bread or steamed rice.',
-          ),
-      Pizza(
-          imgUrl: 'assets/images/dish1.png',
-          name: 'Soba Soup',
-          price: 12,
-          quantity: 1,
-          ingredients: [
-            {'Noodle': 'assets/images/ingre1.png'},
-            {'Shrimp': 'assets/images/ingre2.png'},
-            {'Egg': 'assets/images/ingre3.png'},
-            {'Scallion': 'assets/images/ingre4.png'},
-            {'Noodle': 'assets/images/ingre1.png'},
-          ],
-          about:
-              'Soba Noodle Soup, or Toshikoshi Soba, symbolizes good luck in the new year and is traditionally eaten by the Japanese on the 31st of December.',
-          ),
-    ];
+static Future<List<Pizza>> getPizzasByIds() async {
+  List<String> ids = ['pizza2', 'pizza4', 'pizza6', 'pizza8'];
+  List<Pizza> pizzas = [];
+
+  for (String id in ids) {
+    DocumentSnapshot doc = await FirebaseFirestore.instance.collection('productos').doc(id).get();
+    if (doc.exists) {
+      List<Map<String, String>> ingredients;
+
+      switch (doc.id) {
+        case 'pizza2':
+          ingredients = ingredientePepperoni();
+          break;
+        case 'pizza4':
+          ingredients = ingredienteBBQPollo();
+          break;
+        case 'pizza6':
+          ingredients = ingredienteMexicana();
+          break;
+        case 'pizza8':
+          ingredients = ingredienteCuatroQuesos();
+          break;
+        default:
+          ingredients = [];
+      }
+
+      pizzas.add(Pizza(
+        id: doc.id,
+        imgUrl: doc['img'],
+        name: doc['nombre'],
+        price: doc['precio'],
+        quantity: 1,
+        ingredients: ingredients,
+        about: doc['about'],
+      ));
+    }
   }
+
+  return pizzas;
+}
+
+
 
   void setQuantity(int quantity) {
   this.quantity = quantity;

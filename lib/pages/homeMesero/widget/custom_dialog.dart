@@ -62,7 +62,7 @@ class _CustomDialogState extends State<CustomDialog> {
                     children: [
                     const    Center(
                         child: Text(
-                          'Mesa Nº 1',
+                          'Mesa Nº' ,
                           style: TextStyle(fontSize: 20),
                         ),
                       ),

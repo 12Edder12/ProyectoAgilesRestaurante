@@ -18,7 +18,7 @@ class Restaurant {
 
   static Future<Restaurant> generateRestaurant() async {
   List<Pizza> recommendedPizzas = await Pizza.generateRecommendFoods();
-  //List<Pizza> popularPizzas = await Pizza.generatePopularFood();
+  List<Pizza> popularPizzas = await Pizza.getPizzasByIds();
 
   return Restaurant(
     name: 'Pizzeria Guerrin',
@@ -27,8 +27,8 @@ class Restaurant {
     desc: '"La mejor pizza en todo Ambato"',
     score: 4.7,
     menu: {
-      'Recomendados': recommendedPizzas,
-      'Todos':  [],
+      'Recomendados': popularPizzas,
+      'Todos':  recommendedPizzas,
     },
   );
 }
