@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:bbb/models/pedido.dart';
@@ -13,6 +14,8 @@ class CustomDialog extends StatefulWidget {
 }
 
 class _CustomDialogState extends State<CustomDialog> {
+ final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -177,7 +180,8 @@ class _CustomDialogState extends State<CustomDialog> {
                   ),
                   padding:  const EdgeInsets.symmetric(
                       horizontal: 30, vertical: 10), // padding
-                ),
+                ), 
+            /*    ;*/
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -189,12 +193,31 @@ class _CustomDialogState extends State<CustomDialog> {
                     ),
                   ],
                 ),
-                onPressed: () {
+               /* onPressed: () {
                   for (Pedido pedido in globals.pedidos) {
                     print(
                         'Pedido: ${pedido.food.name} - Cantidad: ${pedido.quantity}');
                   }
+                },*/
+                onPressed: () async {
+          // Crear un nuevo documento en la colección 'pedidos'
+                DocumentReference pedidoRef = await _firestore.collection('pedidos').add({
+                'num_mesa': 1,  // Puedes cambiar esto según el número de mesa
+                'detalle_pedido': {
+                 for (Pedido pedido in widget.pedidos)
+                pedido.food.id: {
+                  'cantidad': pedido.quantity,
                 },
+            },
+          });
+
+          print('Pedido confirmado con ID: ${pedidoRef.id}');
+
+                  widget.pedidos.clear();
+                  globals.orderCount = 0;
+
+                  Navigator.of(context).pop();
+                }
               ),
             ],
           ),

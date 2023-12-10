@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Pizza {
+  String? id; 
   String? imgUrl;
   String? desc;
   String? name;
@@ -10,7 +11,8 @@ class Pizza {
   List<Map<String, String>>? ingredients;
   String? about;
   Pizza(
-      {this.imgUrl,
+      { this.id, 
+        this.imgUrl,
       this.name,
       this.price,
       this.quantity,
@@ -127,6 +129,7 @@ static Future<List<Pizza>> generateRecommendFoods() async {
     }
 
       return Pizza(
+        id: doc.id,
         imgUrl: doc['img'],
         name: doc['nombre'],
         price: doc['precio'],
