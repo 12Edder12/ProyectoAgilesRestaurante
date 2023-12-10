@@ -8,7 +8,6 @@ import 'package:bbb/pages/homeMesero/widget/restaurant_info.dart';
 import 'package:bbb/constants/colors.dart';
 import 'package:bbb/constants/globals.dart' as globals;
 import 'package:bbb/models/restaurant.dart';
-import 'package:bbb/pages/components/custom_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
