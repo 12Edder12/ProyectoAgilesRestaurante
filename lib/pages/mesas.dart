@@ -1,6 +1,7 @@
 import 'package:bbb/pages/homeMesero/home_Mesero.dart';
 import 'package:bbb/pages/homeMesero/tomar_mesa.dart';
 import 'package:flutter/material.dart';
+import 'package:bbb/constants/globals.dart' as globals;
 
 class Mesas extends StatefulWidget {
 
@@ -16,7 +17,7 @@ class _MesasState extends State<Mesas> {
     setState(() {
       selectedMesa = index;
     });
-  print('Mesa seleccionada: $index');
+    globals.mesaOrden = index;
     
   }
 

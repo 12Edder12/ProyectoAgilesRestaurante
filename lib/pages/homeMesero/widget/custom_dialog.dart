@@ -60,9 +60,9 @@ class _CustomDialogState extends State<CustomDialog> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                    const    Center(
+                    Center(
                         child: Text(
-                          'Mesa Nº' ,
+                          'Mesa Nº ${globals.mesaOrden.toString()}',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
