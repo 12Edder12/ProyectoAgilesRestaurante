@@ -79,9 +79,10 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
-                      Icons.message,
-                      size: 80,
+                    Image.asset(
+                      "lib/img/res_logo.png",
+                       width: 150,  // Ancho de la imagen
+                       height: 150,
                     ),
                     const Text(
                       "Hola, le saluda la pizzería Guerrín",

@@ -55,7 +55,7 @@ class _DetailPageState extends State<DetailPage> {
                     pedido.quantity = pedido.quantity! + widget.food.quantity!;
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                     const SnackBar(
                         content: Text('La cantidad máxima de comida es de 10'),
                       ),
                     );
@@ -75,7 +75,7 @@ class _DetailPageState extends State<DetailPage> {
                   globals.orderCount++;
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                  const  SnackBar(
                       content: Text('La cantidad máxima de comida es de 10'),
                     ),
                   );

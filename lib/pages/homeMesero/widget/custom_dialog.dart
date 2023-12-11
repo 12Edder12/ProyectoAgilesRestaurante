@@ -244,7 +244,7 @@ class _CustomDialogState extends State<CustomDialog> {
                     } catch (e) {
                       // Muestra un SnackBar con un mensaje de error
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                      const SnackBar(
                           content: Text(
                               'Algo salió mal al subir el pedido a Firebase'),
                           backgroundColor:
