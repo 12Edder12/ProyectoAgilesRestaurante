@@ -17,8 +17,15 @@ Future<bool> isEmailTaken(String email) async {
 }
 
 
+  int loginAttempts = 0;
+  bool isBlocked = false;
+
 Future<DocumentSnapshot<Object?>> signInWithEmailPassword
 (String email, String password) async {
+if (isBlocked) {
+      throw Exception("El sistema está bloqueado temporalmente. Intenta de nuevo más tarde.");
+    }
+
   try{
     UserCredential userCredential = 
     await _firebaseAuth.signInWithEmailAndPassword(
@@ -29,10 +36,24 @@ Future<DocumentSnapshot<Object?>> signInWithEmailPassword
        DocumentSnapshot userDoc = await _firebaseFirestore.collection('users')
       .doc(userCredential.user!.uid).get();
 
+      loginAttempts = 0;
+
     return userDoc;
    
  } on FirebaseAuthException catch (e) {
+     loginAttempts++;
+
+if (loginAttempts >= 3) {
+        isBlocked = true;
+        Future.delayed(Duration(seconds: 10), () {
+          // Desbloquear el sistema después de 10 segundos
+          isBlocked = false;
+          loginAttempts = 0;
+        });
+      }
+
     throw Exception(e.code);
+    
   }
 }
 
