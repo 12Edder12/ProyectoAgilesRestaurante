@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passController = TextEditingController();
 
-void showError(String error) {
+  void showError(String error) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(error),
@@ -28,31 +28,29 @@ void showError(String error) {
     );
   }
 
-
-void navigateToPage(String cargo) {
-  if (cargo == 'Cocinero') {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const HomeCocinero()),
-    );
-  } else if (cargo == 'Mesero') {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const TomarMesa()),
-    );
+  void navigateToPage(String cargo) {
+    if (cargo == 'Cocinero') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeCocinero()),
+      );
+    } else if (cargo == 'Mesero') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const TomarMesa()),
+      );
+    }
   }
-}
-
 
   void signIn() async {
     final authService = Provider.of<AuthService>(context, listen: false);
 
     try {
-    DocumentSnapshot userDoc =   await authService.signInWithEmailPassword(
+      DocumentSnapshot userDoc = await authService.signInWithEmailPassword(
           emailController.text, passController.text);
 
-    String cargo = userDoc['cargo'];
-    navigateToPage(cargo);
+      String cargo = userDoc['cargo'];
+      navigateToPage(cargo);
     } catch (e) {
       showError(e.toString());
     }
@@ -66,14 +64,15 @@ void navigateToPage(String cargo) {
         child: Stack(
           children: [
             // Fondo de pantalla
-            Opacity(opacity: 0.2,
-             child: Image.asset(
-              "lib/img/xd.jpeg", 
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
+            Opacity(
+              opacity: 0.2,
+              child: Image.asset(
+                "lib/img/xd.jpeg",
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+              ),
             ),
-        ),
             Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
