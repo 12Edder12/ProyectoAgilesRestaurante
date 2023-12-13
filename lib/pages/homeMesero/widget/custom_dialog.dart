@@ -184,35 +184,56 @@ class _CustomDialogState extends State<CustomDialog> {
                 ),
               ),
               ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: kSecondaryColor, // color del fondo
-                    foregroundColor: Colors.white, // color del texto
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // bordes redondeados
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: kSecondaryColor, // color del fondo
+                  foregroundColor: Colors.white, // color del texto
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(10), // bordes redondeados
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 30, vertical: 10), // padding
+                ),
+                /*    ;*/
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.check, color: black),
+                    Container(
+                      margin: const EdgeInsets.only(left: 5),
+                      child: const Text('Confirmar Pedido',
+                          style: TextStyle(fontSize: 20, color: black)),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 10), // padding
-                  ),
-                  /*    ;*/
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.check, color: black),
-                      Container(
-                        margin: const EdgeInsets.only(left: 5),
-                        child: const Text('Confirmar Pedido',
-                            style: TextStyle(fontSize: 20, color: black)),
-                      ),
-                    ],
-                  ),
-                  /* onPressed: () {
+                  ],
+                ),
+                /* onPressed: () {
                   for (Pedido pedido in globals.pedidos) {
                     print(
                         'Pedido: ${pedido.food.name} - Cantidad: ${pedido.quantity}');
                   }
                 },*/
-                  onPressed: () async {
+                onPressed: () async {
+                  // Verificar si la lista de pedidos está vacía
+                  if (widget.pedidos.length == 0) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Error'),
+                          content:
+                              const Text('No se pueden enviar pedidos vacíos'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('OK'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
                     try {
                       // Crear un nuevo documento en la colección 'pedidos'
                       DocumentReference pedidoRef =
@@ -244,7 +265,7 @@ class _CustomDialogState extends State<CustomDialog> {
                     } catch (e) {
                       // Muestra un SnackBar con un mensaje de error
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text(
                               'Algo salió mal al subir el pedido a Firebase'),
                           backgroundColor:
@@ -252,7 +273,9 @@ class _CustomDialogState extends State<CustomDialog> {
                         ),
                       );
                     }
-                  }),
+                  }
+                },
+              ),
             ],
           ),
         ),

@@ -124,7 +124,7 @@ class _HomeMesero2State extends State<HomeMesero2> {
                   );
                 }
               },
-              child: Icon(Icons.add, color: kBackground,),
+              child:  const  Icon(Icons.add, color: kBackground,),
               backgroundColor: kPrimaryColor,
             ),
           );
