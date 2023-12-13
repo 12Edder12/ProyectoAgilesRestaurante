@@ -99,10 +99,11 @@ if (!isEmailValid(emailController.text)) {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-         const Icon(
-            Icons.message,
-            size: 80,
-          ),
+        Image.asset(
+      "lib/img/res_logo.png",
+      width: 80,
+      height: 80,
+      ),
         const  Text("Registrate",
           style: TextStyle(
             fontSize: 16, 
