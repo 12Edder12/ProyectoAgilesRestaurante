@@ -237,10 +237,8 @@ class _MesasState extends State<Mesas> {
                   ),
                 ),
               ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ElevatedButton(
+             const SizedBox(height: 10),
+              ElevatedButton(
                     onPressed: () {
                       // Acción al presionar el botón "ATRAS"
                       Navigator.push(
@@ -283,12 +281,10 @@ class _MesasState extends State<Mesas> {
                       ),
                     ),
                   ),
-                ),
+      ]),
               ),
             ],
           ),
-        ),
-      ]),
-    );
-  }
+        
+ ); }
 }
