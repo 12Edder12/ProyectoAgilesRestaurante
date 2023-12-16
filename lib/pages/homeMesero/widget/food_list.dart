@@ -8,11 +8,11 @@ class FoodList extends StatelessWidget {
   final Function? callback;
   final Restaurant? restaurant;
   const FoodList({
-    Key? key,
+    super.key,
     this.selected,
     this.callback,
     this.restaurant,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

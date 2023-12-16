@@ -47,12 +47,14 @@ if (!isEmailValid(emailController.text)) {
   }
 
   final authService = Provider.of<AuthService>(context, listen:false);
-
+  final scaffoldMessenger = ScaffoldMessenger.of(context);
   try {
-    final isEmailTaken = await authService.isEmailTaken(emailController.text);
+  
 
+
+    final isEmailTaken = await authService.isEmailTaken(emailController.text);
     if (isEmailTaken) {
-      ScaffoldMessenger.of(context).showSnackBar(
+      scaffoldMessenger.showSnackBar(
         const SnackBar(
           content: Text("Este correo ya está registrado"),
         ),
@@ -66,7 +68,7 @@ if (!isEmailValid(emailController.text)) {
 
     ); }
   } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
+    scaffoldMessenger.showSnackBar(
       const SnackBar(
         content: Text("Error al crear la cuenta"),
       ),

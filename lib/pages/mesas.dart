@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:bbb/constants/globals.dart' as globals;
 
 class Mesas extends StatefulWidget {
+  const Mesas({super.key});
+
   @override
   _MesasState createState() => _MesasState();
 }

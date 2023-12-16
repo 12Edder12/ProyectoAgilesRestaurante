@@ -57,7 +57,7 @@ class _CustomDialogState extends State<CustomDialog> {
                   },
                 ),
               ),
-              Container(
+             SizedBox(
                 height: MediaQuery.of(context).size.height * 0.5,
                 child: SingleChildScrollView(
                   child: Column(
@@ -65,7 +65,7 @@ class _CustomDialogState extends State<CustomDialog> {
                       Center(
                         child: Text(
                           'Mesa Nº ${globals.mesaOrden.toString()}',
-                          style: TextStyle(fontSize: 20),
+                          style: const TextStyle(fontSize: 20),
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -238,8 +238,9 @@ class _CustomDialogState extends State<CustomDialog> {
                       // Crear un nuevo documento en la colección 'pedidos'
                       DocumentReference pedidoRef =
                           await _firestore.collection('pedidos').add({
-                        'num_mesa': globals
-                            .mesaOrden, // Puedes cambiar esto según el número de mesa
+                        'num_mesa': globals.mesaOrden,
+                        'completado':false, 
+                        'fecha': FieldValue.serverTimestamp(),
                         'detalle_pedido': {
                           for (Pedido pedido in widget.pedidos)
                             pedido.food.id: {

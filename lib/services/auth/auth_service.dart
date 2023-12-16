@@ -45,7 +45,7 @@ if (isBlocked) {
 
 if (loginAttempts >= 3) {
         isBlocked = true;
-        Future.delayed(Duration(seconds: 10), () {
+        Future.delayed(const Duration(seconds: 10), () {
           // Desbloquear el sistema después de 10 segundos
           isBlocked = false;
           loginAttempts = 0;

@@ -10,9 +10,9 @@ import 'package:bbb/constants/globals.dart' as globals;
 class DetailPage extends StatefulWidget {
   final Pizza food;
   const DetailPage({
-    Key? key,
+    super.key,
     required this.food,
-  }) : super(key: key);
+  });
 
   @override
   _DetailPageState createState() => _DetailPageState();
@@ -39,7 +39,7 @@ class _DetailPageState extends State<DetailPage> {
           ],
         ),
       ),
-      floatingActionButton: Container(
+      floatingActionButton: SizedBox(
         width: 100,
         height: 56,
         child: RawMaterialButton(
