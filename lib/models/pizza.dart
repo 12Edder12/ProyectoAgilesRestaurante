@@ -12,7 +12,7 @@ class Pizza {
   String? about;
   Pizza(
       { this.id, 
-        this.imgUrl,
+      this.imgUrl,
       this.name,
       this.price,
       this.quantity,
@@ -89,12 +89,12 @@ static List<Map<String, String>> ingredientePolloPesto() {
 
 
 static Future<List<Pizza>> generateRecommendFoods() async {
+  List<Pizza> pizzas = [];
 
   QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('productos').get();
-  if (querySnapshot.docs.isEmpty) {
-    return [];
-  } else {
-    return querySnapshot.docs.map((doc) {
+  
+  querySnapshot.docs.forEach((doc) {
+    if (!doc.id.startsWith('bebida')) {
       // Crear una lista de ingredientes por defecto
       List<Map<String, String>> ingredients;
 
@@ -126,9 +126,9 @@ static Future<List<Pizza>> generateRecommendFoods() async {
           break;
         default:
           ingredients = [];
-    }
+      }
 
-      return Pizza(
+      pizzas.add(Pizza(
         id: doc.id,
         imgUrl: doc['img'],
         name: doc['nombre'],
@@ -136,9 +136,11 @@ static Future<List<Pizza>> generateRecommendFoods() async {
         quantity: 1,
         ingredients: ingredients,
         about: doc['about'],
-      );
-    }).toList();
-  }
+      ));
+    }
+  });
+
+  return pizzas;
 }
 
 static Future<List<Pizza>> getPizzasByIds() async {
@@ -182,6 +184,27 @@ static Future<List<Pizza>> getPizzasByIds() async {
   return pizzas;
 }
 
+static Future<List<Pizza>> getBebidas() async {
+  List<String> ids = ['bebida1', 'bebida2'];
+  List<Pizza> bebidas= [];
+
+  for (String id in ids) {
+    DocumentSnapshot doc = await FirebaseFirestore.instance.collection('productos').doc(id).get();
+    if (doc.exists) {
+      bebidas.add(Pizza(
+        id: doc.id,
+        imgUrl: doc['img'],
+        name: doc['nombre'],
+        price: doc['precio'],
+        quantity: 1,
+        ingredients: [],
+        about: doc['about'],
+      ));
+    }
+  }
+
+  return bebidas;
+}
 
 
   void setQuantity(int quantity) {
