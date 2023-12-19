@@ -33,39 +33,42 @@ class FoodDetail extends StatelessWidget {
        const        SizedBox(
               height: 39,
             ),
-       const  Row(
-              children: [
-                Text(
-                  'Ingredientes',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                )
-              ],
-            ),
-       const SizedBox(height: 10),
-            SizedBox(
-              height: 100,
-              child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => Container(
-                        padding: const  EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(40),
+            // Si el id del objeto Pizza comienza con 'pizza', muestra la sección de ingredientes
+            if (food!.id!.startsWith('pizza')) ...[
+              const Row(
+                children: [
+                  Text(
+                    'Ingredientes',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  )
+                ],
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 100,
+                child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) => Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          child: Column(
+                            children: [
+                              Image.network(food!.ingredients![index].values.first,
+                                  width: 52),
+                              Text(food!.ingredients![index].keys.first),
+                            ],
+                          ),
                         ),
-                        child: Column(
-                          children: [
-                            Image.network(food!.ingredients![index].values.first,
-                                width: 52),
-                            Text(food!.ingredients![index].keys.first),
-                          ],
+                    separatorBuilder: (_, index) => const SizedBox(
+                          width: 15,
                         ),
-                      ),
-                  separatorBuilder: (_, index) => const SizedBox(
-                        width: 15,
-                      ),
-                  itemCount: food!.ingredients!.length),
-            ),
-            const  SizedBox(height: 30),
+                    itemCount: food!.ingredients!.length),
+              ),
+              const SizedBox(height: 30),
+            ],
            const  Row(
               children: [
                 Text(

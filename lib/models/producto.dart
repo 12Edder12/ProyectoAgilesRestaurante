@@ -185,7 +185,7 @@ static Future<List<Pizza>> getPizzasByIds() async {
 }
 
 static Future<List<Pizza>> getBebidas() async {
-  List<String> ids = ['bebida1', 'bebida2'];
+  List<String> ids = ['bebida1', 'bebida2', 'bebida3'];
   List<Pizza> bebidas= [];
 
   for (String id in ids) {
