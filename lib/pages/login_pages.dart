@@ -20,14 +20,15 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passController = TextEditingController();
 
-  void showError(String error) {
+void showError(String error) {
+  if (mounted) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(error),
       ),
     );
   }
-
+}
   void navigateToPage(String cargo) {
     if (cargo == 'Cocinero') {
       Navigator.push(
