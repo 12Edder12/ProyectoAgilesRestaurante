@@ -10,7 +10,7 @@ import 'package:bbb/services/auth/auth_service.dart';
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
 
-  const LoginPage({Key? key, required this.onTap}) : super(key: key);
+  const LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -20,14 +20,15 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passController = TextEditingController();
 
-  void showError(String error) {
+void showError(String error) {
+  if (mounted) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(error),
       ),
     );
   }
-
+}
   void navigateToPage(String cargo) {
     if (cargo == 'Cocinero') {
       Navigator.push(

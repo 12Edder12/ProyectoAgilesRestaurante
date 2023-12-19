@@ -42,7 +42,7 @@ class FoodDetail extends StatelessWidget {
               ],
             ),
        const SizedBox(height: 10),
-            Container(
+            SizedBox(
               height: 100,
               child: ListView.separated(
                   scrollDirection: Axis.horizontal,

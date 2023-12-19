@@ -9,12 +9,12 @@ class FoodListView extends StatelessWidget {
   final PageController? pageController;
   final Restaurant? restaurant;
   const FoodListView({
-    Key? key,
+    super.key,
     this.selected,
     this.callback,
     this.pageController,
     this.restaurant,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

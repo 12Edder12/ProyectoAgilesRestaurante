@@ -4,6 +4,8 @@ import 'package:bbb/models/restaurant.dart';
 class RestaurantInfo extends StatelessWidget {
   final Future<Restaurant> restaurant = Restaurant.generateRestaurant();
 
+   RestaurantInfo({super.key});
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Restaurant>(

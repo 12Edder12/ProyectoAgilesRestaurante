@@ -8,7 +8,7 @@ class FoodImg extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 230,
       child: Stack(
         children: [

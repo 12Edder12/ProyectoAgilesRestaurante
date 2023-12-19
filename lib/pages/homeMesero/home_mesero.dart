@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeMesero2 extends StatefulWidget {
-  const HomeMesero2({Key? key}) : super(key: key);
+  const HomeMesero2({super.key});
 
   @override
   State<HomeMesero2> createState() => _HomeMesero2State();
