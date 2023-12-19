@@ -98,7 +98,7 @@ class _TomarMesaState extends State<TomarMesa> {
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Mesas()));
+                              MaterialPageRoute(builder: (context) => const Mesas()));
                         },
                         style: elevatedButtonStyle,
                         child: SizedBox(
@@ -229,7 +229,7 @@ class _TomarMesaState extends State<TomarMesa> {
                     child: Container(
                       width: double.infinity,
                       height: 80,
-                      color: Color(0xFFEB8F1E),
+                      color: const Color(0xFFEB8F1E),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
