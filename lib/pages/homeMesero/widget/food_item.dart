@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:bbb/models/pizza.dart';
+import 'package:bbb/models/producto.dart';
 
 class FoodItem extends StatelessWidget {
   final Pizza food;

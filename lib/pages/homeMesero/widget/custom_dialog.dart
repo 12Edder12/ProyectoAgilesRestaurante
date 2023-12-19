@@ -57,7 +57,7 @@ class _CustomDialogState extends State<CustomDialog> {
                   },
                 ),
               ),
-             SizedBox(
+              SizedBox(
                 height: MediaQuery.of(context).size.height * 0.5,
                 child: SingleChildScrollView(
                   child: Column(
@@ -70,12 +70,12 @@ class _CustomDialogState extends State<CustomDialog> {
                       ),
                       const SizedBox(height: 10),
                     ]..addAll(
-                        widget.pedidos.asMap().entries.map((entry) {
+                             (widget.pedidos.asMap().entries.toList()..sort((a, b) => a.value.food.id!.startsWith('bebida') ? 1 : -1))
+                           .map((entry)  {
                           int idx = entry.key;
                           Pedido pedido = entry.value;
                           return Dismissible(
-                            // Cada Dismissible debe contener una clave única. En este caso, usamos un valor entero
-                            // que representa el índice actual.
+                            // Cada Dismissible debe contener una clave única. En este caso, usamos un valor entero que representa el índice actual.
                             key: Key(pedido.hashCode.toString()),
                             direction: DismissDirection.horizontal,
                             onDismissed: (direction) {
@@ -84,105 +84,107 @@ class _CustomDialogState extends State<CustomDialog> {
                                 globals.orderCount--;
                               });
                             },
-                            // Muestra un fondo rojo mientras el elemento se desliza.
-                            background: Container(color: kPrimaryColor),
-                            child: Card(
-                              child: ListTile(
-                                title: Text(
-                                  'Pizza: ${pedido.food.name}',
-                                  style: const TextStyle(fontSize: 20),
-                                ),
-                                subtitle: Text(
-                                  'Cantidad: ${pedido.quantity}',
-                                  style: const TextStyle(fontSize: 16),
-                                ),
-                                trailing: IconButton(
-                                  icon: const Icon(Icons.edit),
-                                  onPressed: () {
-                                    final controller = TextEditingController();
-                                    String errorMessage = '';
-
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return StatefulBuilder(
-                                          builder: (BuildContext context,
-                                              StateSetter setState) {
-                                            return AlertDialog(
-                                              title:
-                                                  const Text('Editar cantidad'),
-                                              content: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: <Widget>[
-                                                  TextField(
-                                                    controller: controller,
-                                                    keyboardType:
-                                                        TextInputType.number,
-                                                    inputFormatters: <TextInputFormatter>[
-                                                      FilteringTextInputFormatter
-                                                          .digitsOnly
-                                                    ],
-                                                  ),
-                                                  Text(
-                                                    errorMessage,
-                                                    style: const TextStyle(
-                                                        color: Colors.red),
-                                                  ),
-                                                ],
-                                              ),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  child:
-                                                      const Text('Confirmar'),
-                                                  onPressed: () {
-                                                    // Verifica si el campo de texto está vacío
-                                                    if (controller
-                                                        .text.isEmpty) {
-                                                      setState(() {
-                                                        errorMessage =
-                                                            "Por favor, ingrese una cantidad";
-                                                      });
-                                                    } else {
-                                                      int newQuantity =
-                                                          int.parse(
-                                                              controller.text);
-                                                      // Verifica si la nueva cantidad es mayor que 10 o menor que 1
-                                                      if (newQuantity > 10) {
-                                                        setState(() {
-                                                          errorMessage =
-                                                              "La cantidad no puede ser mayor que 10";
-                                                        });
-                                                      } else if (newQuantity <
-                                                          1) {
-                                                        setState(() {
-                                                          errorMessage =
-                                                              "La cantidad no puede ser menor que 1";
-                                                        });
-                                                      } else {
-                                                        pedido.quantity =
-                                                            newQuantity;
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      }
-                                                    }
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                  ),
-                ),
+          // Muestra un fondo rojo mientras el elemento se desliza.
+          background: Container(color: kPrimaryColor),
+          child: Card(
+  
+            child: ListTile(
+              leading: Icon(pedido.food.id!.startsWith("bebida") ? Icons.local_drink : Icons.fastfood), // Agrega un ícono basado en el ID del producto
+              title: Text(
+                '${pedido.food.name}',
+                style: const TextStyle(fontSize: 20),
               ),
+              subtitle: Text(
+                'Cantidad: ${pedido.quantity}',
+                style: const TextStyle(fontSize: 16),
+              ),
+              trailing: IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () {
+                  final controller = TextEditingController();
+                  String errorMessage = '';
+
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return StatefulBuilder(
+                        builder: (BuildContext context,
+                            StateSetter setState) {
+                          return AlertDialog(
+                            title:
+                                const Text('Editar cantidad'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                TextField(
+                                  controller: controller,
+                                  keyboardType:
+                                      TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter
+                                        .digitsOnly
+                                  ],
+                                ),
+                                Text(
+                                  errorMessage,
+                                  style: const TextStyle(
+                                      color: Colors.red),
+                                ),
+                              ],
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                child:
+                                    const Text('Confirmar'),
+                                onPressed: () {
+                                  // Verifica si el campo de texto está vacío
+                                  if (controller
+                                      .text.isEmpty) {
+                                    setState(() {
+                                      errorMessage =
+                                          "Por favor, ingrese una cantidad";
+                                    });
+                                  } else {
+                                    int newQuantity =
+                                        int.parse(
+                                            controller.text);
+                                    // Verifica si la nueva cantidad es mayor que 10 o menor que 1
+                                    if (newQuantity > 10) {
+                                      setState(() {
+                                        errorMessage =
+                                            "La cantidad no puede ser mayor que 10";
+                                      });
+                                    } else if (newQuantity <
+                                        1) {
+                                      setState(() {
+                                        errorMessage =
+                                            "La cantidad no puede ser menor que 1";
+                                      });
+                                    } else {
+                                      pedido.quantity =
+                                          newQuantity;
+                                      Navigator.of(context)
+                                          .pop();
+                                    }
+                                  }
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    ),
+),
+),
+),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: kSecondaryColor, // color del fondo
@@ -206,12 +208,6 @@ class _CustomDialogState extends State<CustomDialog> {
                     ),
                   ],
                 ),
-                /* onPressed: () {
-                  for (Pedido pedido in globals.pedidos) {
-                    print(
-                        'Pedido: ${pedido.food.name} - Cantidad: ${pedido.quantity}');
-                  }
-                },*/
                 onPressed: () async {
                   // Verificar si la lista de pedidos está vacía
                   if (widget.pedidos.length == 0) {
@@ -239,7 +235,7 @@ class _CustomDialogState extends State<CustomDialog> {
                       DocumentReference pedidoRef =
                           await _firestore.collection('pedidos').add({
                         'num_mesa': globals.mesaOrden,
-                        'completado':false, 
+                        'completado': false,
                         'fecha': FieldValue.serverTimestamp(),
                         'detalle_pedido': {
                           for (Pedido pedido in widget.pedidos)
