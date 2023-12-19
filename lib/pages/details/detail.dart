@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bbb/pages/details/widget/food_detail.dart';
 import 'package:bbb/pages/details/widget/food_image.dart';
 import 'package:bbb/constants/colors.dart';
-import 'package:bbb/models/pizza.dart';
+import 'package:bbb/models/producto.dart';
 import 'package:bbb/models/pedido.dart';
 import 'package:bbb/pages/components/custom_app_bar.dart';
 import 'package:bbb/constants/globals.dart' as globals;

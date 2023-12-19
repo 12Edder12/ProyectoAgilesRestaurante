@@ -1,4 +1,4 @@
-import 'pizza.dart';
+import 'producto.dart';
 
 class Restaurant {
   String name;

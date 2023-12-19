@@ -1,4 +1,4 @@
-import 'package:bbb/models/pizza.dart';
+import 'package:bbb/models/producto.dart';
 
 class Pedido{
 final Pizza food;
