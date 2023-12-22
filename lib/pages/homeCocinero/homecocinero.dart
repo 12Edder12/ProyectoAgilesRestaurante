@@ -2,6 +2,7 @@ import 'package:bbb/services/auth/auth_service.dart';
 import 'package:bbb/services/auth/login_or_register.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class HomeCocinero extends StatefulWidget {
@@ -28,82 +29,106 @@ class _HomeCocineroState extends State<HomeCocinero> {
   Map<String, dynamic>? selectedPedido;
 
   // Función para mostrar el cuadro de diálogo con detalles del pedido.
-  void showPedidoDetailsDialog(Map<String, dynamic> pedidoData) async {
-    // Obtener una lista de IDs de productos del pedido.
-    List<String> productoIDs = pedidoData['detalle_pedido'].keys.toList();
+ void showPedidoDetailsDialog(Map<String, dynamic> pedidoData) async {
+  // Obtener una lista de IDs de productos del pedido.
+  List<String> productoIDs = pedidoData['detalle_pedido'].keys.toList();
 
-    // Obtener los nombres de los productos correspondientes a los IDs desde la tabla de productos.
-    List<String> nombresProductos = [];
+  // Obtener los nombres de los productos correspondientes a los IDs desde la tabla de productos.
+  List<String> nombresProductos = [];
 
-    for (String productoID in productoIDs) {
-      DocumentSnapshot productoSnapshot = await FirebaseFirestore.instance
-          .collection('productos')
-          .doc(productoID)
-          .get();
-      if (productoSnapshot.exists) {
-        String nombreProducto = productoSnapshot['nombre']; // Reemplaza 'nombre' con el campo correcto en tu tabla de productos.
-        nombresProductos.add(nombreProducto);
-      }
+  for (String productoID in productoIDs) {
+    DocumentSnapshot productoSnapshot = await FirebaseFirestore.instance
+        .collection('productos')
+        .doc(productoID)
+        .get();
+    if (productoSnapshot.exists) {
+      String nombreProducto = productoSnapshot['nombre']; // Reemplaza 'nombre' con el campo correcto en tu tabla de productos.
+      nombresProductos.add(nombreProducto);
     }
-
-    // ignore: use_build_context_synchronously
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Detalles del Pedido"),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          content: SizedBox(
-            width: double.maxFinite, // Ancho máximo
-            child: ListView(
-              shrinkWrap: true, // Ajusta el contenido al espacio necesario
-              children: [
-                Text("Mesa: ${pedidoData['num_mesa']}"),
-                Text("Completado: ${pedidoData['completado'] ? 'Sí' : 'No'}"),
-                const SizedBox(height: 10),
-                const Text("Detalle del Pedido:"),
-                // Mostrar los nombres de los productos en lugar de los IDs.
-                for (var i = 0; i < productoIDs.length; i++) ...[
-                  Text("${nombresProductos[i]}: ${pedidoData['detalle_pedido'][productoIDs[i]]['cantidad']}"),
-                ],
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text("Confirmar pedido"),
-              onPressed: () async {
-
-          if (selectedPedido != null) {
-      marcarPedidoComoCompletado(selectedPedido?['id']); // Marcar el pedido como completado en Firebase.
-    }
-
-
-                setState(() {
-                  showDialogBox = false; // Cerrar el cuadro de diálogo.
-                  selectedPedido = null; // Limpiar los detalles del pedido seleccionado.
-                });
-                Navigator.of(context).pop(); // Cerrar el cuadro de diálogo.
-}
-              
-            ),
-            TextButton(
-              child: const Text("Cerrar"),
-              onPressed: () {
-                setState(() {
-                  showDialogBox = false; // Cerrar el cuadro de diálogo.
-                  selectedPedido = null; // Limpiar los detalles del pedido seleccionado.
-                }); 
-                Navigator.of(context).pop(); // Cerrar el cuadro de diálogo.
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
+
+  // ignore: use_build_context_synchronously
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title:  Text("Mesa: ${pedidoData['num_mesa']}", 
+         style: const TextStyle(fontWeight: FontWeight.bold)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        content: SizedBox(
+           height: 180, //  largo
+          width: 400, // Ancho máximo
+          child: ListView(
+            shrinkWrap: true, // Ajusta el contenido al espacio necesario
+            children: [
+              const SizedBox(height: 10),
+              const Text("Orden:", 
+              style: TextStyle(fontWeight: FontWeight.bold)), 
+               const SizedBox(height: 20),
+              // Mostrar los nombres de los productos en lugar de los IDs.
+              for (var i = 0; i < productoIDs.length; i++) ...[
+                Text("${nombresProductos[i]}: ${pedidoData['detalle_pedido'][productoIDs[i]]['cantidad']}"),
+               const SizedBox(height: 10),
+              ],
+            ],
+          ),
+        ),
+      
+        actions: <Widget>[
+          TextButton(
+            child: const Text("Confirmar pedido"),
+            onPressed: () async {
+              if (selectedPedido != null) {
+                // Mostrar un cuadro de diálogo de confirmación
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Confirmación"),
+                      content: const Text("¿Estás seguro de realizar esta acción?"),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text("Sí"),
+                          onPressed: () async {
+                             marcarPedidoComoCompletado(selectedPedido?['id']); // Marcar el pedido como completado en Firebase
+                            setState(() {
+                              showDialogBox = false; // Cerrar el cuadro de diálogo.
+                              selectedPedido = null; // Limpiar los detalles del pedido seleccionado.
+                            });
+                            Navigator.of(context).pop(); // Cerrar el cuadro de diálogo de confirmación
+                            Navigator.of(context).pop(); // Cerrar el cuadro de diálogo original
+                          },
+                        ),
+                          TextButton(
+                          child: const Text("No"),
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Cerrar el cuadro de diálogo de confirmación
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            },
+          ),
+          TextButton(
+            child: const Text("Cerrar"),
+            onPressed: () {
+              setState(() {
+                showDialogBox = false; // Cerrar el cuadro de diálogo.
+                selectedPedido = null; // Limpiar los detalles del pedido seleccionado.
+              }); 
+              Navigator.of(context).pop(); // Cerrar el cuadro de diálogo.
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
 
   // Función para marcar el pedido como completado en Firebase.
   void marcarPedidoComoCompletado(String pedidoId) {
@@ -117,7 +142,7 @@ class _HomeCocineroState extends State<HomeCocinero> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Dashboard Cocinero"),
+        title: const Text("Pedidos Pizza Guerrin"),
         actions: [
           IconButton(
             icon: const Icon(Icons.exit_to_app),
@@ -168,10 +193,14 @@ class _HomeCocineroState extends State<HomeCocinero> {
                     },
                     child: Card(
                       color: Colors.white,
-                      margin: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(8),
                       child: ListTile(
-                        title: Text("Mesa: " + data['num_mesa'].toString()),
-                        subtitle: const Text('Estado: No Completado'),
+                        title: Text(
+                          "Mesa: " + data['num_mesa'].toString() +
+                          " - " + DateFormat('hh:mm a').format(data['fecha'].toDate()),
+                            style: const TextStyle(fontSize: 18), 
+                          ),
+                        
                         trailing: completado
                             ? null // No mostrar el botón si el pedido está completado
                             : IconButton(

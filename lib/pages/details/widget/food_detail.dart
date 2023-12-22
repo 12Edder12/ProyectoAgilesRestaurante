@@ -81,6 +81,7 @@ class FoodDetail extends StatelessWidget {
             Text(
               food!.about!,
               style: const TextStyle(fontSize: 16, wordSpacing: 1.2, height: 1.5),
+              textAlign: TextAlign.justify,
             ),
           const  SizedBox(height: 20),
           ],
