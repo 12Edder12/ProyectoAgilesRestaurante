@@ -53,9 +53,11 @@ class _HomeCocineroState extends State<HomeCocinero> {
     builder: (BuildContext context) {
       return AlertDialog(
         title:  Text("Mesa: ${pedidoData['num_mesa']}", 
-         style: const TextStyle(fontWeight: FontWeight.bold)),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
+         style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 24)),
+         backgroundColor: const Color(0xFFEB8F1E),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+        side: const BorderSide(color: Colors.white, width: 3),
         ),
         content: SizedBox(
            height: 180, //  largo
@@ -65,7 +67,7 @@ class _HomeCocineroState extends State<HomeCocinero> {
             children: [
               const SizedBox(height: 10),
               const Text("Orden:", 
-              style: TextStyle(fontWeight: FontWeight.bold)), 
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20)), 
                const SizedBox(height: 20),
               // Mostrar los nombres de los productos en lugar de los IDs.
               for (var i = 0; i < productoIDs.length; i++) ...[
@@ -77,8 +79,10 @@ class _HomeCocineroState extends State<HomeCocinero> {
         ),
       
         actions: <Widget>[
-          TextButton(
-            child: const Text("Confirmar pedido"),
+          TextButton.icon(
+            icon: const Icon(Icons.check, color: Colors.white),
+            label: const Text("Confirmar pedido", 
+             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18),),
             onPressed: () async {
               if (selectedPedido != null) {
                 // Mostrar un cuadro de diálogo de confirmación
@@ -86,11 +90,15 @@ class _HomeCocineroState extends State<HomeCocinero> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: const Text("Confirmación"),
+                      title: const Text("Confirmación", 
+                       style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 24),),
+                        backgroundColor: const Color(0xFFEB8F1E),
                       content: const Text("¿Estás seguro de realizar esta acción?"),
                       actions: <Widget>[
-                        TextButton(
-                          child: const Text("Sí"),
+                        TextButton.icon(
+                          icon: const Icon(Icons.check, color: Colors.white),
+                          label: const Text("Sí", 
+                           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18),),
                           onPressed: () async {
                              marcarPedidoComoCompletado(selectedPedido?['id']); // Marcar el pedido como completado en Firebase
                             setState(() {
@@ -101,8 +109,10 @@ class _HomeCocineroState extends State<HomeCocinero> {
                             Navigator.of(context).pop(); // Cerrar el cuadro de diálogo original
                           },
                         ),
-                          TextButton(
-                          child: const Text("No"),
+                          TextButton.icon(
+                          icon: const Icon(Icons.close, color: Colors.white),
+                          label: const Text("No",
+                           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18),),
                           onPressed: () {
                             Navigator.of(context).pop(); // Cerrar el cuadro de diálogo de confirmación
                           },
@@ -114,8 +124,10 @@ class _HomeCocineroState extends State<HomeCocinero> {
               }
             },
           ),
-          TextButton(
-            child: const Text("Cerrar"),
+          TextButton.icon(
+            icon: const Icon(Icons.close, color: Colors.white),
+            label: const Text("Cerrar", 
+             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18),),
             onPressed: () {
               setState(() {
                 showDialogBox = false; // Cerrar el cuadro de diálogo.
@@ -142,7 +154,9 @@ class _HomeCocineroState extends State<HomeCocinero> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Pedidos Pizza Guerrin"),
+        title: const Text("Pedidos Pizza Guerrin", 
+         ),
+          backgroundColor: const Color(0xFFEB8F1E),
         actions: [
           IconButton(
             icon: const Icon(Icons.exit_to_app),
@@ -192,20 +206,20 @@ class _HomeCocineroState extends State<HomeCocinero> {
                       showPedidoDetailsDialog(data); // Muestra el cuadro de diálogo con detalles del pedido.
                     },
                     child: Card(
-                      color: Colors.white,
+                      color: const Color(0xFFCB0101),
                       margin: const EdgeInsets.all(8),
                       child: ListTile(
                         title: Text(
                           "Mesa: " + data['num_mesa'].toString() +
                           " - " + DateFormat('hh:mm a').format(data['fecha'].toDate()),
-                            style: const TextStyle(fontSize: 18), 
+                            style: const TextStyle(fontSize: 18, color: Colors.white,), 
                           ),
                         
                         trailing: completado
                             ? null // No mostrar el botón si el pedido está completado
                             : IconButton(
                                 icon: const Icon(Icons.check_circle),
-                                color: completado ? Colors.green : Colors.grey,
+                                color: completado ? Colors.green : Colors.white,
                                 onPressed: () {
                                   // Marcar el pedido como completado en Firebase.
                                   marcarPedidoComoCompletado(pedidoId);
