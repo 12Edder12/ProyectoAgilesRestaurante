@@ -7,7 +7,7 @@ final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 Future<List<User>> getUsers() async {
   final QuerySnapshot querySnapshot = await firestore.collection('users').get();
-  return querySnapshot.docs.map((doc) {
+  final users = querySnapshot.docs.map((doc) {
     return User(
       userId: doc['ced_user'],
       name: doc['nom_user'],
@@ -19,4 +19,17 @@ Future<List<User>> getUsers() async {
       fecNacUser: doc['fec_nac_user'],
     );
   }).toList();
+
+  users.sort((a, b) => _compareRoles(a.role, b.role));
+
+  return users;
+}
+
+int _compareRoles(String role1, String role2) {
+  final roleOrder = {'admin': 1, 'Cocinero': 2, 'Mesero': 3};
+
+  final role1Order = roleOrder[role1] ?? 4;
+  final role2Order = roleOrder[role2] ?? 4;
+
+  return role1Order.compareTo(role2Order);
 }

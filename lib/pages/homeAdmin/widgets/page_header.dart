@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PageHeader extends StatelessWidget {
-  const PageHeader({super.key, required this.title});
+  const PageHeader({super.key, required this.title, required TextStyle style});
 
   final String title;
 

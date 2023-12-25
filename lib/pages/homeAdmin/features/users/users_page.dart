@@ -14,54 +14,86 @@ class UsersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return ContentView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const PageHeader(
-            title: 'Empleados',
-          ),
-          const Gap(16),
-          Expanded(
-            child: Card(
-              clipBehavior: Clip.antiAlias,
-              child: FutureBuilder<List<User>>(
-                future: getUsers(),
-                builder:
-                    (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.separated(
-                      itemCount: snapshot.data!.length,
-                      separatorBuilder: (context, index) => const Divider(),
-                      itemBuilder: (context, index) {
-                        final user = snapshot.data![index];
-                        return ListTile(
-                          title: Text(
-                            user.name,
-                            style: theme.textTheme.bodyMedium!
-                                .copyWith(fontWeight: FontWeight.w600),
+      child: Padding(
+        // Agrega un padding alrededor de la columna
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const PageHeader(
+              title: 'Empleados',
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight
+                      .bold), // Aumenta el tamaño de la fuente y la hace en negrita
+            ),
+            const Gap(32), // Aumenta el espacio
+            Expanded(
+              child: Card(
+                clipBehavior: Clip.antiAlias,
+                child: FutureBuilder<List<User>>(
+                  future: getUsers(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<User>> snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.separated(
+                        itemCount: snapshot.data!.length,
+                        separatorBuilder: (context, index) => const SizedBox(
+                            height: 16), // Agrega espacio entre las tarjetas
+                        itemBuilder: (context, index) {
+                          final user = snapshot.data![index];
+                          return AnimatedOpacity(
+                            // Agrega una animación de opacidad
+                            opacity: 1.0,
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeIn,
+                            child: Card(
+                              child: ListTile(
+                                leading: Icon(_getIconForRole(user.role)),
+                                title: Text(
+                                  '${user.apeUser} ${user.name}',
+                                  style: theme.textTheme.bodyText1,
+                                ),
+                                subtitle: Text(
+                                  user.role,
+                                  style: theme.textTheme.caption,
+                                ),
+                                trailing:
+                                    const Icon(Icons.more_vert),
+                                onTap: () {
+                                  UserPageRoute(userId: user.userId)
+                                      .go(context);
+                                },
+                              ),
                             ),
-                          subtitle: Text(
-                            user.role,
-                            style: theme.textTheme.labelMedium,
-                          ),
-                          trailing: const Icon(Icons.navigate_next_outlined),
-                          onTap: () {
-                            UserPageRoute(userId: user.userId).go(context);
-                          },
-                        );
-                      },
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                },
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+}
+
+IconData _getIconForRole(String role) {
+  switch (role) {
+    case 'admin':
+      return Icons.admin_panel_settings;
+    case 'Mesero':
+      return Icons.restaurant_menu;
+    case 'Cocinero':
+      return Icons.kitchen;
+    default:
+      return Icons.person;
   }
 }

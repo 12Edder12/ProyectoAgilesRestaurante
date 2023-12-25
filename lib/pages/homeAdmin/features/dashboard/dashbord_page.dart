@@ -26,6 +26,7 @@ class DashBoardPage extends StatelessWidget {
         children: [
           const PageHeader(
             title: 'Dashboard',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold), // Proporciona un estilo
            
           ),
           const Gap(16),
