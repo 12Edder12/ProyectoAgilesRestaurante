@@ -2,9 +2,7 @@ import 'package:bbb/pages/homeAdmin/features/users/user.dart';
 import 'package:bbb/pages/homeAdmin/features/users/users_crud.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../widgets/widgets.dart';
@@ -21,13 +19,13 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   late final TextEditingController _cedulaController;
   late final TextEditingController _nameController;
-  late final TextEditingController _roleController;
   late final TextEditingController _apeUserController;
   late final TextEditingController _celUserController;
   late final TextEditingController _dirUserController;
   late final TextEditingController _emailController;
-  late final TextEditingController _fecNacUserController;
-  
+  late final TextEditingController _ageController;
+  List<String> _roles = ['Mesero', 'Cocinero', 'admin', 'No definido'];
+  String? _selectedRole;
   // Agrega aquí los demás controladores
 
   bool _isEditing = false;
@@ -35,9 +33,10 @@ class _UserPageState extends State<UserPage> {
   @override
   void initState() {
     super.initState();
+    _selectedRole = widget.user.role;
+    _ageController = TextEditingController(text: calculateAge(widget.user.fecNacUser).toString());
     _cedulaController = TextEditingController(text: widget.user.userId);
     _nameController = TextEditingController(text: widget.user.name);
-    _roleController = TextEditingController(text: widget.user.role);
     _apeUserController = TextEditingController(text: widget.user.apeUser);
     _celUserController = TextEditingController(text: widget.user.celUser);
     _dirUserController = TextEditingController(text: widget.user.dirUser);
@@ -47,6 +46,7 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return ContentView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,6 +66,26 @@ class _UserPageState extends State<UserPage> {
             decoration: InputDecoration(labelText: 'Apellido'),
             enabled: _isEditing,
           ),
+          DropdownButtonFormField<String>(  
+          value: _selectedRole,
+          decoration: InputDecoration(labelText: 'Cargo'),
+          items: _roles.map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+          onChanged: _isEditing ? (String? newValue) {
+            setState(() {
+              _selectedRole = newValue;
+            });
+          } : null,
+        ),
+          TextFormField(
+            controller: _ageController,
+            decoration: InputDecoration(labelText: 'Edad'),
+            enabled: _isEditing,
+          ),
           TextFormField(
             controller: _celUserController,
             decoration: InputDecoration(labelText: 'Celular'),
@@ -79,11 +99,6 @@ class _UserPageState extends State<UserPage> {
           TextFormField(
             controller: _emailController,
             decoration: InputDecoration(labelText: 'Email'),
-            enabled: _isEditing,
-          ),
-          TextFormField(
-            controller: _roleController,
-            decoration: InputDecoration(labelText: 'Cargo'),
             enabled: _isEditing,
           ),
 
@@ -115,16 +130,13 @@ class _UserPageState extends State<UserPage> {
             label: const Text('Guardar'),
             onPressed: () async {
             if (_isEditing) {
-            final dateFormat = DateFormat('dd/MM/yyyy');
-            final birthDate = dateFormat.parse(_fecNacUserController.text);
             final newUserData = {
             'nom_user': _nameController.text,
             'ape_user': _apeUserController.text,
             'cel_user': _celUserController.text,
-            'cargo': _roleController.text,
+            'cargo': _selectedRole,
             'dir_user': _dirUserController.text,
-            'email': _emailController.text,
-            'fec_nac_user': Timestamp.fromDate(birthDate),  
+            'email': _emailController.text, 
             // Agrega aquí el resto de los campos del usuario
           };
             final userService = UserService();
@@ -157,4 +169,15 @@ class _UserPageState extends State<UserPage> {
       ),
     );
   }
+}
+
+int calculateAge(Timestamp birthDate) {
+  final birthDateTime = birthDate.toDate();
+  final currentDate = DateTime.now();
+  int age = currentDate.year - birthDateTime.year;
+  if (currentDate.month < birthDateTime.month ||
+      (currentDate.month == birthDateTime.month && currentDate.day < birthDateTime.day)) {
+    age--;
+  }
+  return age;
 }
