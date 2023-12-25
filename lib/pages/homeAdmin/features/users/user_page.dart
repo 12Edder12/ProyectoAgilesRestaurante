@@ -48,31 +48,47 @@ class _UserPageState extends State<UserPage> {
   Widget build(BuildContext context) {
     
     return ContentView(
+      child: SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextFormField(
             controller: _cedulaController,
             decoration: InputDecoration(labelText: 'Cédula'),
-            enabled: _isEditing,
+            enabled: false,
+            style: TextStyle(
+              color: _isEditing ? Colors.black : Colors.black87, // Cambia el color del texto aquí
+            ),
           ),
           TextFormField(
             controller: _nameController,
             decoration: InputDecoration(labelText: 'Nombre'),
             enabled: _isEditing,
+            style: TextStyle(
+              color: _isEditing ? Colors.black : Colors.black87, // Cambia el color del texto aquí
+            ),            
           ),
           TextFormField(
             controller: _apeUserController,
             decoration: InputDecoration(labelText: 'Apellido'),
             enabled: _isEditing,
+            style: TextStyle(
+              color: _isEditing ? Colors.black : Colors.black87, // Cambia el color del texto aquí
+            ),            
           ),
           DropdownButtonFormField<String>(  
           value: _selectedRole,
           decoration: InputDecoration(labelText: 'Cargo'),
+            style: TextStyle(
+              color: _isEditing ? Colors.black : Colors.black87, // Cambia el color del texto aquí
+            ),
           items: _roles.map((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value),
+              child: Text(
+                value,
+                style: TextStyle(fontSize: 16), // Cambia el tamaño de la letra aquí
+              ),
             );
           }).toList(),
           onChanged: _isEditing ? (String? newValue) {
@@ -82,25 +98,38 @@ class _UserPageState extends State<UserPage> {
           } : null,
         ),
           TextFormField(
+            controller: _emailController,
+            decoration: InputDecoration(labelText: 'Email'),
+            style: TextStyle(
+              color: _isEditing ? Colors.black : Colors.black87, // Cambia el color del texto aquí
+            ),
+            enabled: _isEditing,
+          ),
+          TextFormField(
             controller: _ageController,
             decoration: InputDecoration(labelText: 'Edad'),
-            enabled: _isEditing,
+            style: TextStyle(
+              color: _isEditing ? Colors.black : Colors.black87, // Cambia el color del texto aquí
+            ),
+            enabled: false,
           ),
           TextFormField(
             controller: _celUserController,
             decoration: InputDecoration(labelText: 'Celular'),
+            style: TextStyle(
+              color: _isEditing ? Colors.black : Colors.black87, // Cambia el color del texto aquí
+            ),
             enabled: _isEditing,
           ),
           TextFormField(
             controller: _dirUserController,
             decoration: InputDecoration(labelText: 'Direccion'),
+            style: TextStyle(
+              color: _isEditing ? Colors.black : Colors.black87, // Cambia el color del texto aquí
+            ),
             enabled: _isEditing,
           ),
-          TextFormField(
-            controller: _emailController,
-            decoration: InputDecoration(labelText: 'Email'),
-            enabled: _isEditing,
-          ),
+
 
           // Agrega aquí los demás campos
           const Gap(16),
@@ -157,15 +186,50 @@ class _UserPageState extends State<UserPage> {
           }
         },
 ), 
-          ElevatedButton.icon(
-            icon: const Icon(Icons.delete),
-            label: const Text('Delete'),
-            onPressed: () {
-              // Aquí puedes llamar a una función para eliminar al usuario de tu base de datos
-            },
-          ),
+        ElevatedButton.icon(
+          icon: const Icon(Icons.delete),
+          label: const Text('Delete'),
+          onPressed: () {
+            showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+          title: const Text('Confirmar eliminación'),
+          content: const Text('¿Estás seguro de que quieres eliminar este usuario?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Eliminar'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                UserService userService = UserService();
+                try {
+                  await userService.deleteUser(widget.user.idFirebase); 
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Usuario eliminado con éxito')),
+                  );
+                  Navigator.of(context).pop();
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error al eliminar el usuario: $e')),
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  },
+),
 
         ],
+      ),
       ),
     );
   }
