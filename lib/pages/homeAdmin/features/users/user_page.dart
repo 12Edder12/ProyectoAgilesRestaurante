@@ -2,6 +2,7 @@ import 'package:bbb/pages/homeAdmin/features/users/user.dart';
 import 'package:bbb/pages/homeAdmin/features/users/users_crud.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +19,7 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
+  late final TextEditingController _cedulaController;
   late final TextEditingController _nameController;
   late final TextEditingController _roleController;
   late final TextEditingController _apeUserController;
@@ -25,6 +27,7 @@ class _UserPageState extends State<UserPage> {
   late final TextEditingController _dirUserController;
   late final TextEditingController _emailController;
   late final TextEditingController _fecNacUserController;
+  
   // Agrega aquí los demás controladores
 
   bool _isEditing = false;
@@ -32,15 +35,14 @@ class _UserPageState extends State<UserPage> {
   @override
   void initState() {
     super.initState();
+    _cedulaController = TextEditingController(text: widget.user.userId);
     _nameController = TextEditingController(text: widget.user.name);
     _roleController = TextEditingController(text: widget.user.role);
     _apeUserController = TextEditingController(text: widget.user.apeUser);
     _celUserController = TextEditingController(text: widget.user.celUser);
     _dirUserController = TextEditingController(text: widget.user.dirUser);
     _emailController = TextEditingController(text: widget.user.email);
-    _fecNacUserController = TextEditingController(
-        text: DateFormat('dd/MM/yyyy').format(widget.user.fecNacUser.toDate()));
-    // Inicializa aquí los demás controladores
+
   }
 
   @override
@@ -50,26 +52,15 @@ class _UserPageState extends State<UserPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextFormField(
-            controller: _nameController,
-            decoration: InputDecoration(labelText: 'Name'),
+            controller: _cedulaController,
+            decoration: InputDecoration(labelText: 'Cédula'),
             enabled: _isEditing,
           ),
-DropdownButtonFormField<String>(
-  value: _roleController.text.isEmpty ? null : _roleController.text,
-  items: <String>['Cocinero', 'Mesero', 'No definido', 'admin'
-  ].map((String value) {
-    return DropdownMenuItem<String>(
-      value: value,
-      child: Text(value),
-    );
-  }).toList(),
-  decoration: InputDecoration(labelText: 'Role'),
-  onChanged: _isEditing ? (newValue) {
-    setState(() {
-      _roleController.text = newValue!;
-    });
-  } : null,
-),
+          TextFormField(
+            controller: _nameController,
+            decoration: InputDecoration(labelText: 'Nombre'),
+            enabled: _isEditing,
+          ),
           TextFormField(
             controller: _apeUserController,
             decoration: InputDecoration(labelText: 'Apellido'),
@@ -90,27 +81,11 @@ DropdownButtonFormField<String>(
             decoration: InputDecoration(labelText: 'Email'),
             enabled: _isEditing,
           ),
-            TextFormField(
-              controller: _fecNacUserController,
-              decoration: InputDecoration(labelText: 'Fecha de Nacimiento'),
-              enabled: _isEditing,
-              onTap: () async {
-                if (_isEditing) {
-                  FocusScope.of(context).requestFocus(new FocusNode()); // para quitar el teclado
-                  final selectedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime.now(),
-                  );
-
-                  if (selectedDate != null) {
-                    final dateFormat = DateFormat('dd/MM/yyyy');
-                    _fecNacUserController.text = dateFormat.format(selectedDate);
-                  }
-                }
-              },
-            ),
+          TextFormField(
+            controller: _roleController,
+            decoration: InputDecoration(labelText: 'Cargo'),
+            enabled: _isEditing,
+          ),
 
           // Agrega aquí los demás campos
           const Gap(16),
