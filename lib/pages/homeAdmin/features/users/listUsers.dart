@@ -5,24 +5,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-Future<List<User>> getUsers() async {
-  final QuerySnapshot querySnapshot = await firestore.collection('users').get();
-  final users = querySnapshot.docs.map((doc) {
-    return User(
-      userId: doc['ced_user'],
-      name: doc['nom_user'],
-      apeUser: doc['ape_user'],
-      celUser: doc['cel_user'],
-      role: doc['cargo'],
-      dirUser: doc['dir_user'],
-      email: doc['email'],
-      fecNacUser: doc['fec_nac_user'],
-    );
-  }).toList();
+Stream<List<User>> getUsers() {
+  return firestore.collection('users').snapshots().map((snapshot) {
+    final users = snapshot.docs.map((doc) {
+      return User(
+        idFirebase: doc.id,
+        userId: doc['ced_user'],
+        name: doc['nom_user'],
+        apeUser: doc['ape_user'],
+        celUser: doc['cel_user'],
+        role: doc['cargo'],
+        dirUser: doc['dir_user'],
+        email: doc['email'],
+        fecNacUser: doc['fec_nac_user'],
+      );
+    }).toList();
 
-  users.sort((a, b) => _compareRoles(a.role, b.role));
+    users.sort((a, b) => _compareRoles(a.role, b.role));
 
-  return users;
+    return users;
+  });
 }
 
 int _compareRoles(String role1, String role2) {

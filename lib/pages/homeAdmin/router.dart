@@ -84,9 +84,9 @@ class UserPageRoute extends GoRouteData {
   final String userId;
 
 @override
- Widget build(BuildContext context, GoRouterState state) {
-  return FutureBuilder<List<User>>(
-    future: getUsers(),
+Widget build(BuildContext context, GoRouterState state) {
+  return StreamBuilder<List<User>>(
+    stream: getUsers(),
     builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
       if (snapshot.hasData) {
         final user = snapshot.data!.firstWhereOrNull((e) => e.userId == userId);

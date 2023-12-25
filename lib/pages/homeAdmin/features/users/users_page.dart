@@ -31,11 +31,17 @@ class UsersPage extends StatelessWidget {
             Expanded(
               child: Card(
                 clipBehavior: Clip.antiAlias,
-                child: FutureBuilder<List<User>>(
-                  future: getUsers(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<User>> snapshot) {
-                    if (snapshot.hasData) {
+                child: StreamBuilder<List<User>>(
+                stream: getUsers(),
+                  builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+    
                       return ListView.separated(
                         itemCount: snapshot.data!.length,
                         separatorBuilder: (context, index) => const SizedBox(
@@ -69,11 +75,7 @@ class UsersPage extends StatelessWidget {
                           );
                         },
                       );
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return CircularProgressIndicator();
-                    }
+
                   },
                 ),
               ),

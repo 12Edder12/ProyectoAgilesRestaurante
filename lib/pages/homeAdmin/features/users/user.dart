@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class User {
   User({
     required this.userId,
+    required this.idFirebase,
     required this.name,
     required this.apeUser,
     required this.celUser,
@@ -11,6 +12,7 @@ class User {
     required this.fecNacUser,
   });
   final String userId;
+  final String idFirebase;
   final String name;
   final String role;
   final String apeUser;
