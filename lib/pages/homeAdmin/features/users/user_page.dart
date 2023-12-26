@@ -205,25 +205,27 @@ class _UserPageState extends State<UserPage> {
                 Navigator.of(context).pop();
               },
             ),
-TextButton(
-  child: const Text('Eliminar'),
-  onPressed: () async {
-    UserService userService = UserService();
-    try {
-      await userService.deleteUser(widget.user.idFirebase); 
+Builder(
+  builder: (context) => TextButton(
+    child: const Text('Eliminar'),
+    onPressed: () async {
+      UserService userService = UserService();
+      try {
+        await userService.deleteUser(widget.user.idFirebase); 
 
-      // Navegar a la lista de usuarios y reemplazar la página actual
-      const UsersPageRoute();
+        // Navegar a la lista de usuarios y reemplazar la página actual
+        UsersPageRoute().go(context);
 
-    } catch (e) {
-      // Guardar una referencia al ScaffoldMessenger
-      final scaffoldMessenger = ScaffoldMessenger.of(context);
+      } catch (e) {
+        // Guardar una referencia al ScaffoldMessenger
+        final scaffoldMessenger = ScaffoldMessenger.of(context);
 
-      scaffoldMessenger.showSnackBar(
-        SnackBar(content: Text('Error al eliminar el usuario: $e')),
-      );
-    }
-  },
+        scaffoldMessenger.showSnackBar(
+          SnackBar(content: Text('Error al eliminar el usuario: $e')),
+        );
+      }
+    },
+  ),
 ),
           ],
         );
