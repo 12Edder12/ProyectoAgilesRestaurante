@@ -1,8 +1,10 @@
 import 'package:bbb/pages/homeAdmin/features/users/user.dart';
 import 'package:bbb/pages/homeAdmin/features/users/users_crud.dart';
+import 'package:bbb/pages/homeAdmin/router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../widgets/widgets.dart';
@@ -203,26 +205,26 @@ class _UserPageState extends State<UserPage> {
                 Navigator.of(context).pop();
               },
             ),
-              TextButton(
-                child: const Text('Eliminar'),
-                onPressed: () async {
-                  UserService userService = UserService();
-                  try {
-                    await userService.deleteUser(widget.user.idFirebase); 
+TextButton(
+  child: const Text('Eliminar'),
+  onPressed: () async {
+    UserService userService = UserService();
+    try {
+      await userService.deleteUser(widget.user.idFirebase); 
 
-                    // Regresar a la pantalla de usuarios
-                    Navigator.pop(context);
+      // Navegar a la lista de usuarios y reemplazar la página actual
+      const UsersPageRoute();
 
-                  } catch (e) {
-                    // Guardar una referencia al ScaffoldMessenger
-                    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    } catch (e) {
+      // Guardar una referencia al ScaffoldMessenger
+      final scaffoldMessenger = ScaffoldMessenger.of(context);
 
-                    scaffoldMessenger.showSnackBar(
-                      SnackBar(content: Text('Error al eliminar el usuario: $e')),
-                    );
-                  }
-                },
-              ),
+      scaffoldMessenger.showSnackBar(
+        SnackBar(content: Text('Error al eliminar el usuario: $e')),
+      );
+    }
+  },
+),
           ],
         );
       },
