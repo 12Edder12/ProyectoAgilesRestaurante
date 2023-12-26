@@ -91,7 +91,7 @@ Widget build(BuildContext context, GoRouterState state) {
       if (snapshot.hasData) {
         final user = snapshot.data!.firstWhereOrNull((e) => e.userId == userId);
         return user == null
-            ? UserNotFoundPage(userId: userId)
+            ? UsersPage()
             : UserPage(user: user);
       } else if (snapshot.hasError) {
         return Text('Error: ${snapshot.error}');

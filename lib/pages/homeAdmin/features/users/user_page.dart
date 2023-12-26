@@ -5,7 +5,6 @@ import 'package:bbb/pages/homeAdmin/router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import '../../widgets/widgets.dart';
 
 class UserPage extends StatefulWidget {
@@ -43,7 +42,7 @@ class _UserPageState extends State<UserPage> {
     _celUserController = TextEditingController(text: widget.user.celUser);
     _dirUserController = TextEditingController(text: widget.user.dirUser);
     _emailController = TextEditingController(text: widget.user.email);
-     idUser  = widget.user.idFirebase;
+    idUser = widget.user.idFirebase;
   }
 
   @override
@@ -206,39 +205,61 @@ class _UserPageState extends State<UserPage> {
                 }
               },
             ),
-          ElevatedButton.icon(
-  icon: const Icon(Icons.delete),
-  label: const Text('Delete'),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.delete),
+              label: const Text('Delete'),
+              onPressed: () async {
+                final result = await showDialog<bool>(
+                  context: context,
+                  builder: (dialogContext) => AlertDialog(
+                    title: const Text('Confirmar eliminación'),
+                    content: const Text(
+                        '¿Estás seguro de que quieres eliminar este usuario?'),
+                    actions: <Widget>[
+TextButton(
+  child: const Text('Eliminar'),
   onPressed: () async {
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: const Text('Confirmar eliminación'),
-        content: const Text('¿Estás seguro de que quieres eliminar este usuario?'),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Cancelar'),
-            onPressed: () {
-              Navigator.of(dialogContext).pop(false);
-            },
-          ),
-          TextButton(
-            child: const Text('Eliminar'),
-            onPressed: () async {
-              final userService = UserService();
-              await userService.deleteUser(idUser);
-              Navigator.of(dialogContext).pop(true);
-            },
-          ),
-        ],
-      ),
-    );
+    final userService = UserService();
+    try {
+      await userService.deleteUser(idUser);
+      Navigator.of(dialogContext).pop(true);
 
-    if (result == true && mounted) { // Verificar si el widget todavía está montado
-      GoRouter.of(context).go('/users');
+      // Mostrar un AlertDialog después de eliminar el usuario
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Usuario eliminado'),
+          content: Text('El usuario ha sido eliminado con éxito.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el AlertDialog
+                router.go('/users'); // Navegar a la página de usuarios
+              },
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      // Mostrar un mensaje de error si algo sale mal
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al eliminar el usuario: $e')),
+      );
+      Navigator.of(dialogContext).pop(false);
     }
   },
 ),
+                    ],
+                  ),
+                );
+
+                if (result == true && mounted) {
+      
+                  router.go('/users');
+                }
+              },
+            ),
           ],
         ),
       ),

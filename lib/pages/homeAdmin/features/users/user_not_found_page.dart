@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class UserNotFoundPage extends StatelessWidget {
+/*class UserNotFoundPage extends StatelessWidget {
   const UserNotFoundPage({super.key, required this.userId});
 
   final String userId;
@@ -27,3 +27,4 @@ class UserNotFoundPage extends StatelessWidget {
     );
   }
 }
+*/

@@ -12,6 +12,7 @@ class UsersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final rootContext = context;
     final theme = Theme.of(context);
     return ContentView(
       child: Padding(
