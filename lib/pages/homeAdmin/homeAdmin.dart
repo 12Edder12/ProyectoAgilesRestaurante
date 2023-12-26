@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class AdminScreen extends StatelessWidget {
-  static const title = 'Flutter Admin Dashboard';
+  static const title = 'Que?';
   @override
   Widget build(BuildContext context) {
     

@@ -1,6 +1,5 @@
 import 'package:bbb/pages/homeAdmin/features/users/listUsers.dart';
 import 'package:bbb/pages/homeAdmin/features/users/user.dart';
-import 'package:bbb/pages/homeAdmin/features/users/user_not_found_page.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,7 @@ import 'widgets/widgets.dart';
 
 part 'router.g.dart';
 
-const routerInitialLocation = '/';
+const routerInitialLocation = '/users';
 
 final router = GoRouter(
   routes: $appRoutes,

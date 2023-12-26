@@ -1,7 +1,7 @@
 import 'package:bbb/pages/homeAdmin/mainAdmin.dart';
 import 'package:bbb/pages/homeAdmin/widgets/navigation/navigation_app_bar.dart';
 import 'package:bbb/pages/homeAdmin/widgets/navigation/navigation_item.dart';
-import 'package:bbb/pages/homeAdmin/widgets/navigation/theme_mode_button.dart';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -47,7 +47,7 @@ class _ScaffoldWithNavigationRail extends StatelessWidget {
               ),
               const Padding(
                 padding: EdgeInsets.all(16),
-                child: ThemeModeButton.icon(),
+                
               ),
             ],
           ),
@@ -96,7 +96,7 @@ class _ScaffoldWithDrawer extends StatelessWidget {
             ),
             const Padding(
               padding: EdgeInsets.all(16),
-              child: ThemeModeButton.outlined(),
+            
             ),
           ],
         ),
@@ -137,33 +137,3 @@ class _NavigationRail extends StatelessWidget {
     );
   }
 }
-
-// class _ScaffoldWithNavigationBar extends StatelessWidget {
-//   const _ScaffoldWithNavigationBar(this.navigationShell);
-
-//   final StatefulNavigationShell navigationShell;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: const NavigationAppBar(),
-//       body: navigationShell,
-//       bottomNavigationBar: NavigationBar(
-//         selectedIndex: navigationShell.currentIndex,
-//         onDestinationSelected: (index) {
-//           navigationShell.goBranch(
-//             index,
-//             initialLocation: index == navigationShell.currentIndex,
-//           );
-//         },
-//         destinations: [
-//           for (final item in NavigationItem.values)
-//             NavigationDestination(
-//               icon: Icon(item.iconData),
-//               label: item.label,
-//             ),
-//         ],
-//       ),
-//     );
-//   }
-// }

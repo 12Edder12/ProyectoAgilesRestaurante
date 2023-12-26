@@ -13,13 +13,13 @@ class NavigationAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: false,
       elevation: 4,
       actions: [
-        const Text('anonymous'),
+        const Text('Administrador'),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: PopupMenuButton<void>(
             itemBuilder: (context) => [
               PopupMenuItem(
-                child: const Text('Sign out'),
+                child: const Text('Salir'),
                 onTap: () {
                   // Sign out logic
                 },
