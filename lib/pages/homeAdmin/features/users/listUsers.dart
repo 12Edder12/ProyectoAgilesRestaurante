@@ -6,7 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 Stream<List<User>> getUsers() {
-  return firestore.collection('users').snapshots().map((snapshot) {
+  return firestore.collection('users')
+    .where('est_user', isEqualTo: "1")
+    .snapshots()
+    .map((snapshot) {
     final users = snapshot.docs.map((doc) {
       return User(
         idFirebase: doc.id,

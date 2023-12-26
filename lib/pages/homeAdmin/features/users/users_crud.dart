@@ -8,7 +8,7 @@ class UserService {
   }
 
   Future<void> deleteUser(String id) async {
-    return _usersCollection.doc(id).delete();
+  return _usersCollection.doc(id).update({'est_user': "0"});
   }
 }
 
