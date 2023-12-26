@@ -63,8 +63,8 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         );
       } else {
-         DateTime fechaUtc = fechaNacimiento!.toUtc();
-DateTime fechaAjustada = DateTime(fechaUtc.year, fechaUtc.month, fechaUtc.day, 12);
+        DateTime fechaUtc = fechaNacimiento!.toUtc();
+        DateTime fechaAjustada = DateTime(fechaUtc.year, fechaUtc.month, fechaUtc.day, 12);
         await authService.signUpWithEmailandPassword(
           emailController.text, // email
           passController.text, // password
