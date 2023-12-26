@@ -1,3 +1,4 @@
+import 'package:bbb/constants/colors.dart';
 import 'package:bbb/constants/globals.dart';
 import 'package:bbb/pages/homeAdmin/features/users/listUsers.dart';
 import 'package:bbb/pages/homeAdmin/features/users/user.dart';
@@ -17,7 +18,6 @@ class UsersPage extends StatelessWidget {
     final theme = Theme.of(context);
     return ContentView(
       child: Padding(
-        // Agrega un padding alrededor de la columna
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,10 +26,10 @@ class UsersPage extends StatelessWidget {
               title: 'Empleados',
               style: TextStyle(
                   fontSize: 24,
-                  fontWeight: FontWeight
-                      .bold), // Aumenta el tamaño de la fuente y la hace en negrita
+                  fontWeight: FontWeight.bold,
+                  color: kPrimaryColor), // Cambia el color del título a azul
             ),
-            const Gap(32), // Aumenta el espacio
+            const Gap(32),
             Expanded(
               child: Card(
                 clipBehavior: Clip.antiAlias,
@@ -46,18 +46,23 @@ class UsersPage extends StatelessWidget {
     
                       return ListView.separated(
                         itemCount: snapshot.data!.length,
-                        separatorBuilder: (context, index) => const SizedBox(
-                            height: 16), // Agrega espacio entre las tarjetas
+                        separatorBuilder: (context, index) => const SizedBox(height: 16),
                         itemBuilder: (context, index) {
                           final user = snapshot.data![index];
                           return AnimatedOpacity(
-                            // Agrega una animación de opacidad
                             opacity: 1.0,
                             duration: Duration(milliseconds: 300),
                             curve: Curves.easeIn,
                             child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0), // Añade bordes redondeados a las tarjetas
+                                side: BorderSide(color: Colors.grey[300]!), // Añade un borde a las tarjetas
+                              ),
                               child: ListTile(
-                                leading: Icon(_getIconForRole(user.role)),
+                                leading: Icon(
+                                  _getIconForRole(user.role),
+                                  color: kPrimaryColor, // Cambia el color de los iconos a azul
+                                ),
                                 title: Text(
                                   '${user.apeUser} ${user.name}',
                                   style: theme.textTheme.bodyText1,
@@ -67,7 +72,7 @@ class UsersPage extends StatelessWidget {
                                   style: theme.textTheme.caption,
                                 ),
                                 trailing:
-                                    const Icon(Icons.more_vert),
+                                    const Icon(Icons.more_vert, color: black), // Cambia el color del icono a azul
                                 onTap: () {
                                   UserPageRoute(userId: user.userId)
                                       .go(context);
