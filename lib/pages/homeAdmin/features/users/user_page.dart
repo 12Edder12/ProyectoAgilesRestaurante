@@ -152,125 +152,172 @@ class _UserPageState extends State<UserPage> {
             ),
 
             // Agrega aquí los demás campos
-            const Gap(16),
-            if (_isEditing)
-              ElevatedButton.icon(
-                icon: const Icon(Icons.cancel),
-                label: const Text('Cancel'),
-                onPressed: () {
-                  setState(() {
-                    _isEditing = false;
-                  });
-                },
-              )
-            else
-              ElevatedButton.icon(
-                icon: const Icon(Icons.edit),
-                label: const Text('Edit'),
-                onPressed: () {
-                  setState(() {
-                    _isEditing = true;
-                  });
-                },
-              ),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.save),
-              label: const Text('Guardar'),
-              onPressed: () async {
-                if (_isEditing) {
-                  final newUserData = {
-                    'nom_user': _nameController.text,
-                    'ape_user': _apeUserController.text,
-                    'cel_user': _celUserController.text,
-                    'cargo': _selectedRole,
-                    'dir_user': _dirUserController.text,
-                    'email': _emailController.text,
-                    // Agrega aquí el resto de los campos del usuario
-                  };
-                  final userService = UserService();
-                  try {
-                    await userService.updateUser(
-                        widget.user.idFirebase, newUserData);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Usuario actualizado con éxito')),
-                    );
-                  } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content: Text('Error al actualizar el usuario: $e')),
-                    );
-                  }
-
-                  setState(() {
-                    _isEditing = false;
-                  });
-                }
-              },
-            ),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.delete),
-              label: const Text('Delete'),
-              onPressed: () async {
-                final result = await showDialog<bool>(
-                  context: context,
-                  builder: (dialogContext) => AlertDialog(
-                    title: const Text('Confirmar eliminación'),
-                    content: const Text(
-                        '¿Estás seguro de que quieres eliminar este usuario?'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('Cancelar'),
-                        onPressed: () {
-                          Navigator.of(dialogContext).pop(false);
-                        },
+            SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment
+                  .spaceEvenly, // Centra los botones en la fila
+              children: [
+                if (_isEditing)
+                  Flexible(
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.cancel, color: Colors.white),
+                      label: Text(
+                        'Cancelar',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12, // Cambia el tamaño del texto a 12
+                        ),
                       ),
-                      TextButton(
-                        child: const Text('Eliminar'),
-                        onPressed: () async {
-                          final userService = UserService();
-                          try {
-                            await userService.deleteUser(idUser);
-                            Navigator.of(dialogContext).pop(true);
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red, // Cambia el color de fondo a rojo
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isEditing = false;
+                        });
+                      },
+                    ),
+                  ),
+                if (!_isEditing)
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.edit, color: Colors.white),
+                    label: const Text('Editar',
+                        style: TextStyle(color: Colors.white)),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue, // Cambia el color de fondo a azul
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isEditing = true;
+                      });
+                    },
+                  ),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.save, color: Colors.white),
+                  label: const Text('Guardar',
+                      style: TextStyle(color: Colors.white)),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green, // Cambia el color de fondo a verde
+                  ),
+                  onPressed: () async {
+                    if (_isEditing) {
+                      final newUserData = {
+                        'nom_user': _nameController.text,
+                        'ape_user': _apeUserController.text,
+                        'cel_user': _celUserController.text,
+                        'cargo': _selectedRole,
+                        'dir_user': _dirUserController.text,
+                        'email': _emailController.text,
+                        // Agrega aquí el resto de los campos del usuario
+                      };
+                      final userService = UserService();
+                      try {
+                        await userService.updateUser(
+                            widget.user.idFirebase, newUserData);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text('Usuario actualizado con éxito')),
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content:
+                                  Text('Error al actualizar el usuario: $e')),
+                        );
+                      }
 
-                            // Comprueba si globalContext no es null antes de usarlo
-                            if (globalContext != null) {
-                              showDialog(
-                                context: globalContext!,
-                                builder: (context) => AlertDialog(
-                                  title: Text('Usuario eliminado'),
-                                  content: Text(
-                                      'El usuario ha sido eliminado con éxito.'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: Text('OK'),
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pop(); // Cerrar el AlertDialog
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  content:
-                                      Text('Error al eliminar el usuario: $e')),
-                            );
-                            Navigator.of(dialogContext).pop(false);
-                          }
+                      setState(() {
+                        _isEditing = false;
+                      });
+                    }
+                  },
+                ),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.delete, color: Colors.white),
+                  label: const Text('Eliminar',
+                      style: TextStyle(color: Colors.white)),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red, // Cambia el color de fondo a rojo
+                  ),
+onPressed: () async {
+  final result = await showDialog<bool>(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: const Text(
+        'Confirmar eliminación',
+        style: TextStyle(color: Colors.red), // Cambia el color del título a rojo
+      ),
+      content: const Text(
+        '¿Estás seguro de que quieres eliminar este usuario?',
+        style: TextStyle(color: Colors.black), // Cambia el color del contenido a negro
+      ),
+      actions: <Widget>[
+        TextButton.icon(
+          icon: const Icon(Icons.cancel, color: Colors.red), // Añade un icono de cancelar
+          label: const Text(
+            'Cancelar',
+            style: TextStyle(color: Colors.red), // Cambia el color del texto a rojo
+          ),
+          onPressed: () {
+            Navigator.of(dialogContext).pop(false);
+          },
+        ),
+        TextButton.icon(
+          icon: const Icon(Icons.delete, color: Colors.red), // Añade un icono de eliminar
+          label: const Text(
+            'Eliminar',
+            style: TextStyle(color: Colors.red), // Cambia el color del texto a rojo
+          ),
+          onPressed: () async {
+            final userService = UserService();
+            try {
+              await userService.deleteUser(idUser);
+              Navigator.of(dialogContext).pop(true);
+
+              // Comprueba si globalContext no es null antes de usarlo
+              if (globalContext != null) {
+                showDialog(
+                  context: globalContext!,
+                  builder: (context) => AlertDialog(
+                    title: Text(
+                      'Usuario eliminado',
+                      style: TextStyle(color: Colors.green), // Cambia el color del título a verde
+                    ),
+                    content: Text(
+                      'El usuario ha sido eliminado con éxito.',
+                      style: TextStyle(color: Colors.black), // Cambia el color del contenido a negro
+                    ),
+                    actions: <Widget>[
+                      TextButton.icon(
+                        icon: const Icon(Icons.check, color: Colors.green), // Añade un icono de check
+                        label: Text(
+                          'OK',
+                          style: TextStyle(color: Colors.green), // Cambia el color del texto a verde
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Cerrar el AlertDialog
                         },
                       ),
                     ],
                   ),
                 );
-
-                if (result == true && mounted) {
-                  print("entra aca?");
-                  router.go('/users');
-                }
-              },
+              }
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Error al eliminar el usuario: $e'),
+                ),
+              );
+              Navigator.of(dialogContext).pop(false);
+            }
+          },
+        ),
+      ],
+    ),
+  );
+},
+                ),
+              ],
             ),
           ],
         ),
