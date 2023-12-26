@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../constants/globals.dart';
 
 class UserService {
   final CollectionReference _usersCollection = FirebaseFirestore.instance.collection('users');
@@ -8,7 +11,8 @@ class UserService {
   }
 
   Future<void> deleteUser(String id) async {
-  return _usersCollection.doc(id).update({'est_user': "0"});
+    await _usersCollection.doc(id).update({'est_user': "0"});
+
   }
 }
 

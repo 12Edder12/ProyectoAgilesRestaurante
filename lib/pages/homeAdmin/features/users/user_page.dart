@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bbb/constants/globals.dart';
 import 'package:bbb/pages/homeAdmin/features/users/user.dart';
 import 'package:bbb/pages/homeAdmin/features/users/users_crud.dart';
@@ -216,46 +218,56 @@ class _UserPageState extends State<UserPage> {
                     content: const Text(
                         '¿Estás seguro de que quieres eliminar este usuario?'),
                     actions: <Widget>[
-TextButton(
-  child: const Text('Eliminar'),
-  onPressed: () async {
-    final userService = UserService();
-    try {
-      await userService.deleteUser(idUser);
-      Navigator.of(dialogContext).pop(true);
+                      TextButton(
+                        child: const Text('Cancelar'),
+                        onPressed: () {
+                          Navigator.of(dialogContext).pop(false);
+                        },
+                      ),
+                      TextButton(
+                        child: const Text('Eliminar'),
+                        onPressed: () async {
+                          final userService = UserService();
+                          try {
+                            await userService.deleteUser(idUser);
+                            Navigator.of(dialogContext).pop(true);
 
-      // Mostrar un AlertDialog después de eliminar el usuario
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Usuario eliminado'),
-          content: Text('El usuario ha sido eliminado con éxito.'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Cerrar el AlertDialog
-                router.go('/users'); // Navegar a la página de usuarios
-              },
-            ),
-          ],
-        ),
-      );
-    } catch (e) {
-      // Mostrar un mensaje de error si algo sale mal
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al eliminar el usuario: $e')),
-      );
-      Navigator.of(dialogContext).pop(false);
-    }
-  },
-),
+                            // Comprueba si globalContext no es null antes de usarlo
+                            if (globalContext != null) {
+                              showDialog(
+                                context: globalContext!,
+                                builder: (context) => AlertDialog(
+                                  title: Text('Usuario eliminado'),
+                                  content: Text(
+                                      'El usuario ha sido eliminado con éxito.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Cerrar el AlertDialog
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content:
+                                      Text('Error al eliminar el usuario: $e')),
+                            );
+                            Navigator.of(dialogContext).pop(false);
+                          }
+                        },
+                      ),
                     ],
                   ),
                 );
 
                 if (result == true && mounted) {
-      
+                  print("entra aca?");
                   router.go('/users');
                 }
               },

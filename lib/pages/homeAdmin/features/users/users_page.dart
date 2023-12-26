@@ -1,3 +1,4 @@
+import 'package:bbb/constants/globals.dart';
 import 'package:bbb/pages/homeAdmin/features/users/listUsers.dart';
 import 'package:bbb/pages/homeAdmin/features/users/user.dart';
 import 'package:bbb/pages/homeAdmin/router.dart';
@@ -12,7 +13,7 @@ class UsersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rootContext = context;
+    globalContext = context;
     final theme = Theme.of(context);
     return ContentView(
       child: Padding(

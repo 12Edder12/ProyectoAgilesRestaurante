@@ -17,7 +17,7 @@ void main() async {
 class App extends StatelessWidget {
   const App({super.key});
 
-  static const title = 'Flutter Admin Dashboard';
+  static const title = 'Pizzería Guerrin';
 
   @override
   Widget build(BuildContext context) {
