@@ -83,6 +83,7 @@ Future<UserCredential> signUpWithEmailandPassword
         'ced_user' : ced_user,
         'email': email,
         'cargo': "No definido",
+        'est_user': "1",
         'nom_user': nom_user,
         'ape_user': ape_user,
         'dir_user': dir_user,

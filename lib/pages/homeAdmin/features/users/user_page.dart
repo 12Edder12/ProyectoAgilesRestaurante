@@ -1,16 +1,13 @@
-import 'dart:ui';
 
 import 'package:bbb/constants/globals.dart';
 import 'package:bbb/pages/homeAdmin/features/users/user.dart';
 import 'package:bbb/pages/homeAdmin/features/users/users_crud.dart';
-import 'package:bbb/pages/homeAdmin/router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import '../../widgets/widgets.dart';
 
 class UserPage extends StatefulWidget {
-  UserPage({Key? key, required this.user}) : super(key: key);
+  const UserPage({super.key, required this.user});
 
   final User user;
 
@@ -56,7 +53,7 @@ class _UserPageState extends State<UserPage> {
           children: [
             TextFormField(
               controller: _cedulaController,
-              decoration: InputDecoration(labelText: 'Cédula'),
+              decoration: const InputDecoration(labelText: 'Cédula'),
               enabled: false,
               style: TextStyle(
                 color: _isEditing
@@ -66,7 +63,7 @@ class _UserPageState extends State<UserPage> {
             ),
             TextFormField(
               controller: _nameController,
-              decoration: InputDecoration(labelText: 'Nombre'),
+              decoration: const InputDecoration(labelText: 'Nombre'),
               enabled: _isEditing,
               style: TextStyle(
                 color: _isEditing
@@ -76,7 +73,7 @@ class _UserPageState extends State<UserPage> {
             ),
             TextFormField(
               controller: _apeUserController,
-              decoration: InputDecoration(labelText: 'Apellido'),
+              decoration: const InputDecoration(labelText: 'Apellido'),
               enabled: _isEditing,
               style: TextStyle(
                 color: _isEditing
@@ -86,7 +83,7 @@ class _UserPageState extends State<UserPage> {
             ),
             DropdownButtonFormField<String>(
               value: _selectedRole,
-              decoration: InputDecoration(labelText: 'Cargo'),
+              decoration: const InputDecoration(labelText: 'Cargo'),
               style: TextStyle(
                 color: _isEditing
                     ? Colors.black
@@ -97,7 +94,7 @@ class _UserPageState extends State<UserPage> {
                   value: value,
                   child: Text(
                     value,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16), // Cambia el tamaño de la letra aquí
                   ),
                 );
@@ -112,7 +109,7 @@ class _UserPageState extends State<UserPage> {
             ),
             TextFormField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
               style: TextStyle(
                 color: _isEditing
                     ? Colors.black
@@ -122,7 +119,7 @@ class _UserPageState extends State<UserPage> {
             ),
             TextFormField(
               controller: _ageController,
-              decoration: InputDecoration(labelText: 'Edad'),
+              decoration: const InputDecoration(labelText: 'Edad'),
               style: TextStyle(
                 color: _isEditing
                     ? Colors.black
@@ -132,7 +129,7 @@ class _UserPageState extends State<UserPage> {
             ),
             TextFormField(
               controller: _celUserController,
-              decoration: InputDecoration(labelText: 'Celular'),
+              decoration: const InputDecoration(labelText: 'Celular'),
               style: TextStyle(
                 color: _isEditing
                     ? Colors.black
@@ -142,7 +139,7 @@ class _UserPageState extends State<UserPage> {
             ),
             TextFormField(
               controller: _dirUserController,
-              decoration: InputDecoration(labelText: 'Direccion'),
+              decoration: const InputDecoration(labelText: 'Direccion'),
               style: TextStyle(
                 color: _isEditing
                     ? Colors.black
@@ -152,8 +149,8 @@ class _UserPageState extends State<UserPage> {
             ),
 
             // Agrega aquí los demás campos
-            SizedBox(height: 30),
-            Row(
+         const SizedBox(height: 30),
+             Row(
               mainAxisAlignment: MainAxisAlignment
                   .spaceEvenly, // Centra los botones en la fila
               children: [
@@ -161,7 +158,7 @@ class _UserPageState extends State<UserPage> {
                   Flexible(
                     child: ElevatedButton.icon(
                       icon: const Icon(Icons.cancel, color: Colors.white),
-                      label: Text(
+                      label: const Text(
                         'Cancelar',
                         style: TextStyle(
                           color: Colors.white,
@@ -169,7 +166,7 @@ class _UserPageState extends State<UserPage> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.red, // Cambia el color de fondo a rojo
+                        backgroundColor: Colors.red, // Cambia el color de fondo a rojo
                       ),
                       onPressed: () {
                         setState(() {
@@ -184,7 +181,7 @@ class _UserPageState extends State<UserPage> {
                     label: const Text('Editar',
                         style: TextStyle(color: Colors.white)),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.blue, // Cambia el color de fondo a azul
+                      backgroundColor: Colors.blue, // Cambia el color de fondo a azul
                     ),
                     onPressed: () {
                       setState(() {
@@ -197,7 +194,7 @@ class _UserPageState extends State<UserPage> {
                   label: const Text('Guardar',
                       style: TextStyle(color: Colors.white)),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.green, // Cambia el color de fondo a verde
+                    backgroundColor: Colors.green, // Cambia el color de fondo a verde
                   ),
                   onPressed: () async {
                     if (_isEditing) {
@@ -215,7 +212,7 @@ class _UserPageState extends State<UserPage> {
                         await userService.updateUser(
                             widget.user.idFirebase, newUserData);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                         const SnackBar(
                               content: Text('Usuario actualizado con éxito')),
                         );
                       } catch (e) {
@@ -237,7 +234,7 @@ class _UserPageState extends State<UserPage> {
                   label: const Text('Eliminar',
                       style: TextStyle(color: Colors.white)),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red, // Cambia el color de fondo a rojo
+                    backgroundColor: Colors.red, // Cambia el color de fondo a rojo
                   ),
 onPressed: () async {
   final result = await showDialog<bool>(
@@ -279,18 +276,18 @@ onPressed: () async {
                 showDialog(
                   context: globalContext!,
                   builder: (context) => AlertDialog(
-                    title: Text(
+                    title: const Text(
                       'Usuario eliminado',
                       style: TextStyle(color: Colors.green), // Cambia el color del título a verde
                     ),
-                    content: Text(
+                    content: const Text(
                       'El usuario ha sido eliminado con éxito.',
                       style: TextStyle(color: Colors.black), // Cambia el color del contenido a negro
                     ),
                     actions: <Widget>[
                       TextButton.icon(
                         icon: const Icon(Icons.check, color: Colors.green), // Añade un icono de check
-                        label: Text(
+                        label: const Text(
                           'OK',
                           style: TextStyle(color: Colors.green), // Cambia el color del texto a verde
                         ),

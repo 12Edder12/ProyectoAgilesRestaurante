@@ -21,6 +21,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return AdaptiveTheme(
       light: AppTheme.light,
       dark: AppTheme.dark,
@@ -32,6 +33,7 @@ class App extends StatelessWidget {
           const Breakpoint(start: 961, end: double.infinity, name: DESKTOP),
         ],
         child: MaterialApp.router(
+          debugShowCheckedModeBanner: false, // Agrega esta línea
           title: title,
           routerConfig: router,
           theme: theme,
