@@ -68,20 +68,27 @@ if (loginAttempts >= 3) {
   }
 
 Future<UserCredential> signUpWithEmailandPassword
-(String email, String password, String cargo) async {
+(String email, String password, String nom_user, String ape_user, String dir_user, String cel_user, String ced_user, DateTime fecha) async {
   try{
     UserCredential userCredential =
      await _firebaseAuth.createUserWithEmailAndPassword(
       email: email, 
       password: password,
       );
-
-
+      DateTime fechaUtc = fecha!.toUtc();
+      DateTime fechaAjustada = DateTime(fechaUtc.year, fechaUtc.month, fechaUtc.day, 12);
       _firebaseFirestore.collection('users')
       .doc(userCredential.user!.uid).set({
         'uid': userCredential.user!.uid,
+        'ced_user' : ced_user,
         'email': email,
-        'cargo':cargo,
+        'cargo': "No definido",
+        'est_user': "1",
+        'nom_user': nom_user,
+        'ape_user': ape_user,
+        'dir_user': dir_user,
+        'cel_user' : cel_user,
+        'fec_nac_user': Timestamp.fromDate(fechaAjustada),
       });
 
       return userCredential;

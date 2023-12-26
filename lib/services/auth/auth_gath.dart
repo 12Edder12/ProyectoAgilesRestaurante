@@ -1,3 +1,4 @@
+import 'package:bbb/pages/homeAdmin/homeAdmin.dart';
 import 'package:bbb/pages/homeCocinero/homecocinero.dart';
 import 'package:bbb/pages/homeMesero/tomar_mesa.dart';
 import 'package:bbb/services/auth/home_page.dart';
@@ -33,7 +34,10 @@ class AuthGate extends StatelessWidget {
                     return const HomeCocinero();
                   } else if (cargo == 'Mesero') {
                     return const TomarMesa();
-                  } else {
+                  } else if (cargo == 'admin') {
+                    return AdminScreen();
+                  }
+                  else {
                     return const HomePage();
                   }
                 } else if (snapshot.hasError) {
