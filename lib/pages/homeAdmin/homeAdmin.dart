@@ -11,7 +11,7 @@ class AdminScreen extends StatelessWidget {
     
     return AdaptiveTheme(
       light: AppTheme.light,
-      dark: AppTheme.dark,
+     // dark: AppTheme.dark,
       initial: AdaptiveThemeMode.system,
       builder: (theme, darkTheme) => ResponsiveBreakpoints.builder(
         breakpoints: [
