@@ -5,7 +5,7 @@ class AppTheme {
   AppTheme._();
 
   static ThemeData get light => _themeData(Brightness.light);
-  static ThemeData get dark => _themeData(Brightness.dark);
+  //static ThemeData get dark => _themeData(Brightness.dark);
 
   static ThemeData _themeData(Brightness brightness) {
     // デフォルトの`deepPurple`指定であれば`ThemeData.light`のコンストラクタ指定で十分だが
