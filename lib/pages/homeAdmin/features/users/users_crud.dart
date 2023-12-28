@@ -7,9 +7,11 @@ class UserService {
     return _usersCollection.doc(id).update(data);
   }
 
-  Future<void> deleteUser(String id) async {
-    await _usersCollection.doc(id).update({'est_user': "0"});
-
-  }
+Future<void> deleteUser(String id) async {
+  await _usersCollection.doc(id).update({
+    'est_user': "0",
+    'cargo': "No definido",
+  });
+}
 }
 
