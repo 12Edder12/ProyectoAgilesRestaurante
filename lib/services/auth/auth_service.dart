@@ -16,6 +16,16 @@ Future<bool> isEmailTaken(String email) async {
   return result.docs.isNotEmpty;
 }
 
+Future<bool> isCedulaTaken(String cedula) async {
+  final snapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .where('ced_user', isEqualTo: cedula)
+      .where('est_user', isEqualTo: "1")
+      .get();
+
+  return snapshot.docs.isNotEmpty;
+}
+
 
   int loginAttempts = 0;
   bool isBlocked = false;
