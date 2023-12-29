@@ -93,7 +93,7 @@ static Future<List<Pizza>> generateRecommendFoods() async {
 
   QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('productos').get();
   
-  querySnapshot.docs.forEach((doc) {
+  for (var doc in querySnapshot.docs) {
     if (!doc.id.startsWith('bebida')) {
       // Crear una lista de ingredientes por defecto
       List<Map<String, String>> ingredients;
@@ -138,7 +138,7 @@ static Future<List<Pizza>> generateRecommendFoods() async {
         about: doc['about'],
       ));
     }
-  });
+  }
 
   return pizzas;
 }

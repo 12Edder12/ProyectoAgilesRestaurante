@@ -210,8 +210,7 @@ class _HomeCocineroState extends State<HomeCocinero> {
                       margin: const EdgeInsets.all(8),
                       child: ListTile(
                         title: Text(
-                          "Mesa: " + data['num_mesa'].toString() +
-                          " - " + DateFormat('hh:mm a').format(data['fecha'].toDate()),
+                          "Mesa: ${data['num_mesa']} - ${DateFormat('hh:mm a').format(data['fecha'].toDate())}",
                             style: const TextStyle(fontSize: 18, color: Colors.white,), 
                           ),
                         

@@ -4,7 +4,7 @@ import 'package:bbb/models/producto.dart';
 
 class FoodImg extends StatelessWidget {
   final Pizza? food;
-  FoodImg({this.food});
+  const FoodImg({super.key, this.food});
 
   @override
   Widget build(BuildContext context) {

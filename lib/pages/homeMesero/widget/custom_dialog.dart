@@ -8,7 +8,7 @@ import 'package:bbb/constants/colors.dart';
 class CustomDialog extends StatefulWidget {
   final List<Pedido> pedidos;
 
-  CustomDialog({required this.pedidos});
+  const CustomDialog({super.key, required this.pedidos});
 
   @override
   _CustomDialogState createState() => _CustomDialogState();
@@ -68,9 +68,7 @@ class _CustomDialogState extends State<CustomDialog> {
                           style: const TextStyle(fontSize: 20),
                         ),
                       ),
-                      const SizedBox(height: 10),
-                    ]..addAll(
-                             (widget.pedidos.asMap().entries.toList()..sort((a, b) => a.value.food.id!.startsWith('bebida') ? 1 : -1))
+                      const SizedBox(height: 10), ...(widget.pedidos.asMap().entries.toList()..sort((a, b) => a.value.food.id!.startsWith('bebida') ? 1 : -1))
                            .map((entry)  {
                           int idx = entry.key;
                           Pedido pedido = entry.value;
@@ -180,8 +178,8 @@ class _CustomDialogState extends State<CustomDialog> {
             ),
           ),
         );
-      }).toList(),
-    ),
+      }),
+                    ],
 ),
 ),
 ),
@@ -210,7 +208,7 @@ class _CustomDialogState extends State<CustomDialog> {
                 ),
                 onPressed: () async {
                   // Verificar si la lista de pedidos está vacía
-                  if (widget.pedidos.length == 0) {
+                  if (widget.pedidos.isEmpty) {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {

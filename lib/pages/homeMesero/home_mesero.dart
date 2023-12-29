@@ -115,7 +115,7 @@ class _HomeMesero2State extends State<HomeMesero2> {
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
-                if (globals.pedidos.length > 0) {
+                if (globals.pedidos.isNotEmpty) {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -124,8 +124,8 @@ class _HomeMesero2State extends State<HomeMesero2> {
                   );
                 }
               },
-              child:  const  Icon(Icons.add, color: kBackground,),
               backgroundColor: kPrimaryColor,
+              child:  const  Icon(Icons.add, color: kBackground,),
             ),
           );
         }
