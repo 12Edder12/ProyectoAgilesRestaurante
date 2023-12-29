@@ -44,18 +44,32 @@ void showError(String error) {
   }
 
   void signIn() async {
-    final authService = Provider.of<AuthService>(context, listen: false);
+  final authService = Provider.of<AuthService>(context, listen: false);
+//  final firebaseApi = FirebaseApi();
 
-    try {
-      DocumentSnapshot userDoc = await authService.signInWithEmailPassword(
-          emailController.text, passController.text);
+  try {
+    DocumentSnapshot userDoc = await authService.signInWithEmailPassword(
+      emailController.text, 
+      passController.text
+    );
 
-      String cargo = userDoc['cargo'];
-      navigateToPage(cargo);
-    } catch (e) {
-      showError(e.toString());
-    }
+ /*   // Obtener el FCM Token
+    String? fcmToken = await firebaseApi.initNotifications();
+
+    // Actualizar el FCM Token en Firestore
+    if (fcmToken != null) {
+      String userId = userDoc['uid']; // Asegúrate de obtener el UID correcto del usuario
+      FirebaseFirestore.instance.collection('users').doc(userId).update({
+        'fcmToken': fcmToken,
+      });
+    }*/
+
+    String cargo = userDoc['cargo'];
+    navigateToPage(cargo);
+  } catch (e) {
+    showError(e.toString());
   }
+}
 
   @override
   Widget build(BuildContext context) {

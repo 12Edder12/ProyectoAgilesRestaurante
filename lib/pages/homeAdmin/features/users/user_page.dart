@@ -16,6 +16,8 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
+
+  final _formKey = GlobalKey<FormState>();
   late final TextEditingController _cedulaController;
   late final TextEditingController _nameController;
   late final TextEditingController _apeUserController;
@@ -48,6 +50,8 @@ class _UserPageState extends State<UserPage> {
   Widget build(BuildContext context) {
     return ContentView(
       child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -70,6 +74,14 @@ class _UserPageState extends State<UserPage> {
                     ? Colors.black
                     : Colors.black87, // Cambia el color del texto aquí
               ),
+      validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese un nombre';
+    } else if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value)) {
+      return 'El nombre solo debe contener letras';
+    }
+    return null;
+  },
             ),
             TextFormField(
               controller: _apeUserController,
@@ -80,6 +92,14 @@ class _UserPageState extends State<UserPage> {
                     ? Colors.black
                     : Colors.black87, // Cambia el color del texto aquí
               ),
+    validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese un apellido';
+    } else if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value)) {
+      return 'El apellido solo debe contener letras';
+    }
+    return null;
+  },
             ),
             DropdownButtonFormField<String>(
               value: _selectedRole,
@@ -116,6 +136,14 @@ class _UserPageState extends State<UserPage> {
                     : Colors.black87, // Cambia el color del texto aquí
               ),
               enabled: _isEditing,
+              validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese un email';
+    } else if (!value.contains('@') || (!value.endsWith('hotmail.com') && !value.endsWith('gmail.com') && !value.endsWith('yahoo.es'))) {
+      return 'El email debe contener un @ y terminar con hotmail.com, gmail.com o yahoo.es';
+    }
+    return null;
+  },
             ),
             TextFormField(
               controller: _ageController,
@@ -136,6 +164,14 @@ class _UserPageState extends State<UserPage> {
                     : Colors.black87, // Cambia el color del texto aquí
               ),
               enabled: _isEditing,
+   validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese un número de celular';
+    } else if (value.length != 10 || !RegExp(r'^[0-9]+$').hasMatch(value)) {
+      return 'El número de celular debe tener 10 dígitos y solo contener números';
+    }
+    return null;
+  },
             ),
             TextFormField(
               controller: _dirUserController,
@@ -146,6 +182,13 @@ class _UserPageState extends State<UserPage> {
                     : Colors.black87, // Cambia el color del texto aquí
               ),
               enabled: _isEditing,
+              validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese una direccion';
+    }else if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value)) {
+      return 'La direccion solo debe contener letras';
+    }
+              }
             ),
 
             // Agrega aquí los demás campos
@@ -190,45 +233,47 @@ class _UserPageState extends State<UserPage> {
                     },
                   ),
                 ElevatedButton.icon(
-                  icon: const Icon(Icons.save, color: Colors.white),
-                  label: const Text('Guardar',
-                      style: TextStyle(color: Colors.white)),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green, // Cambia el color de fondo a verde
-                  ),
-                  onPressed: () async {
-                    if (_isEditing) {
-                      final newUserData = {
-                        'nom_user': _nameController.text,
-                        'ape_user': _apeUserController.text,
-                        'cel_user': _celUserController.text,
-                        'cargo': _selectedRole,
-                        'dir_user': _dirUserController.text,
-                        'email': _emailController.text,
-                        // Agrega aquí el resto de los campos del usuario
-                      };
-                      final userService = UserService();
-                      try {
-                        await userService.updateUser(
-                            widget.user.idFirebase, newUserData);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                         const SnackBar(
-                              content: Text('Usuario actualizado con éxito')),
-                        );
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content:
-                                  Text('Error al actualizar el usuario: $e')),
-                        );
-                      }
+  icon: const Icon(Icons.save, color: Colors.white),
+  label: const Text('Guardar',
+      style: TextStyle(color: Colors.white)),
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.green, // Cambia el color de fondo a verde
+  ),
+  onPressed: () async {
+    if (_isEditing) {
+      if (_formKey.currentState!.validate()) {
+        final newUserData = {
+          'nom_user': _nameController.text,
+          'ape_user': _apeUserController.text,
+          'cel_user': _celUserController.text,
+          'cargo': _selectedRole,
+          'dir_user': _dirUserController.text,
+          'email': _emailController.text,
+          // Agrega aquí el resto de los campos del usuario
+        };
+        final userService = UserService();
+        try {
+          await userService.updateUser(
+              widget.user.idFirebase, newUserData);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Usuario actualizado con éxito')),
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content:
+                    Text('Error al actualizar el usuario: $e')),
+          );
+        }
 
-                      setState(() {
-                        _isEditing = false;
-                      });
-                    }
-                  },
-                ),
+        setState(() {
+          _isEditing = false;
+        });
+      }
+    }
+  },
+),
                 ElevatedButton.icon(
                   icon: const Icon(Icons.delete, color: Colors.white),
                   label: const Text('Eliminar',
@@ -319,7 +364,7 @@ onPressed: () async {
           ],
         ),
       ),
-    );
+    ));
   }
 }
 

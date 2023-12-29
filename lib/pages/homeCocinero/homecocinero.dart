@@ -1,5 +1,6 @@
 import 'package:bbb/services/auth/auth_service.dart';
 import 'package:bbb/services/auth/login_or_register.dart';
+import 'package:bbb/services/auth/notificaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -105,8 +106,11 @@ class _HomeCocineroState extends State<HomeCocinero> {
                               showDialogBox = false; // Cerrar el cuadro de diálogo.
                               selectedPedido = null; // Limpiar los detalles del pedido seleccionado.
                             });
+
                             Navigator.of(context).pop(); // Cerrar el cuadro de diálogo de confirmación
                             Navigator.of(context).pop(); // Cerrar el cuadro de diálogo original
+                              await enviarNotificacion("Pedido Lista para se entregado", "Mesa: ${pedidoData['num_mesa']}");
+
                           },
                         ),
                           TextButton.icon(

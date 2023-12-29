@@ -3,12 +3,20 @@ import 'package:bbb/services/auth/auth_gath.dart';
 import 'package:bbb/services/auth/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+OneSignal.initialize("96221739-4b13-46a8-825b-2987269a801b");
+OneSignal.Notifications.requestPermission(true);
+
+
+  
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  //await FirebaseApi().initNotifications();
   runApp(
     ChangeNotifierProvider(create: (context) => AuthService(),
     child: const MyApp(),),
