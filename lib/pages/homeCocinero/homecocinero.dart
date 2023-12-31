@@ -28,6 +28,7 @@ class _HomeCocineroState extends State<HomeCocinero> {
 
   // Variable para almacenar los detalles del pedido seleccionado.
   Map<String, dynamic>? selectedPedido;
+    Map<String, dynamic>? a;
 
   // Función para mostrar el cuadro de diálogo con detalles del pedido.
  void showPedidoDetailsDialog(Map<String, dynamic> pedidoData) async {
@@ -45,6 +46,19 @@ class _HomeCocineroState extends State<HomeCocinero> {
     if (productoSnapshot.exists) {
       String nombreProducto = productoSnapshot['nombre']; // Reemplaza 'nombre' con el campo correcto en tu tabla de productos.
       nombresProductos.add(nombreProducto);
+    }
+  }
+
+  String mensajeNotificacion = "Mesa: ${pedidoData['num_mesa']}\n";
+  for (var productoID in productoIDs) {
+    DocumentSnapshot productoSnapshot = await FirebaseFirestore.instance
+        .collection('productos')
+        .doc(productoID)
+        .get();
+    if (productoSnapshot.exists) {
+      String nombreProducto = productoSnapshot['nombre'];
+      int cantidad = pedidoData['detalle_pedido'][productoID]['cantidad'];
+      mensajeNotificacion += "$nombreProducto: $cantidad\n";
     }
   }
 
@@ -103,13 +117,16 @@ class _HomeCocineroState extends State<HomeCocinero> {
                           onPressed: () async {
                              marcarPedidoComoCompletado(selectedPedido?['id']); // Marcar el pedido como completado en Firebase
                             setState(() {
+                              print('Selected Pedido: $selectedPedido');
                               showDialogBox = false; // Cerrar el cuadro de diálogo.
+                              a = selectedPedido ;
                               selectedPedido = null; // Limpiar los detalles del pedido seleccionado.
                             });
 
                             Navigator.of(context).pop(); // Cerrar el cuadro de diálogo de confirmación
                             Navigator.of(context).pop(); // Cerrar el cuadro de diálogo original
-                              await enviarNotificacion("Pedido Lista para se entregado", "Mesa: ${pedidoData['num_mesa']}");
+
+                             await enviarNotificacion("Pedido Lista para se entregado", mensajeNotificacion);
 
                           },
                         ),
