@@ -15,11 +15,47 @@ class _MesasState extends State<Mesas> {
   int selectedMesa = 0;
 
   // Método para manejar el cambio de la mesa seleccionada
-  void onMesaSelected(int index) {
+  void onMesaSelected(int index, bool mesaDisponible) {
+    if (mesaDisponible) {
+    // Si la mesa no está disponible, muestra el diálogo de confirmación
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Confirmación"),
+          content: const Text("¿Deseas seguir editando el pedido?"),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("Sí"),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomeMesero2()),
+                  );
+setState(() {
+      selectedMesa = index;
+    });
+    globals.mesaOrden = index;
+                  
+              },
+            ),
+            TextButton(
+              child: const Text("No"),
+              onPressed: () {
+                // Si el usuario elige "No", simplemente cierra el diálogo
+                Navigator.pop(context); // Cierra el diálogo
+              },
+            ),
+          ],
+        );
+      },
+    ); }
+    else {
     setState(() {
       selectedMesa = index;
     });
     globals.mesaOrden = index;
+    }
   }
 
   Stream<List<Map<String, dynamic>>> getMesasData() {
@@ -34,10 +70,10 @@ class _MesasState extends State<Mesas> {
   }
 
   // Método para construir un botón de mesa
-  Widget buildMesaButton(String imageUrl, String mesaName, int index,
+  Widget buildMesaButton(String imageUrl, String mesaName, int index,  bool mesaDisponible,
       {Color color = Colors.green}) {
     return ElevatedButton(
-      onPressed: () => onMesaSelected(index),
+      onPressed: () => onMesaSelected(index, mesaDisponible),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(
           selectedMesa == index ? const Color(0xFF6C6969) : color,
@@ -139,6 +175,7 @@ class _MesasState extends State<Mesas> {
                             'lib/img/mesas.png',
                             "MESA ${mesaData['id_tab']}",
                             mesaData['num'],
+                            mesaData['est_tab'] != true,
                             color: mesaData['est_tab'] != true
                                 ? Colors.red
                                 : Colors.green,
