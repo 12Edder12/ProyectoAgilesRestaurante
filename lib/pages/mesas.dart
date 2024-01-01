@@ -1,5 +1,6 @@
 import 'package:bbb/pages/homeMesero/home_Mesero.dart';
 import 'package:bbb/pages/homeMesero/tomar_mesa.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:bbb/constants/globals.dart' as globals;
 
@@ -21,15 +22,25 @@ class _MesasState extends State<Mesas> {
     globals.mesaOrden = index;
   }
 
+  Stream<List<Map<String, dynamic>>> getMesasData() {
+    return FirebaseFirestore.instance
+        .collection('tables')
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+    });
+  }
+
   // Método para construir un botón de mesa
-  Widget buildMesaButton(String imageUrl, String mesaName, int index) {
+  Widget buildMesaButton(String imageUrl, String mesaName, int index,
+      {Color color = Colors.green}) {
     return ElevatedButton(
       onPressed: () => onMesaSelected(index),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(
-          selectedMesa == index
-              ? const Color(0xFF6C6969)
-              : const Color(0xFFEE8F1B),
+          selectedMesa == index ? const Color(0xFF6C6969) : color,
         ),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
@@ -67,23 +78,23 @@ class _MesasState extends State<Mesas> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [
-        Opacity(
-          opacity: 0.2,
-          child: Image.asset(
-            "lib/img/xd.jpeg",
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
+      body: Stack(
+        children: [
+          Opacity(
+            opacity: 0.2,
+            child: Image.asset(
+              "lib/img/xd.jpeg",
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
           ),
-        ),
-        Container(
-          padding: const EdgeInsets.only(
-            top: 30,
-            bottom: 5,
-          ),
-          child: Column(
-            children: <Widget>[
+          Container(
+            padding: const EdgeInsets.only(
+              top: 30,
+              bottom: 5,
+            ),
+            child: Column(children: [
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.only(
@@ -92,7 +103,8 @@ class _MesasState extends State<Mesas> {
                 ),
                 decoration: BoxDecoration(
                   color: Colors.transparent, // Color de fondo del Text
-                  borderRadius: BorderRadius.circular(20.0), // Esquinas redondeadas
+                  borderRadius:
+                      BorderRadius.circular(20.0), // Esquinas redondeadas
                 ),
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
@@ -107,93 +119,35 @@ class _MesasState extends State<Mesas> {
                   ),
                 ),
               ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: buildMesaButton(
-                          'lib/img/mesas.png',
-                          "MESA 1",
-                          1,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: buildMesaButton(
-                          'lib/img/mesas.png',
-                          "MESA 2",
-                          2,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: buildMesaButton(
-                          'lib/img/mesas.png',
-                          "MESA 3",
-                          3,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: buildMesaButton(
-                          'lib/img/mesas.png',
-                          "MESA 4",
-                          4,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: buildMesaButton(
-                          'lib/img/mesas.png',
-                          "MESA 5",
-                          5,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: buildMesaButton(
-                          'lib/img/mesas.png',
-                          "MESA 6",
-                          6,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              StreamBuilder<List<Map<String, dynamic>>>(
+                stream: getMesasData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator(); // Muestra un indicador de carga mientras se esperan los datos
+                  } else if (snapshot.hasError) {
+                    return Text(
+                        'Error: ${snapshot.error}'); // Muestra un mensaje de error si algo sale mal
+                  } else {
+                    return Wrap(
+                      spacing: 10, // espacio horizontal entre las mesas
+                      runSpacing: 10, // espacio vertical entre las mesas
+                      children: snapshot.data!.map((mesaData) {
+                        return SizedBox(
+                          width: (MediaQuery.of(context).size.width - 30) /
+                              2, // ancho de cada mesa
+                          child: buildMesaButton(
+                            'lib/img/mesas.png',
+                            "MESA ${mesaData['id_tab']}",
+                            mesaData['num'],
+                            color: mesaData['est_tab'] != true
+                                ? Colors.red
+                                : Colors.green,
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  }
+                },
               ),
               Expanded(
                 child: Align(
@@ -237,54 +191,53 @@ class _MesasState extends State<Mesas> {
                   ),
                 ),
               ),
-             const SizedBox(height: 10),
+              const SizedBox(height: 10),
               ElevatedButton(
-                    onPressed: () {
-                      // Acción al presionar el botón "ATRAS"
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const TomarMesa()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: Container(
-                      width: double.infinity,
-                      height: 45,
-                      padding: const EdgeInsets.only(
-                        left: 15.0,
-                        right: 15.0,
-                      ),
-                      color: Colors.transparent,
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              left: 10.0,
-                            ),
-                            child: Text(
-                              'ATRÁS',
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                onPressed: () {
+                  // Acción al presionar el botón "ATRAS"
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const TomarMesa()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
-      ]),
+                ),
+                child: Container(
+                  width: double.infinity,
+                  height: 45,
+                  padding: const EdgeInsets.only(
+                    left: 15.0,
+                    right: 15.0,
+                  ),
+                  color: Colors.transparent,
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 10.0,
+                        ),
+                        child: Text(
+                          'ATRÁS',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ],
+            ]),
           ),
-        
- ); }
+        ],
+      ),
+    );
+  }
 }
