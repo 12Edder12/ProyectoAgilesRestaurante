@@ -17,6 +17,30 @@ class CustomDialog extends StatefulWidget {
 class _CustomDialogState extends State<CustomDialog> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+
+Future<void> _actualizarEstadoMesa(int numMesa) async {
+  try {
+    // Obtiene la referencia a la colección 'tables'
+    CollectionReference tables = _firestore.collection('tables');
+
+    // Busca el documento que corresponde a la mesa con el número dado
+    QuerySnapshot querySnapshot = await tables
+        .where('id_tab', isEqualTo: 't$numMesa') // Asume que el ID de la mesa sigue este formato
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      // Obtiene el primer documento (debería haber solo uno)
+      DocumentSnapshot mesaDoc = querySnapshot.docs.first;
+
+      // Actualiza el estado de la mesa en Firestore
+      await tables.doc(mesaDoc.id).update({'est_tab': false});
+    }
+  } catch (e) {
+    print("Error al actualizar el estado de la mesa: $e");
+    // Manejar el error adecuadamente
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -244,6 +268,9 @@ class _CustomDialogState extends State<CustomDialog> {
                             },
                         },
                       });
+
+                      await _actualizarEstadoMesa(globals.mesaOrden.toInt());
+
 
                       // Muestra un SnackBar con un mensaje de éxito
                       ScaffoldMessenger.of(context).showSnackBar(
