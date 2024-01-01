@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
-
+//eddernc@hotmail.com
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
 OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
