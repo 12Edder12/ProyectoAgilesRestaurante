@@ -22,12 +22,15 @@ class _MesasState extends State<Mesas> {
     globals.mesaOrden = index;
   }
 
-  Future<List<Map<String, dynamic>>> getMesasData() async {
-    QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('tables').get();
-    return querySnapshot.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
+  Stream<List<Map<String, dynamic>>> getMesasData() {
+    return FirebaseFirestore.instance
+        .collection('tables')
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+    });
   }
 
   // Método para construir un botón de mesa
@@ -36,11 +39,9 @@ class _MesasState extends State<Mesas> {
     return ElevatedButton(
       onPressed: () => onMesaSelected(index),
       style: ButtonStyle(
-   backgroundColor: MaterialStateProperty.all(
-  selectedMesa == index
-      ? const Color(0xFF6C6969)
-      : color,
-),
+        backgroundColor: MaterialStateProperty.all(
+          selectedMesa == index ? const Color(0xFF6C6969) : color,
+        ),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -118,8 +119,8 @@ class _MesasState extends State<Mesas> {
                   ),
                 ),
               ),
-              FutureBuilder<List<Map<String, dynamic>>>(
-                future: getMesasData(),
+              StreamBuilder<List<Map<String, dynamic>>>(
+                stream: getMesasData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator(); // Muestra un indicador de carga mientras se esperan los datos
