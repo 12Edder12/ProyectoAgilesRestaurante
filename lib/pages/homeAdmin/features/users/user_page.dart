@@ -135,18 +135,8 @@ class _UserPageState extends State<UserPage> {
                     ? Colors.black
                     : Colors.black87, // Cambia el color del texto aquí
               ),
-              enabled: _isEditing,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor ingrese un email';
-                } else if (!value.contains('@') ||
-                    (!value.endsWith('hotmail.com') &&
-                        !value.endsWith('gmail.com') &&
-                        !value.endsWith('yahoo.es'))) {
-                  return 'El email debe contener un @ y terminar con hotmail.com, gmail.com o yahoo.es';
-                }
-                return null;
-              },
+              enabled: false,
+
             ),
             TextFormField(
               controller: _ageController,
