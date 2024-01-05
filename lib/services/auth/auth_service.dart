@@ -71,14 +71,14 @@ if (loginAttempts >= 3) {
  Future<void> signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
-      print('Cierre de sesión exitoso');
+    //  print('Cierre de sesión exitoso');
     } catch (e) {
-      print('Error al cerrar sesión: $e');
+     // print('Error al cerrar sesión: $e');
     }
   }
 
 Future<UserCredential> signUpWithEmailandPassword
-(String email, String password, String nom_user, String ape_user, String dir_user, String cel_user, String ced_user, DateTime fecha) async {
+(String email, String password, String nomUser, String apeUser, String dirUser, String celUser, String cedUser, DateTime fecha) async {
   try{
     UserCredential userCredential =
      await _firebaseAuth.createUserWithEmailAndPassword(
@@ -90,14 +90,14 @@ Future<UserCredential> signUpWithEmailandPassword
       _firebaseFirestore.collection('users')
       .doc(userCredential.user!.uid).set({
         'uid': userCredential.user!.uid,
-        'ced_user' : ced_user,
+        'ced_user' : cedUser,
         'email': email,
         'cargo': "No definido",
         'est_user': "1",
-        'nom_user': nom_user,
-        'ape_user': ape_user,
-        'dir_user': dir_user,
-        'cel_user' : cel_user,
+        'nom_user': nomUser,
+        'ape_user': apeUser,
+        'dir_user': dirUser,
+        'cel_user' : celUser,
         'fec_nac_user': Timestamp.fromDate(fechaAjustada),
       });
 

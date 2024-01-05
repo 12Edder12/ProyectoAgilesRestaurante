@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'navigation_title.dart';
 
 class NavigationAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const NavigationAppBar({Key? key}) : super(key: key);
+  const NavigationAppBar({super.key});
 
   Future<void> signOut(BuildContext context) async {
     final authService = Provider.of<AuthService>(context, listen: false);

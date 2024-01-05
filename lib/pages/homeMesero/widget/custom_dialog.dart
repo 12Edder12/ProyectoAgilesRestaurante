@@ -36,7 +36,7 @@ Future<void> _actualizarEstadoMesa(int numMesa) async {
       await tables.doc(mesaDoc.id).update({'est_tab': false});
     }
   } catch (e) {
-    print("Error al actualizar el estado de la mesa: $e");
+   // print("Error al actualizar el estado de la mesa: $e");
     // Manejar el error adecuadamente
   }
 }

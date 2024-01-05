@@ -1,7 +1,7 @@
-import 'package:bbb/pages/homeAdmin/homeAdmin.dart';
+import 'package:bbb/pages/homeAdmin/home_admin.dart';
 import 'package:bbb/pages/homeCocinero/homecocinero.dart';
 import 'package:bbb/pages/homeMesero/tomar_mesa.dart';
-import 'package:bbb/services/auth/home_page.dart';
+import 'package:bbb/pages/home_page.dart';
 import 'package:bbb/services/auth/login_or_register.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,7 +35,7 @@ class AuthGate extends StatelessWidget {
                   } else if (cargo == 'Mesero') {
                     return const TomarMesa();
                   } else if (cargo == 'admin') {
-                    return AdminScreen();
+                    return const AdminScreen();
                   }
                   else {
                     return const HomePage();

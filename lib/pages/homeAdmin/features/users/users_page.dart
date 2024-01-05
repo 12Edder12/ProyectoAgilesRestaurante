@@ -41,7 +41,7 @@ class UsersPage extends StatelessWidget {
                       }
 
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
     
                       return ListView.separated(
@@ -51,7 +51,7 @@ class UsersPage extends StatelessWidget {
                           final user = snapshot.data![index];
                           return AnimatedOpacity(
                             opacity: 1.0,
-                            duration: Duration(milliseconds: 300),
+                            duration: const Duration(milliseconds: 300),
                             curve: Curves.easeIn,
                             child: Card(
                               shape: RoundedRectangleBorder(
@@ -65,11 +65,11 @@ class UsersPage extends StatelessWidget {
                                 ),
                                 title: Text(
                                   '${user.apeUser} ${user.name}',
-                                  style: theme.textTheme.bodyText1,
+                                  style: theme.textTheme.bodyLarge,
                                 ),
                                 subtitle: Text(
                                   user.role,
-                                  style: theme.textTheme.caption,
+                                  style: theme.textTheme.bodySmall,
                                 ),
                                 trailing:
                                     const Icon(Icons.more_vert, color: black), // Cambia el color del icono a azul

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:bbb/services/auth/auth_service.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   void signOut(BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: false);

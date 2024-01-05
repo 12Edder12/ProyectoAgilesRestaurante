@@ -264,10 +264,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.white),
                           padding: MaterialStateProperty.all<EdgeInsets>(
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                          const  EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                           ),
                           textStyle: MaterialStateProperty.all<TextStyle>(
-                            TextStyle(fontSize: 16),
+                          const  TextStyle(fontSize: 16),
                           ),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -280,7 +280,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           fechaNacimiento == null
                               ? 'Seleccionar fecha de nacimiento'
                               : 'Fecha de nacimiento: ${DateFormat('dd-MM-yyyy').format(fechaNacimiento!)}',
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                         ),
                         onPressed: () async {
                           final fechaSeleccionada = await showDatePicker(
@@ -297,7 +297,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             if (edad < 18) {
                               // Muestra un mensaje de error si la persona tiene menos de 18 años
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
+                              const  SnackBar(
                                     content:
                                         Text('Debes tener al menos 18 años.')),
                               );

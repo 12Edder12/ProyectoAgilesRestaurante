@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 Future<void> enviarNotificacion(String titulo, String contenido) async {
   var claveApi = 'NDA0MmZmYzktOTQzNS00ZWUzLTg3NzYtMGM4NzY4YTA3ZTg2'; // Asegúrate de reemplazar esto con tu clave real
-  var claveApiBase64 = base64Encode(utf8.encode(claveApi));
+  //var claveApiBase64 = base64Encode(utf8.encode(claveApi));
   
   var headers = {
     'Content-Type': 'application/json; charset=utf-8',
@@ -25,12 +25,12 @@ Future<void> enviarNotificacion(String titulo, String contenido) async {
 final response = await http.Response.fromStream(responseStream);
 
     if (response.statusCode == 200) {
-  print('Notificación enviada con éxito');
+ // print('Notificación enviada con éxito');
 } else {
-  print('Error al enviar notificación: ${response.statusCode}');
-  print('Respuesta del servidor: ${response.body}');
+ // print('Error al enviar notificación: ${response.statusCode}');
+ // print('Respuesta del servidor: ${response.body}');
 }
   } catch (e) {
-    print('Error al enviar notificación: $e');
+  //  print('Error al enviar notificación: $e');
   }
 }
