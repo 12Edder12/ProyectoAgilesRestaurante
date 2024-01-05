@@ -6,6 +6,8 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 class AdminScreen extends StatelessWidget {
   static const title = 'Que?';
+
+  const AdminScreen({super.key});
   @override
   Widget build(BuildContext context) {
     

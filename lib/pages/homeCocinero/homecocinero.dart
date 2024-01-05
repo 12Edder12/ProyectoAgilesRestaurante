@@ -160,7 +160,7 @@ class _HomeCocineroState extends State<HomeCocinero> {
                               marcarPedidoComoCompletado(selectedPedido?[
                                   'id']); // Marcar el pedido como completado en Firebase
                               setState(() {
-                                print('Selected Pedido: $selectedPedido');
+                               // print('Selected Pedido: $selectedPedido');
                                 showDialogBox =
                                     false; // Cerrar el cuadro de diálogo.
                                 a = selectedPedido;

@@ -159,7 +159,7 @@ setState(() {
                 stream: getMesasData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator(); // Muestra un indicador de carga mientras se esperan los datos
+                    return const CircularProgressIndicator(); // Muestra un indicador de carga mientras se esperan los datos
                   } else if (snapshot.hasError) {
                     return Text(
                         'Error: ${snapshot.error}'); // Muestra un mensaje de error si algo sale mal

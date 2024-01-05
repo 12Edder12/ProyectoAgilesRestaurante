@@ -1,4 +1,4 @@
-import 'package:bbb/pages/homeAdmin/mainAdmin.dart';
+import 'package:bbb/pages/homeAdmin/main_admin.dart';
 import 'package:bbb/pages/homeAdmin/widgets/navigation/navigation_app_bar.dart';
 import 'package:bbb/pages/homeAdmin/widgets/navigation/navigation_item.dart';
 
