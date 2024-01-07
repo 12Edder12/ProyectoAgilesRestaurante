@@ -1,6 +1,6 @@
 import 'package:bbb/constants/colors.dart';
 import 'package:bbb/constants/globals.dart';
-import 'package:bbb/pages/homeAdmin/features/users/listUsers.dart';
+import 'package:bbb/pages/homeAdmin/features/users/list_users.dart';
 import 'package:bbb/pages/homeAdmin/features/users/user.dart';
 import 'package:bbb/pages/homeAdmin/router.dart';
 import 'package:flutter/material.dart';

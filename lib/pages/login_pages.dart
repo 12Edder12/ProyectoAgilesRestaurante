@@ -1,5 +1,7 @@
+import 'package:bbb/pages/homeAdmin/home_admin.dart';
 import 'package:bbb/pages/homeCocinero/homecocinero.dart';
 import 'package:bbb/pages/homeMesero/tomar_mesa.dart';
+import 'package:bbb/pages/home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,19 +31,21 @@ void showError(String error) {
     );
   }
 }
-  void navigateToPage(String cargo) {
-    if (cargo == 'Cocinero') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeCocinero()),
-      );
-    } else if (cargo == 'Mesero') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const TomarMesa()),
-      );
-    }
-  }
+
+void navigateToPage(String cargo) {
+ if (!mounted) return; 
+  if (cargo == 'Cocinero') {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const HomeCocinero()),
+    );
+  } else if (cargo == 'Mesero') {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const TomarMesa()),
+    );
+
+}}
 
   void signIn() async {
   final authService = Provider.of<AuthService>(context, listen: false);
@@ -52,17 +56,6 @@ void showError(String error) {
       emailController.text, 
       passController.text
     );
-
- /*   // Obtener el FCM Token
-    String? fcmToken = await firebaseApi.initNotifications();
-
-    // Actualizar el FCM Token en Firestore
-    if (fcmToken != null) {
-      String userId = userDoc['uid']; // Asegúrate de obtener el UID correcto del usuario
-      FirebaseFirestore.instance.collection('users').doc(userId).update({
-        'fcmToken': fcmToken,
-      });
-    }*/
 
     String cargo = userDoc['cargo'];
     navigateToPage(cargo);
