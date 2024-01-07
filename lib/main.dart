@@ -17,10 +17,10 @@ void main() async{
 OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
 OneSignal.initialize("96221739-4b13-46a8-825b-2987269a801b");
 OneSignal.Notifications.requestPermission(true);
- print('Todo está bien con OneSignal');
+    // print('Todo está bien con OneSignal');
 
 } catch (e) {
-      print('Error al inicializar OneSignal: $e');
+  //     print('Error al inicializar OneSignal: $e');
     }
   }
 
