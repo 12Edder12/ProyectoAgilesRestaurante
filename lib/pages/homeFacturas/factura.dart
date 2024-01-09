@@ -4,8 +4,6 @@ import 'package:bbb/services/auth/login_or_register.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
-
 class Factura extends StatelessWidget {
   const Factura({super.key});
 
@@ -40,12 +38,10 @@ class Factura extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
+      body: Column(
         children: [
-          Botones(
-            onPressed: () {
-              // Aquí va la lógica para cuando se presiona un botón
-            },
+          Expanded(
+            child: Botones(),
           ),
         ],
       ),
