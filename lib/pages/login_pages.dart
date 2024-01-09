@@ -29,19 +29,22 @@ void showError(String error) {
     );
   }
 }
-  void navigateToPage(String cargo) {
-    if (cargo == 'Cocinero') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeCocinero()),
-      );
-    } else if (cargo == 'Mesero') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const TomarMesa()),
-      );
-    }
+
+void navigateToPage(String cargo) {
+  if (!mounted) return; // Asegúrate de que el widget esté montado
+
+  if (cargo == 'Cocinero') {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const HomeCocinero()),
+    );
+  } else if (cargo == 'Mesero') {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const TomarMesa()),
+    );
   }
+}
 
   void signIn() async {
   final authService = Provider.of<AuthService>(context, listen: false);

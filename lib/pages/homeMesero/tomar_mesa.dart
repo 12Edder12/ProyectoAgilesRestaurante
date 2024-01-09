@@ -1,3 +1,4 @@
+import 'package:bbb/pages/homeFacturas/factura.dart';
 import 'package:bbb/pages/homeMesero/home_Mesero.dart';
 import 'package:bbb/pages/mesas.dart';
 import 'package:bbb/services/auth/auth_service.dart';
@@ -127,9 +128,12 @@ class _TomarMesaState extends State<TomarMesa> {
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: ElevatedButton(
-                        onPressed: () {
-                          // Aquí va la lógica para facturar
-                        },
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Factura()),
+                        );
+                      },
                         style: elevatedButtonStyle,
                         child: SizedBox(
                           width: 100,
