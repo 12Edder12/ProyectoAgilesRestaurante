@@ -1,11 +1,8 @@
-import 'package:bbb/constants/colors.dart';
-import 'package:bbb/services/auth/auth_service.dart';
-import 'package:bbb/services/auth/login_or_register.dart';
+import 'package:bbb/pages/homeCocinero/widget/pedido_card.dart';
+import 'package:bbb/pages/homeCocinero/widget/sign_out_button.dart';
 import 'package:bbb/services/auth/notificaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class HomeCocinero extends StatefulWidget {
   const HomeCocinero({super.key});
@@ -15,24 +12,16 @@ class HomeCocinero extends StatefulWidget {
 }
 
 class _HomeCocineroState extends State<HomeCocinero> {
-  Future<void> signOut() async {
-    final authService = Provider.of<AuthService>(context, listen: false);
-    await authService.signOut();
+  Map<String, dynamic>? selectedPedido;
 
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const LoginOrRegister()),
-    );
-  }
-
-  // Variable para controlar si se muestra el cuadro de diálogo.
+// Variable para controlar si se muestra el cuadro de diálogo.
   bool showDialogBox = false;
 
   // Variable para almacenar los detalles del pedido seleccionado.
-  Map<String, dynamic>? selectedPedido;
   Map<String, dynamic>? a;
 
-  // Función para mostrar el cuadro de diálogo con detalles del pedido.
-  void showPedidoDetailsDialog(Map<String, dynamic> pedidoData) async {
+
+void showPedidoDetailsDialog(Map<String, dynamic> pedidoData) async {
     // Obtener una lista de IDs de productos del pedido.
     List<String> productoIDs = pedidoData['detalle_pedido'].keys.toList();
 
@@ -45,8 +34,7 @@ class _HomeCocineroState extends State<HomeCocinero> {
           .doc(productoID)
           .get();
       if (productoSnapshot.exists) {
-        String nombreProducto = productoSnapshot[
-            'nombre']; // Reemplaza 'nombre' con el campo correcto en tu tabla de productos.
+        String nombreProducto = productoSnapshot['nombre']; // Reemplaza 'nombre' con el campo correcto en tu tabla de productos.
         nombresProductos.add(nombreProducto);
       }
     }
@@ -221,9 +209,8 @@ class _HomeCocineroState extends State<HomeCocinero> {
         );
       },
     );
-  }
+}
 
-  // Función para marcar el pedido como completado en Firebase.
   void marcarPedidoComoCompletado(String pedidoId) {
     FirebaseFirestore.instance
         .collection('pedidos')
@@ -244,14 +231,7 @@ class _HomeCocineroState extends State<HomeCocinero> {
           ),
         ),
         backgroundColor: const Color(0xFFEB8F1E),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.exit_to_app),
-            onPressed: () async {
-              await signOut();
-            },
-          ),
-        ],
+        actions: const [ AuthSignOutButton()],
       ),
       body: Stack(
         children: [
@@ -267,11 +247,8 @@ class _HomeCocineroState extends State<HomeCocinero> {
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('pedidos')
-                .where('completado',
-                    isEqualTo: false) // Filtra los pedidos no completados
-                .orderBy('fecha',
-                    descending:
-                        false) // Ordena los pedidos por fecha ascendente (FIFO)
+                .where('completado', isEqualTo: false)
+                .orderBy('fecha', descending: false)
                 .snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -285,47 +262,18 @@ class _HomeCocineroState extends State<HomeCocinero> {
                 children: snapshot.data!.docs.map((DocumentSnapshot document) {
                   Map<String, dynamic> data =
                       document.data() as Map<String, dynamic>;
-                  bool completado = data['completado'];
-                  String pedidoId = document.id;
-                  return InkWell(
+                  return PedidoTile(
+                    pedidoData: data,
                     onTap: () {
-                      // Cuando se hace clic en el pedido, mostrar el cuadro de diálogo con detalles.
                       setState(() {
-                        showDialogBox = true;
-                        selectedPedido =
-                            data; // Almacena los detalles del pedido seleccionado.
+                        selectedPedido = data;
                         selectedPedido?['id'] = document.id;
                       });
-                      showPedidoDetailsDialog(
-                          data); // Muestra el cuadro de diálogo con detalles del pedido.
+                      showPedidoDetailsDialog(data);
                     },
-                    child: Card(
-                      color: kPrimaryColor,
-                      margin: const EdgeInsets.all(8),
-                      child: ListTile(
-                        title: Text(
-                          "Mesa: " +
-                              data['num_mesa'].toString() +
-                              " - " +
-                              DateFormat('hh:mm a')
-                                  .format(data['fecha'].toDate()),
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                        trailing: completado
-                            ? null // No mostrar el botón si el pedido está completado
-                            : IconButton(
-                                icon: const Icon(Icons.check_circle),
-                                color: completado ? Colors.green : Colors.white,
-                                onPressed: () {
-                                  // Marcar el pedido como completado en Firebase.
-                                  marcarPedidoComoCompletado(pedidoId);
-                                },
-                              ),
-                      ),
-                    ),
+                    onCompleted: () {
+                      marcarPedidoComoCompletado(document.id);
+                    },
                   );
                 }).toList(),
               );
