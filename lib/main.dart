@@ -14,7 +14,13 @@ import 'package:provider/provider.dart';
 //eddernc@hotmail.com
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = "pk_test_51OVR6tILXmRhmPFR0a3rWTTW4SUX1YFLkjaD6XWmeglplW5kcR49Vr6SutZLVF7tUgwtkqv3cup9pGJeDmABtFKW00iNQTABD6";
+try {
+    Stripe.publishableKey = "pk_test_51OVR6tILXmRhmPFR0a3rWTTW4SUX1YFLkjaD6XWmeglplW5kcR49Vr6SutZLVF7tUgwtkqv3cup9pGJeDmABtFKW00iNQTABD6";
+    print('*********************************Stripe se ha inicializado correctamente');
+  } catch (e) {
+    print('**********************************Error al inicializar Stripe: $e');
+  }
+
   if (!kIsWeb) {
     try {
       OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
