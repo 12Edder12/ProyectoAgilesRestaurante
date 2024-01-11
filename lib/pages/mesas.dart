@@ -1,8 +1,8 @@
-import 'package:bbb/pages/homeMesero/home_Mesero.dart';
-import 'package:bbb/pages/homeMesero/tomar_mesa.dart';
+import 'package:Pizzeria_Guerrin/pages/homeMesero/home_Mesero.dart';
+import 'package:Pizzeria_Guerrin/pages/homeMesero/tomar_mesa.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:bbb/constants/globals.dart' as globals;
+import 'package:Pizzeria_Guerrin/constants/globals.dart' as globals;
 
 class Mesas extends StatefulWidget {
   const Mesas({super.key});
@@ -14,8 +14,62 @@ class Mesas extends StatefulWidget {
 class _MesasState extends State<Mesas> {
   int selectedMesa = 0;
 
+
+Future<void> obtenerPedidosPorMesa(int numeroMesa) async {
+  var pedidosRef = FirebaseFirestore.instance.collection('pedidos');
+  var productosRef = FirebaseFirestore.instance.collection('productos');
+
+  try {
+    // Obtener todos los pedidos de la mesa que no han sido pagados
+    var pedidos = await pedidosRef
+        .where('num_mesa', isEqualTo: numeroMesa)
+        .where('pagado', isEqualTo: false)
+        .get();
+
+    double totalMesa = 0.0;
+
+    for (var pedido in pedidos.docs) {
+      var detallePedido = pedido.data()['detalle_pedido'];
+
+      for (String idProducto in detallePedido.keys) {
+        var cantidad = detallePedido[idProducto]['cantidad'];
+        
+        // Obtener el producto real usando el idProducto
+        var producto = await productosRef.doc(idProducto).get();
+        var precio = producto.data()?['precio'];
+        var nombreProducto = producto.data()?['nombre'];
+
+        // Calcular el total para cada producto en el pedido
+        double totalProducto = precio * cantidad;
+        totalMesa += totalProducto;
+
+        // Imprimir el detalle del producto
+        print('$nombreProducto $cantidad $precio');
+      }
+    }
+
+    // Imprimir el total acumulado para la mesa
+    print('Total de la Mesa $numeroMesa: $totalMesa');
+  } catch (e) {
+    print('Ocurrió un error: $e');
+  }
+}
+
   // Método para manejar el cambio de la mesa seleccionada
   void onMesaSelected(int index, bool mesaDisponible) {
+
+    setState(() {
+      selectedMesa = index;
+    });
+    globals.mesaOrden = index;
+
+  obtenerPedidosPorMesa(index).then((_) {
+        // Acciones después de completar la obtención de los pedidos, si es necesario
+      }).catchError((error) {
+        // Manejar errores aquí
+        print('Ocurrió un error al obtener los pedidos: $error');
+      });
+
     if (mesaDisponible) {
     // Si la mesa no está disponible, muestra el diálogo de confirmación
     showDialog(
@@ -32,11 +86,6 @@ class _MesasState extends State<Mesas> {
                     context,
                     MaterialPageRoute(builder: (context) => const HomeMesero2()),
                   );
-setState(() {
-      selectedMesa = index;
-    });
-    globals.mesaOrden = index;
-                  
               },
             ),
             TextButton(
@@ -260,7 +309,7 @@ setState(() {
                           left: 10.0,
                         ),
                         child: Text(
-                          'ATRÁS',
+                          'ATRÁS Mesas ',
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,

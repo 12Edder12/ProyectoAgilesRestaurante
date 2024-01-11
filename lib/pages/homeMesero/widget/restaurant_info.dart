@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bbb/models/restaurant.dart';
+import 'package:Pizzeria_Guerrin/models/restaurant.dart';
 
 class RestaurantInfo extends StatelessWidget {
   final Future<Restaurant> restaurant = Restaurant.generateRestaurant();

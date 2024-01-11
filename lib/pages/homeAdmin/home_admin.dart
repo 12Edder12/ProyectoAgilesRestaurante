@@ -1,6 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:bbb/pages/homeAdmin/router.dart';
-import 'package:bbb/pages/homeAdmin/theme.dart';
+import 'package:Pizzeria_Guerrin/pages/homeAdmin/router.dart';
+import 'package:Pizzeria_Guerrin/pages/homeAdmin/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 

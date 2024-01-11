@@ -1,13 +1,13 @@
-import 'package:bbb/services/auth/auth_service.dart';
-import 'package:bbb/services/auth/login_or_register.dart';
+import 'package:Pizzeria_Guerrin/services/auth/auth_service.dart';
+import 'package:Pizzeria_Guerrin/services/auth/login_or_register.dart';
 import 'package:flutter/material.dart';
-import 'package:bbb/pages/homeMesero/widget/custom_dialog.dart';
-import 'package:bbb/pages/homeMesero/widget/food_list.dart';
-import 'package:bbb/pages/homeMesero/widget/food_list_view.dart';
-import 'package:bbb/pages/homeMesero/widget/restaurant_info.dart';
-import 'package:bbb/constants/colors.dart';
-import 'package:bbb/constants/globals.dart' as globals;
-import 'package:bbb/models/restaurant.dart';
+import 'package:Pizzeria_Guerrin/pages/homeMesero/widget/custom_dialog.dart';
+import 'package:Pizzeria_Guerrin/pages/homeMesero/widget/food_list.dart';
+import 'package:Pizzeria_Guerrin/pages/homeMesero/widget/food_list_view.dart';
+import 'package:Pizzeria_Guerrin/pages/homeMesero/widget/restaurant_info.dart';
+import 'package:Pizzeria_Guerrin/constants/colors.dart';
+import 'package:Pizzeria_Guerrin/constants/globals.dart' as globals;
+import 'package:Pizzeria_Guerrin/models/restaurant.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

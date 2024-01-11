@@ -1,8 +1,8 @@
-import 'package:bbb/constants/colors.dart';
-import 'package:bbb/constants/globals.dart';
-import 'package:bbb/pages/homeAdmin/features/users/list_users.dart';
-import 'package:bbb/pages/homeAdmin/features/users/user.dart';
-import 'package:bbb/pages/homeAdmin/router.dart';
+import 'package:Pizzeria_Guerrin/constants/colors.dart';
+import 'package:Pizzeria_Guerrin/constants/globals.dart';
+import 'package:Pizzeria_Guerrin/pages/homeAdmin/features/users/list_users.dart';
+import 'package:Pizzeria_Guerrin/pages/homeAdmin/features/users/user.dart';
+import 'package:Pizzeria_Guerrin/pages/homeAdmin/router.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gap/gap.dart';

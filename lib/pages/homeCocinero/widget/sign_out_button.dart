@@ -1,8 +1,8 @@
 // En auth_sign_out_button.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:bbb/services/auth/auth_service.dart';
-import 'package:bbb/services/auth/login_or_register.dart';
+import 'package:Pizzeria_Guerrin/services/auth/auth_service.dart';
+import 'package:Pizzeria_Guerrin/services/auth/login_or_register.dart';
 
 class AuthSignOutButton extends StatelessWidget {
   const AuthSignOutButton({super.key});

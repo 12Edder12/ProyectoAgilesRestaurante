@@ -1,6 +1,6 @@
-import 'package:bbb/firebase_options.dart';
-import 'package:bbb/services/auth/auth_gath.dart';
-import 'package:bbb/services/auth/auth_service.dart';
+import 'package:Pizzeria_Guerrin/firebase_options.dart';
+import 'package:Pizzeria_Guerrin/services/auth/auth_gath.dart';
+import 'package:Pizzeria_Guerrin/services/auth/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
