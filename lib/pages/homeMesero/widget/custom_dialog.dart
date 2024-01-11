@@ -260,6 +260,7 @@ Future<void> _actualizarEstadoMesa(int numMesa) async {
                           await _firestore.collection('pedidos').add({
                         'num_mesa': globals.mesaOrden,
                         'completado': false,
+                        'pagado': false,
                         'fecha': FieldValue.serverTimestamp(),
                         'detalle_pedido': {
                           for (Pedido pedido in widget.pedidos)
