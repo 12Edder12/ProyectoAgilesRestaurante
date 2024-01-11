@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:bbb/constants/colors.dart';
+import 'package:Pizzeria_Guerrin/constants/colors.dart';
 
-import 'package:bbb/models/restaurant.dart';
+import 'package:Pizzeria_Guerrin/models/restaurant.dart';
 
 class FoodList extends StatelessWidget {
   final int? selected;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:bbb/services/auth/auth_service.dart';
+import 'package:Pizzeria_Guerrin/services/auth/auth_service.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
