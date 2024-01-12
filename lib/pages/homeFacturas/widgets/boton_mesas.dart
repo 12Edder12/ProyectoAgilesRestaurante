@@ -1,5 +1,5 @@
 import 'package:bbb/constants/colors.dart';
-import 'package:bbb/pages/homeFacturas/widgets/detalle_pedidos.dart';
+import 'package:bbb/pages/homeFacturas/widgets/detalle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
