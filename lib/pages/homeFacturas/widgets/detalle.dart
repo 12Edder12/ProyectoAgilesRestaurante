@@ -27,22 +27,6 @@ class _DetallePedidosState extends State<DetallePedidos> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            DropdownButton<String>(
-              value: metodoPago,
-              hint: Text('Selecciona un método de pago'),
-              items: <String>['Efectivo', 'Tarjeta de crédito']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  metodoPago = newValue;
-                });
-              },
-            ),
             MesaDetalle(numeroMesa: widget.numero),
           ],
         ),

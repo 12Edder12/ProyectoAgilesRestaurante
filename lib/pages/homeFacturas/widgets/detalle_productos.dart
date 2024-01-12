@@ -1,17 +1,23 @@
-
-
+import 'package:bbb/pages/homeFacturas/services/stripe_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class MesaDetalle extends StatelessWidget {
+class MesaDetalle extends StatefulWidget {
   final int numeroMesa;
 
   MesaDetalle({required this.numeroMesa});
 
   @override
+  _MesaDetalleState createState() => _MesaDetalleState();
+}
+
+class _MesaDetalleState extends State<MesaDetalle> {
+  String? metodoPago;
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>>(
-      future: obtenerPedidosPorMesa(numeroMesa),
+      future: obtenerPedidosPorMesa(widget.numeroMesa),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
@@ -36,6 +42,45 @@ class MesaDetalle extends StatelessWidget {
                   );
                 },
               ),
+              DropdownButton<String>(
+                value: metodoPago,
+                hint: Text('Selecciona un método de pago'),
+                items: <String>['Efectivo', 'Tarjeta de crédito']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) async {
+                  setState(() {
+                    metodoPago = newValue;
+                  });
+                  if (newValue == 'Tarjeta de crédito') {
+                    var items = [
+                      {
+                        "productName": "Producto 1",
+                        "productPrice": 10.00,
+                        "qty": 1
+                      },
+                      {
+                        "productName": "Producto 2",
+                        "productPrice": 20.00,
+                        "qty": 2
+                      }
+                    ];
+                    var stripeService = StripeService();
+                    await stripeService.stripePaymentCheckout(
+                        items, 50.00, context, mounted, onSucces: () {
+                      print("Pago exitoso");
+                    }, onCancel: () {
+                      print("Pago cancelado");
+                    }, onError: (e) {
+                      print("Ocurrió un error" + e.toString());
+                    });
+                  }
+                },
+              ),
             ],
           );
         }
@@ -43,7 +88,6 @@ class MesaDetalle extends StatelessWidget {
     );
   }
 }
-
 
 Future<Map<String, dynamic>> obtenerPedidosPorMesa(int numeroMesa) async {
   var pedidosRef = FirebaseFirestore.instance.collection('pedidos');
@@ -65,7 +109,7 @@ Future<Map<String, dynamic>> obtenerPedidosPorMesa(int numeroMesa) async {
 
       for (String idProducto in detallePedido.keys) {
         var cantidad = detallePedido[idProducto]['cantidad'];
-        
+
         var producto = await productosRef.doc(idProducto).get();
         var precio = producto.data()?['precio'];
         var nombreProducto = producto.data()?['nombre'];
