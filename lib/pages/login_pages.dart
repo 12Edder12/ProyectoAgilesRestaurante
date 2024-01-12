@@ -1,11 +1,11 @@
-import 'package:bbb/pages/homeCocinero/homecocinero.dart';
-import 'package:bbb/pages/homeMesero/tomar_mesa.dart';
+import 'package:Pizzeria_Guerrin/pages/homeCocinero/homecocinero.dart';
+import 'package:Pizzeria_Guerrin/pages/homeMesero/tomar_mesa.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:bbb/pages/components/my_button.dart';
-import 'package:bbb/pages/components/my_text_field.dart';
-import 'package:bbb/services/auth/auth_service.dart';
+import 'package:Pizzeria_Guerrin/pages/components/my_button.dart';
+import 'package:Pizzeria_Guerrin/pages/components/my_text_field.dart';
+import 'package:Pizzeria_Guerrin/services/auth/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;

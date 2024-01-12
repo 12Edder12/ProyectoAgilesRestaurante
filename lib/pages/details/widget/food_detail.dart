@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:bbb/pages/details/widget/food_quantity.dart';
-import 'package:bbb/constants/colors.dart';
-import 'package:bbb/models/producto.dart';
+import 'package:Pizzeria_Guerrin/pages/details/widget/food_quantity.dart';
+import 'package:Pizzeria_Guerrin/constants/colors.dart';
+import 'package:Pizzeria_Guerrin/models/producto.dart';
 
 class FoodDetail extends StatelessWidget {
   final Pizza? food;

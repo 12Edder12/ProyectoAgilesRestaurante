@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:bbb/models/pedido.dart';
-import 'package:bbb/constants/globals.dart' as globals;
-import 'package:bbb/constants/colors.dart';
+import 'package:Pizzeria_Guerrin/models/pedido.dart';
+import 'package:Pizzeria_Guerrin/constants/globals.dart' as globals;
+import 'package:Pizzeria_Guerrin/constants/colors.dart';
 
 class CustomDialog extends StatefulWidget {
   final List<Pedido> pedidos;

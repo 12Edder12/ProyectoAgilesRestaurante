@@ -1,6 +1,6 @@
-import 'package:bbb/pages/homeAdmin/main_admin.dart';
-import 'package:bbb/pages/homeAdmin/widgets/navigation/navigation_app_bar.dart';
-import 'package:bbb/pages/homeAdmin/widgets/navigation/navigation_item.dart';
+import 'package:Pizzeria_Guerrin/pages/homeAdmin/main_admin.dart';
+import 'package:Pizzeria_Guerrin/pages/homeAdmin/widgets/navigation/navigation_app_bar.dart';
+import 'package:Pizzeria_Guerrin/pages/homeAdmin/widgets/navigation/navigation_item.dart';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

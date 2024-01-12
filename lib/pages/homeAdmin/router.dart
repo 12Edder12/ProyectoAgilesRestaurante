@@ -1,5 +1,5 @@
-import 'package:bbb/pages/homeAdmin/features/users/list_users.dart';
-import 'package:bbb/pages/homeAdmin/features/users/user.dart';
+import 'package:Pizzeria_Guerrin/pages/homeAdmin/features/users/list_users.dart';
+import 'package:Pizzeria_Guerrin/pages/homeAdmin/features/users/user.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ class DashboardRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const DashBoardPage();
+    return  DashBoardPage();
   }
 }
 

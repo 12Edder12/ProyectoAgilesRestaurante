@@ -1,8 +1,7 @@
-import 'package:bbb/pages/homeFacturas/factura.dart';
-import 'package:bbb/pages/homeMesero/home_Mesero.dart';
-import 'package:bbb/pages/mesas.dart';
-import 'package:bbb/services/auth/auth_service.dart';
-import 'package:bbb/services/auth/login_or_register.dart';
+import 'package:Pizzeria_Guerrin/pages/homeMesero/home_Mesero.dart';
+import 'package:Pizzeria_Guerrin/pages/mesas.dart';
+import 'package:Pizzeria_Guerrin/services/auth/auth_service.dart';
+import 'package:Pizzeria_Guerrin/services/auth/login_or_register.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

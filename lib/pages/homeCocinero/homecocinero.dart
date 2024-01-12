@@ -1,6 +1,6 @@
-import 'package:bbb/pages/homeCocinero/widget/pedido_card.dart';
-import 'package:bbb/pages/homeCocinero/widget/sign_out_button.dart';
-import 'package:bbb/services/auth/notificaciones.dart';
+import 'package:Pizzeria_Guerrin/pages/homeCocinero/widget/pedido_card.dart';
+import 'package:Pizzeria_Guerrin/pages/homeCocinero/widget/sign_out_button.dart';
+import 'package:Pizzeria_Guerrin/services/auth/notificaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

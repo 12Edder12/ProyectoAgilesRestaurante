@@ -1,7 +1,7 @@
 // En pedido_tile.dart
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:bbb/constants/colors.dart';
+import 'package:Pizzeria_Guerrin/constants/colors.dart';
 
 class PedidoTile extends StatelessWidget {
   final Map<String, dynamic> pedidoData;
