@@ -1,4 +1,5 @@
-import 'package:bbb/pages/homeFacturas/services/stripe_service.dart';
+
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/services/stripe_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

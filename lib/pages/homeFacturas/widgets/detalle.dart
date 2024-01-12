@@ -1,5 +1,5 @@
 
-import 'package:bbb/pages/homeFacturas/widgets/detalle_productos.dart';
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/detalle_productos.dart';
 import 'package:flutter/material.dart';
 
 

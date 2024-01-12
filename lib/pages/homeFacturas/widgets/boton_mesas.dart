@@ -1,5 +1,6 @@
-import 'package:bbb/constants/colors.dart';
-import 'package:bbb/pages/homeFacturas/widgets/detalle.dart';
+
+import 'package:Pizzeria_Guerrin/constants/colors.dart';
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/detalle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
