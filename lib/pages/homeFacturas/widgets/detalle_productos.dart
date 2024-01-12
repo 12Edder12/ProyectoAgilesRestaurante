@@ -57,21 +57,16 @@ class _MesaDetalleState extends State<MesaDetalle> {
                     metodoPago = newValue;
                   });
                   if (newValue == 'Tarjeta de crédito') {
-                    var items = [
-                      {
-                        "productName": "Producto 1",
-                        "productPrice": 10.00,
-                        "qty": 1
-                      },
-                      {
-                        "productName": "Producto 2",
-                        "productPrice": 20.00,
-                        "qty": 2
-                      }
-                    ];
+                    var items = pedidos.map((pedido) {
+                      return {
+                        "productName": pedido['nombre'],
+                        "productPrice": pedido['precio'],
+                        "qty": pedido['cantidad']
+                      };
+                    }).toList();
                     var stripeService = StripeService();
                     await stripeService.stripePaymentCheckout(
-                        items, 50.00, context, mounted, onSucces: () {
+                        items, total, context, mounted, onSucces: () {
                       print("Pago exitoso");
                     }, onCancel: () {
                       print("Pago cancelado");
