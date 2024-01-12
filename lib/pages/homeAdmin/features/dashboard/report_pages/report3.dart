@@ -7,7 +7,7 @@ class Report3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bebida Más Comprada'),
+        title: const Text('Día que Más se Vende'),
       ),
       body: Center(
         child: ElevatedButton(

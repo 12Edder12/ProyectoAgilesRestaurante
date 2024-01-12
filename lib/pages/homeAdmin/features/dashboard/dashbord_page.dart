@@ -10,8 +10,8 @@ class DashBoardPage extends StatelessWidget {
 
   final buttonTitles = [
     'Pizzas Más Vendidas',
+     'Bebida Más Comprada',
     'Día que Más se Vende',
-    'Bebida Más Comprada',
     'Ingresos',
     'Hora en que se Vende Más el Producto'
   ];
@@ -30,10 +30,10 @@ class DashBoardPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Icon(Icons.construction, size: 100, color: Colors.orange),
+            const Icon(Icons.analytics_rounded, size: 100, color: Colors.orange),
             const Text(
-              'Loro bebe estuvo aqui',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              'Reportes Administrador',
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
             Expanded(
               child: GridView.count(
@@ -56,8 +56,11 @@ class DashBoardPage extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment:  MainAxisAlignment.center,
                         children: [
-                       const   Icon( Icons.abc, size: 20), // Cambia el icono aquí
-                          Text(buttonTitles[index]),
+                       const   Icon( Icons.assessment_rounded , size: 170), // Cambia el icono aquí
+                          Text(buttonTitles[index], 
+                          style: const TextStyle(
+    fontSize: 17, // Cambia esto al tamaño que desees
+  ),),
                         ],
                       ),
                     ),
