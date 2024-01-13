@@ -2,6 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Buscador extends StatefulWidget {
+
+  final Function(Map<String, dynamic> cliente)? onClienteSeleccionado;
+
+  Buscador({this.onClienteSeleccionado});
+
   @override
   _BuscadorState createState() => _BuscadorState();
 }
@@ -119,6 +124,9 @@ class _BuscadorState extends State<Buscador> {
   }
 
   void _mostrarDetalleCliente(Map<String, dynamic> cliente) {
+    if (widget.onClienteSeleccionado != null) {
+      widget.onClienteSeleccionado!(cliente);
+    }
     showModalBottomSheet(
       context: context,
       builder: (context) {
