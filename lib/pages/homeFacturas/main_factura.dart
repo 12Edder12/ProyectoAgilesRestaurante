@@ -1,4 +1,5 @@
 
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/detalle_cliente.dart';
 import 'package:flutter/material.dart';
 
 class main_factura extends StatelessWidget {
@@ -21,7 +22,7 @@ class main_factura extends StatelessWidget {
         body: const TabBarView(
           children: [
             // Los widgets que se mostrarán en cada pestaña
-            Center(child: Text('Contenido de la pestaña Detalles Cliente')),
+            Center(child: DetalleCliente(numero: 1)),
             Center(child: Text('Contenido de la pestaña Detalles Pedidos')),
           ],
         ),
