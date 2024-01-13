@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class Buscador extends StatefulWidget {
   @override
-  _ClienteDetalleState createState() => _ClienteDetalleState();
+  _BuscadorState createState() => _BuscadorState();
 }
 
-class _ClienteDetalleState extends State<Buscador> {
+class _BuscadorState extends State<Buscador> {
   String _cedula = '';
   List<Map<String, dynamic>> _resultados = [];
 
@@ -23,6 +23,7 @@ class _ClienteDetalleState extends State<Buscador> {
                 setState(() {
                   _cedula = value.trim();
                 });
+                _buscarCliente();
               },
               decoration: InputDecoration(
                 labelText: 'Ingrese Cédula',
@@ -35,20 +36,7 @@ class _ClienteDetalleState extends State<Buscador> {
             SizedBox(height: 20),
             Expanded(
               child: _resultados.isNotEmpty
-                  ? DataTable(
-                columns: [
-                  DataColumn(label: Text('Cédula')),
-                  DataColumn(label: Text('Nombre')),
-                  DataColumn(label: Text('Correo')),
-                ],
-                rows: _resultados.map((cliente) {
-                  return DataRow(cells: [
-                    DataCell(Text(cliente['ced_cli'] ?? 'N/A')),
-                    DataCell(Text(cliente['nom_cli'] ?? 'N/A')),
-                    DataCell(Text(cliente['cor_cli'] ?? 'N/A')),
-                  ]);
-                }).toList(),
-              )
+                  ? _buildDataTable()
                   : Center(
                 child: Text('Ingrese una cédula para buscar clientes.'),
               ),
@@ -64,7 +52,7 @@ class _ClienteDetalleState extends State<Buscador> {
       try {
         QuerySnapshot querySnapshot = await FirebaseFirestore.instance
             .collection('clientes')
-            .where('ced_cli', isEqualTo: _cedula)
+            .where('ced_cli', isGreaterThanOrEqualTo: _cedula)
             .get();
 
         List<Map<String, dynamic>> tempResultados = [];
@@ -88,7 +76,27 @@ class _ClienteDetalleState extends State<Buscador> {
         print('Error al buscar clientes: $e');
       }
     } else {
+      setState(() {
+        _resultados.clear();
+      });
       print('Por favor, ingrese una cédula.');
     }
+  }
+
+  Widget _buildDataTable() {
+    return DataTable(
+      columns: [
+        DataColumn(label: Text('Cédula')),
+        DataColumn(label: Text('Nombre')),
+        DataColumn(label: Text('Correo')),
+      ],
+      rows: _resultados.map((cliente) {
+        return DataRow(cells: [
+          DataCell(Text(cliente['ced_cli'] ?? 'N/A')),
+          DataCell(Text(cliente['nom_cli'] ?? 'N/A')),
+          DataCell(Text(cliente['cor_cli'] ?? 'N/A')),
+        ]);
+      }).toList(),
+    );
   }
 }
