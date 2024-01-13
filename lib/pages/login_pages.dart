@@ -31,7 +31,8 @@ void showError(String error) {
 }
 
 void navigateToPage(String cargo) {
- if (!mounted) return; 
+  if (!mounted) return; // Asegúrate de que el widget esté montado
+
   if (cargo == 'Cocinero') {
     Navigator.push(
       context,
@@ -42,8 +43,8 @@ void navigateToPage(String cargo) {
       context,
       MaterialPageRoute(builder: (context) => const TomarMesa()),
     );
-
-}}
+  }
+}
 
   void signIn() async {
   final authService = Provider.of<AuthService>(context, listen: false);

@@ -1,4 +1,4 @@
-import 'package:Pizzeria_Guerrin/pages/homeMesero/home_Mesero.dart';
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/factura.dart';
 import 'package:Pizzeria_Guerrin/pages/mesas.dart';
 import 'package:Pizzeria_Guerrin/services/auth/auth_service.dart';
 import 'package:Pizzeria_Guerrin/services/auth/login_or_register.dart';
@@ -76,7 +76,7 @@ class _TomarMesaState extends State<TomarMesa> {
               child: const Column(
                 children: <Widget>[
                   Text(
-                    "PIZZERIA GÜERRIN",
+                    "Pizzería Güerrín",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black,
@@ -97,8 +97,10 @@ class _TomarMesaState extends State<TomarMesa> {
                       padding: const EdgeInsets.all(10),
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => const Mesas()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Mesas()));
                         },
                         style: elevatedButtonStyle,
                         child: SizedBox(
@@ -110,7 +112,41 @@ class _TomarMesaState extends State<TomarMesa> {
                                 'lib/img/mesas.png',
                               ),
                               const Text(
-                                "ASIGNAR MESAS",
+                                "Asignar Mesas",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 19,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Factura()),
+                        );
+                      },
+                        style: elevatedButtonStyle,
+                        child: SizedBox(
+                          width: 100,
+                          height: 150,
+                          child: Column(
+                            children: <Widget>[
+                              Expanded(
+                                child: Image.asset(
+                                  'lib/img/factura.png', // Asegúrate de tener una imagen para facturar
+                                ),
+                              ),
+                      
+                              const Text(
+                                "Facturar",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.white,
@@ -124,143 +160,8 @@ class _TomarMesaState extends State<TomarMesa> {
                     ),
                   ],
                 ),
-                Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Visibility(
-                        visible: false,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomeMesero2()));
-                          },
-                          style: elevatedButtonStyle,
-                          child: SizedBox(
-                            width: 110,
-                            height: 150,
-                            child: Column(
-                              children: <Widget>[
-                                Image.asset(
-                                  'lib/img/mesas.png',
-                                  height: 75,
-                                  alignment: Alignment.bottomCenter,
-                                ),
-                                const Text(
-                                  "EDITAR PEDIDO",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 19,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Visibility(
-                        visible: false,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomeMesero2()));
-                          },
-                          style: elevatedButtonStyle,
-                          child: SizedBox(
-                            width: 110,
-                            height: 150,
-                            child: Column(
-                              children: <Widget>[
-                                Image.asset(
-                                  'lib/img/mesas.png',
-                                  height: 90,
-                                ),
-                                const Text(
-                                  "TOMAR FACTURA",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 19,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Visibility(
-                  visible: false,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      //IR AL PERFIL
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: Container(
-                      width: double.infinity,
-                      height: 80,
-                      color: const Color(0xFFEB8F1E),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(
-                              left: 25.0,
-                            ),
-                            child: Text(
-                              'Mi Perfil',
-                              style: TextStyle(
-                                fontSize: 26,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              right: 20.0,
-                            ),
-                            child: Image.network(
-                              'https://cdn-icons-png.flaticon.com/512/3135/3135768.png',
-                              height: 60,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            )
           ]),
         ),
       ]),
