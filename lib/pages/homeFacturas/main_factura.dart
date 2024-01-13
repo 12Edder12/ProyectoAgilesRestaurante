@@ -1,4 +1,5 @@
 
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/detalle_pedidos.dart';
 import 'package:flutter/material.dart';
 
 class main_factura extends StatelessWidget {
@@ -22,7 +23,7 @@ class main_factura extends StatelessWidget {
           children: [
             // Los widgets que se mostrarán en cada pestaña
             Center(child: Text('Contenido de la pestaña Detalles Cliente')),
-            Center(child: Text('Contenido de la pestaña Detalles Pedidos')),
+            DetallePedidoWidget(numeroMesa: 4), // Reemplaza esto con el número de mesa correcto
           ],
         ),
       ),

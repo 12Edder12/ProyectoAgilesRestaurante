@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:Pizzeria_Guerrin/constants/colors.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/main_factura.dart';
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/services/detalles_productos.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/detalle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +18,11 @@ class Botones extends StatelessWidget {
       stream: mesas.where('pagado', isEqualTo: false).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          return Text('Algo salió mal');
+          return const Text('Algo salió mal');
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Cargando");
+          return const Text("Cargando");
         }
         return ListView(
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -32,7 +33,7 @@ class Botones extends StatelessWidget {
               ),
               elevation: 8, // sombra alrededor del card
               color: Colors.white, // color de fondo del card
-              margin: EdgeInsets.all(10), // espacio alrededor del card
+              margin: const EdgeInsets.all(10), // espacio alrededor del card
               child: Container(
                 decoration: BoxDecoration(
                   border:
@@ -58,7 +59,7 @@ class Botones extends StatelessWidget {
                     builder:
                         (BuildContext context, AsyncSnapshot<double> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Text('Cargando total...');
+                        return const Text('Cargando total...');
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else {
@@ -74,12 +75,12 @@ class Botones extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Selecciona un método de pago'),
+                            title: const Text('Selecciona un método de pago'),
                             content: SingleChildScrollView(
                               child: ListBody(
                                 children: <Widget>[
                                   GestureDetector(
-                                    child: Text("Efectivo"),
+                                    child: const Text("Efectivo"),
                                     onTap: () {
                                       Navigator.push(
                                         context,
@@ -89,17 +90,11 @@ class Botones extends StatelessWidget {
                                       );
                                     },
                                   ),
-                                  Padding(padding: EdgeInsets.all(8.0)),
+                                  const Padding(padding: EdgeInsets.all(8.0)),
                                   GestureDetector(
-                                    child: Text("Stripe"),
+                                    child: const Text("Stripe"),
                                     onTap: () {
-                                      /* 
-                                      Navigator.of(context).pop();
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => PagoStripe()),
-                                      );*/
+                                        
                                     },
                                   ),
                                 ],
@@ -120,37 +115,3 @@ class Botones extends StatelessWidget {
   }
 }
 
-Future<double> obtenerTotalPorMesa(int numeroMesa) async {
-  var pedidosRef = FirebaseFirestore.instance.collection('pedidos');
-  var productosRef = FirebaseFirestore.instance.collection('productos');
-
-  Map<String, dynamic> resultado = {
-    'productos': [],
-    'total': 0.0,
-  };
-
-  try {
-    var pedidos = await pedidosRef
-        .where('num_mesa', isEqualTo: numeroMesa)
-        .where('pagado', isEqualTo: false)
-        .get();
-
-    for (var pedido in pedidos.docs) {
-      var detallePedido = pedido.data()['detalle_pedido'];
-
-      for (String idProducto in detallePedido.keys) {
-        var cantidad = detallePedido[idProducto]['cantidad'];
-
-        var producto = await productosRef.doc(idProducto).get();
-        var precio = producto.data()?['precio'];
-
-        double totalProducto = precio * cantidad;
-        resultado['total'] += totalProducto;
-      }
-    }
-  } catch (e) {
-    print('Ocurrió un error: $e');
-  }
-
-  return double.parse(resultado['total'].toStringAsFixed(2));
-}
