@@ -9,6 +9,7 @@ class Buscador extends StatefulWidget {
 class _BuscadorState extends State<Buscador> {
   String _cedula = '';
   List<Map<String, dynamic>> _resultados = [];
+  Map<String, dynamic>? _clienteSeleccionado; // Estado para rastrear el cliente seleccionado
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +64,7 @@ class _BuscadorState extends State<Buscador> {
               'ced_cli': doc['ced_cli'],
               'nom_cli': doc['nom_cli'],
               'cor_cli': doc['cor_cli'],
+              'ape_cli': doc['ape_cli']
             });
           }
         } else {
@@ -87,16 +89,59 @@ class _BuscadorState extends State<Buscador> {
     return DataTable(
       columns: [
         DataColumn(label: Text('Cédula')),
-        DataColumn(label: Text('Nombre')),
+        DataColumn(label: Text('Cliente')),
         DataColumn(label: Text('Correo')),
       ],
       rows: _resultados.map((cliente) {
-        return DataRow(cells: [
-          DataCell(Text(cliente['ced_cli'] ?? 'N/A')),
-          DataCell(Text(cliente['nom_cli'] ?? 'N/A')),
-          DataCell(Text(cliente['cor_cli'] ?? 'N/A')),
-        ]);
+        final isSelected = cliente == _clienteSeleccionado; // Verificar si este cliente está seleccionado
+        return DataRow(
+          cells: [
+            DataCell(Text(cliente['ced_cli'] ?? 'N/A')),
+            DataCell(Text('${cliente['nom_cli'] ?? 'N/A'} ${cliente['ape_cli'] ?? ''}')),
+            DataCell(Text(cliente['cor_cli'] ?? 'N/A')),
+          ],
+          selected: isSelected, // Establecer la fila como seleccionada si es el cliente seleccionado
+          onSelectChanged: (isSelected) {
+            if (isSelected == true) {
+              setState(() {
+                _clienteSeleccionado = cliente; // Actualizar el cliente seleccionado
+                _mostrarDetalleCliente(cliente);
+              });
+            } else {
+              setState(() {
+                _clienteSeleccionado = null; // Deseleccionar el cliente
+              });
+            }
+          },
+        );
       }).toList(),
+    );
+  }
+
+  void _mostrarDetalleCliente(Map<String, dynamic> cliente) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Detalle del Cliente'),
+              SizedBox(height: 10),
+              Text('Cédula: ${cliente['ced_cli'] ?? 'N/A'}'),
+              Text('Cliente: ${cliente['nom_cli']} ${cliente['ape_cli'] ?? 'N/A'}'),
+              Text('Correo: ${cliente['cor_cli'] ?? 'N/A'}'),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // Cerrar la modal
+                },
+                child: Text('Cerrar'),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
