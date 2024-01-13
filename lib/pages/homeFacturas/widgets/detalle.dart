@@ -1,4 +1,5 @@
 
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/buscador.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/detalle_pedidos2.dart';
 import 'package:flutter/material.dart';
 
