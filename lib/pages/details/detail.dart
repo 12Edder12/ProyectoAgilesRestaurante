@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
+
+import 'package:Pizzeria_Guerrin/constants/colors.dart';
+import 'package:Pizzeria_Guerrin/models/pedido.dart';
+import 'package:Pizzeria_Guerrin/models/producto.dart';
+import 'package:Pizzeria_Guerrin/pages/components/custom_app_bar.dart';
 import 'package:Pizzeria_Guerrin/pages/details/widget/food_detail.dart';
 import 'package:Pizzeria_Guerrin/pages/details/widget/food_image.dart';
-import 'package:Pizzeria_Guerrin/constants/colors.dart';
-import 'package:Pizzeria_Guerrin/models/producto.dart';
-import 'package:Pizzeria_Guerrin/models/pedido.dart';
-import 'package:Pizzeria_Guerrin/pages/components/custom_app_bar.dart';
+import 'package:flutter/material.dart';
 import 'package:Pizzeria_Guerrin/constants/globals.dart' as globals;
 
 class DetailPage extends StatefulWidget {
