@@ -1,3 +1,4 @@
+import 'package:Pizzeria_Guerrin/services/mobileFiles.dart';
 import 'package:flutter/material.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/PdfGenerator.dart';  // Asegúrate de importar la ubicación correcta de tu archivo PdfGenerator.dart
 
@@ -11,6 +12,7 @@ class BotonEnviarFactura extends StatelessWidget {
 
         // Mostrar un modal con un mensaje
         _mostrarMensaje(context);
+
       },
       child: Text('Enviar Factura'),
     );
@@ -24,6 +26,7 @@ class BotonEnviarFactura extends StatelessWidget {
         return AlertDialog(
           title: Text('Factura Generada y Enviada'),
           content: Text('La factura ha sido generada y enviada exitosamente.'),
+          
           actions: <Widget>[
             TextButton(
               child: Text('Cerrar'),

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:Pizzeria_Guerrin/services/mobileFiles.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -22,7 +23,7 @@ class PdfGenerator {
 
       // Mostrar un mensaje (esto es opcional, puedes eliminarlo si lo deseas)
       print('PDF generado en $path');
-
+      saveAndLaunchFile(bytes, "Output.pdf");
       // Cierra el documento
       document.dispose();
     } catch (error) {
