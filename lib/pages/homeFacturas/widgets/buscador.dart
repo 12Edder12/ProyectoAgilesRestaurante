@@ -39,5 +39,26 @@ class _BuscadorClientesState extends State<BuscadorClientes> {
     );
   }
 
+  Future<void> _buscarCliente() async {
+    if (_cedula.isNotEmpty) {
+      try {
+        QuerySnapshot querySnapshot = await _firestore
+            .collection('clientes')
+            .where('ced_cli', isEqualTo: _cedula)
+            .get();
 
+        if (querySnapshot.docs.isNotEmpty) {
+          for (var doc in querySnapshot.docs) {
+            print(doc.data()); // Imprime los datos del cliente encontrado
+          }
+        } else {
+          print('No se encontraron clientes con esa cédula.');
+        }
+      } catch (e) {
+        print('Error al buscar clientes: $e');
+      }
+    } else {
+      print('Por favor, ingrese una cédula.');
+    }
+  }
 }
