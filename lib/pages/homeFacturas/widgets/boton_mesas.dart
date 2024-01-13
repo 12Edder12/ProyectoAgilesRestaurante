@@ -41,71 +41,81 @@ class Botones extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10), // espacio interno del ListTile
-                  leading: const Icon(Icons.receipt,
-                      color: Colors.black, size: 30), // icono de factura
-                  title: Text(
-                    "Mesa Nº ${data['num']}",
-                    style: const TextStyle(
-                      color: Colors.black, // color del texto
-                      fontWeight: FontWeight.bold, // grosor del texto
-                      fontSize: 20, // tamaño del texto
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10), // espacio interno del ListTile
+                    leading: const Icon(Icons.receipt,
+                        color: Colors.black, size: 30), // icono de factura
+                    title: Text(
+                      "Mesa Nº ${data['num']}",
+                      style: const TextStyle(
+                        color: Colors.black, // color del texto
+                        fontWeight: FontWeight.bold, // grosor del texto
+                        fontSize: 20, // tamaño del texto
+                      ),
                     ),
-                  ),
-                  subtitle: FutureBuilder<double>(
-                    future: obtenerTotalPorMesa(data['num']),
-                    builder:
-                        (BuildContext context, AsyncSnapshot<double> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Text('Cargando total...');
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else {
-                        return Text('Total: ${snapshot.data}');
-                      }
-                    },
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.arrow_forward,
-                        color: Colors.black, size: 30),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Selecciona un método de pago'),
-                            content: SingleChildScrollView(
-                              child: ListBody(
-                                children: <Widget>[
-                                  GestureDetector(
-                                    child: const Text("Efectivo"),
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const main_factura()),
-                                      );
-                                    },
-                                  ),
-                                  const Padding(padding: EdgeInsets.all(8.0)),
-                                  GestureDetector(
-                                    child: const Text("Stripe"),
-                                    onTap: () {
-                                        
-                                    },
-                                  ),
+                    subtitle: FutureBuilder<double>(
+                      future: obtenerTotalPorMesa(data['num']),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<double> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Text('Cargando total...');
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return Text('Total: ${snapshot.data}');
+                        }
+                      },
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.arrow_forward,
+                          color: Colors.black, size: 30),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SimpleDialog(
+                              titlePadding: const EdgeInsets.all(16.0),
+                              title: const Row(
+                                children: [
+              
+                                  SizedBox(width: 10),
+                                  Text('Seleccionar método de pago',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold)),
                                 ],
                               ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
+                              children: <Widget>[
+                                ListTile(
+                                  leading:
+                                      const Icon(Icons.money, color: Colors.green),
+                                  title: const Text("Efectivo"),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => main_factura(
+                                            numeroMesa: data['num']),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                ListTile(
+                                  leading: Icon(Icons.credit_card,
+                                      color: Colors.blue),
+                                  title: const Text("Stripe"),
+                                  onTap: () {
+                                    // Aquí va tu código para manejar el pago con Stripe
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    )),
               ),
             );
           }).toList(),
@@ -114,4 +124,3 @@ class Botones extends StatelessWidget {
     );
   }
 }
-

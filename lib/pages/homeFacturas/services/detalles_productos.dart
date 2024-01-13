@@ -1,6 +1,3 @@
-
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<double> obtenerTotalPorMesa(int numeroMesa) async {
@@ -30,7 +27,7 @@ Future<double> obtenerTotalPorMesa(int numeroMesa) async {
         // Verifica si el producto ya está en el mapa
         if (cantidadProductos.containsKey(idProducto)) {
           // Si existe, suma la cantidad
-      cantidadProductos[idProducto] = (cantidadProductos[idProducto] ?? 0) + cantidad;
+          cantidadProductos[idProducto] = (cantidadProductos[idProducto] ?? 0) + cantidad;
 
         } else {
           // Si no existe, agrega el producto al mapa
@@ -51,7 +48,7 @@ Future<double> obtenerTotalPorMesa(int numeroMesa) async {
       resultado['productos'].add({
         'nombre': nombreProducto,
         'cantidad': cantidadProductos[idProducto],
-        'precio': precio,
+        'precioUnitario': precio, // Agrega el precio unitario del producto
         'totalProducto': totalProducto,
       });
     }
@@ -110,6 +107,7 @@ Future<Map<String, dynamic>> obtenerPedidosPorMesa(int numeroMesa) async {
       resultado['productos'].add({
         'nombre': nombreProducto,
         'cantidad': cantidadProductos[idProducto],
+        'precioUnitario': precio,
         'precio': precio,
         'totalProducto': totalProducto,
       });

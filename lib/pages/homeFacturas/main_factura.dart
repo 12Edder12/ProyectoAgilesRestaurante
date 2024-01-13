@@ -1,10 +1,11 @@
-
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/detalle_cliente.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/detalle_pedidos.dart';
 import 'package:flutter/material.dart';
 
 class main_factura extends StatelessWidget {
-  const main_factura({super.key});
+  final int numeroMesa;
+
+  const main_factura({Key? key, required this.numeroMesa}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class main_factura extends StatelessWidget {
       length: 2, // Número de pestañas
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Facturacion con Efectivo'),
+          title: Text('Facturacion Mesa Nº $numeroMesa'),
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Informacion Cliente'), // Texto para la primera pestaña
@@ -20,11 +21,11 @@ class main_factura extends StatelessWidget {
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
             // Los widgets que se mostrarán en cada pestaña
-            Center(child: DetalleCliente(numero: 1)),
-            DetallePedidoWidget(numeroMesa: 4),
+            DetalleCliente(numero: 1),
+            DetallePedidoWidget(numeroMesa: numeroMesa),
           ],
         ),
       ),
