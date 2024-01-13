@@ -11,11 +11,11 @@ class main_factura extends StatelessWidget {
       length: 2, // Número de pestañas
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Mi Pantalla con Pestañas'),
+          title: Text('Facturacion con Efectivo'),
           bottom: const TabBar(
             tabs: [
-              Tab(text: 'Detalles Cliente'), // Texto para la primera pestaña
-              Tab(text: 'Detalles Pedidos'), // Texto para la segunda pestaña
+              Tab(text: 'Informacion Cliente'), // Texto para la primera pestaña
+              Tab(text: 'Informacion Productos'), // Texto para la segunda pestaña
             ],
           ),
         ),

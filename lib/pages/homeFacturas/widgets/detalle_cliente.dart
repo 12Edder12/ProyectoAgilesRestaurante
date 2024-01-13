@@ -25,9 +25,19 @@ class _DetalleClienteState extends State<DetalleCliente> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            NuevoClienteModal(),
             Flexible(flex: 5, child: Buscador()),
-            BotonEnviarFactura(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround, // Alineación para distribuir el espacio entre los widgets
+              children: [
+                Expanded(
+                  child: (NuevoClienteModal()),
+                ),
+                SizedBox(width: 10), // Espaciador opcional entre botones
+                Expanded(
+                  child: (BotonEnviarFactura()),
+                ),
+              ],
+            ),
           ],
         ),
       ),
