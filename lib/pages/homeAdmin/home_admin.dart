@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class AdminScreen extends StatelessWidget {
-  static const title = 'Que?';
+  static const title = 'Cargando';
 
   const AdminScreen({super.key});
   @override
   Widget build(BuildContext context) {
     
     return AdaptiveTheme(
+      
       light: AppTheme.light,
      // dark: AppTheme.dark,
       initial: AdaptiveThemeMode.system,
@@ -22,6 +23,8 @@ class AdminScreen extends StatelessWidget {
           const Breakpoint(start: 961, end: double.infinity, name: DESKTOP),
         ],
         child: MaterialApp.router(
+                debugShowCheckedModeBanner: false, // Agrega esta línea
+
           title: title,
           routerConfig: router,
           theme: theme,
