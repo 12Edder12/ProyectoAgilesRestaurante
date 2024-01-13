@@ -1,4 +1,5 @@
 
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/buscador.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/detalle_productos.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +29,7 @@ class _DetallePedidosState extends State<DetallePedidos> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             MesaDetalle(numeroMesa: widget.numero),
+            BuscadorClientes(),
           ],
         ),
       ),
