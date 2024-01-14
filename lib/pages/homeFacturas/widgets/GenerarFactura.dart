@@ -18,7 +18,7 @@ class BotonEnviarFactura extends StatelessWidget {
           onPressed: () async {
             if (clienteSeleccionado != null) {
               // Invocar al método para generar el PDF
-              //await PdfGenerator.generatePDF();
+              await PdfGenerator.generatePDF();
               print(clienteSeleccionado);
               // Mostrar un modal con un mensaje
               _mostrarMensaje(context);
