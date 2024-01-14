@@ -105,11 +105,12 @@ class PdfGenerator {
     List<Map<String, dynamic>> productose = (detallesPedido['productos'] as List).cast<Map<String, dynamic>>();
     for (var producto in productose) {
       PdfGridRow row = grid.rows.add();
-      row.cells[0].value = producto['cantidad'];
+      row.cells[0].value = producto['cantidad'].toString();
       row.cells[1].value = producto['nombre'];
       row.cells[2].value = producto['precio'].toString();
       row.cells[3].value = producto['totalProducto'].toString();
       totalFactura= totalFactura+producto['totalProducto'];
+      print(producto);
     }
 
     grid.draw(page: page, bounds: ui.Rect.fromLTWH(0, 280, 0, 0));
