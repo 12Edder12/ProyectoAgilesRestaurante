@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:Pizzeria_Guerrin/constants/globals.dart';
 
 class Buscador extends StatefulWidget {
-
   final Function(Map<String, dynamic> cliente)? onClienteSeleccionado;
 
   Buscador({this.onClienteSeleccionado});
@@ -46,8 +45,8 @@ class _BuscadorState extends State<Buscador> {
               child: _resultados.isNotEmpty
                   ? _buildDataTable()
                   : Center(
-                child: Text('Ingrese una cédula para buscar clientes.'),
-              ),
+                      child: Text('Ingrese una cédula para buscar clientes.'),
+                    ),
             ),
           ],
         ),
@@ -67,7 +66,9 @@ class _BuscadorState extends State<Buscador> {
 
         if (querySnapshot.docs.isNotEmpty) {
           for (var doc in querySnapshot.docs) {
+            String idFirebase = doc.id;
             tempResultados.add({
+              'idFirebase': idFirebase,
               'ced_cli': doc['ced_cli'],
               'nom_cli': doc['nom_cli'],
               'cor_cli': doc['cor_cli'],
@@ -99,17 +100,21 @@ class _BuscadorState extends State<Buscador> {
         DataColumn(label: Text('Cliente')),
       ],
       rows: _resultados.map((cliente) {
-        final isSelected = cliente == _clienteSeleccionado; // Verificar si este cliente está seleccionado
+        final isSelected = cliente ==
+            _clienteSeleccionado; // Verificar si este cliente está seleccionado
         return DataRow(
           cells: [
             DataCell(Text(cliente['ced_cli'] ?? 'N/A')),
-            DataCell(Text('${cliente['nom_cli'] ?? 'N/A'} ${cliente['ape_cli'] ?? ''}')),
+            DataCell(Text(
+                '${cliente['nom_cli'] ?? 'N/A'} ${cliente['ape_cli'] ?? ''}')),
           ],
-          selected: isSelected, // Establecer la fila como seleccionada si es el cliente seleccionado
+          selected: isSelected,
+          // Establecer la fila como seleccionada si es el cliente seleccionado
           onSelectChanged: (isSelected) {
             if (isSelected == true) {
               setState(() {
-                _clienteSeleccionado = cliente; // Actualizar el cliente seleccionado
+                _clienteSeleccionado =
+                    cliente; // Actualizar el cliente seleccionado
                 _mostrarDetalleCliente(cliente);
               });
             } else {
@@ -127,6 +132,7 @@ class _BuscadorState extends State<Buscador> {
     if (widget.onClienteSeleccionado != null) {
       // Asigna los datos seleccionados a clienteSeleccionado en globals.dart
       clienteSeleccionado = {
+        'idFirebase': cliente['idFirebase'],
         'ced_cli': cliente['ced_cli'],
         'nom_cli': cliente['nom_cli'],
         'cor_cli': cliente['cor_cli'],
@@ -134,8 +140,8 @@ class _BuscadorState extends State<Buscador> {
         // Agrega otros datos según sea necesario
       };
 
-      widget.onClienteSeleccionado!(cliente); // Llama al callback con la información del cliente
+      widget.onClienteSeleccionado!(
+          cliente); // Llama al callback con la información del cliente
     }
   }
-
 }

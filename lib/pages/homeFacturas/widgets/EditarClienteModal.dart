@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:Pizzeria_Guerrin/constants/globals.dart';
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/services/userController.dart';
 
 class EditarClienteModal extends StatefulWidget {
   final Map<String, dynamic>? cliente;
@@ -13,6 +15,8 @@ class _EditarClienteModalState extends State<EditarClienteModal> {
   TextEditingController _nombreController = TextEditingController();
   TextEditingController _apellidoController = TextEditingController();
   TextEditingController _correoController = TextEditingController();
+
+  bool _isEditing = false;
 
   @override
   void initState() {
@@ -83,10 +87,18 @@ class _EditarClienteModalState extends State<EditarClienteModal> {
     );
   }
 
-  void _guardarCambios() {
-    // Aquí debes implementar la lógica para guardar los cambios en la base de datos
-    // Puedes utilizar _nombreController.text, _apellidoController.text, _correoController.text
-    // y widget.cliente para obtener los valores necesarios.
-    // Ejemplo: actualizarCliente(widget.cliente['ced_cli'], _nombreController.text, _apellidoController.text, _correoController.text);
+  void _guardarCambios() async {
+    final newUserData = {
+      'nom_cli': _nombreController.text,
+      'ape_cli': _apellidoController.text,
+      'cor_cli': _correoController.text,
+    };
+    final clientService = ClientService();
+    try {
+      await clientService.updateClient(clienteSeleccionado?['idFirebase'], newUserData);
+      print("Cliente actualizado");
+    } catch (e) {
+      print("Cliente fallo");
+    }
   }
 }
