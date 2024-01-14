@@ -276,6 +276,14 @@ class DetallePedidoWidget extends StatelessWidget {
                               );
                             },
                           );
+                        }else {
+                          // Muestra un SnackBar indicando que no hay un cliente seleccionado
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('No hay cliente seleccionado para la Factura.'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
                         }
                       },
                       style: ElevatedButton.styleFrom(
