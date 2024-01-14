@@ -34,6 +34,7 @@ Future<void> _actualizarEstadoMesa(int numMesa) async {
 
       // Actualiza el estado de la mesa en Firestore
       await tables.doc(mesaDoc.id).update({'est_tab': false});
+      await tables.doc(mesaDoc.id).update({'pagado': false});
     }
   } catch (e) {
    // print("Error al actualizar el estado de la mesa: $e");
