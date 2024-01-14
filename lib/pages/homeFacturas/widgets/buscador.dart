@@ -14,7 +14,7 @@ class Buscador extends StatefulWidget {
 class _BuscadorState extends State<Buscador> {
   String _cedula = '';
   List<Map<String, dynamic>> _resultados = [];
-  Map<String, dynamic>? _clienteSeleccionado; // Estado para rastrear el cliente seleccionado
+  Map<String, dynamic>? _clienteSeleccionado;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,6 @@ class _BuscadorState extends State<Buscador> {
       columns: [
         DataColumn(label: Text('Cédula')),
         DataColumn(label: Text('Cliente')),
-        DataColumn(label: Text('Correo')),
       ],
       rows: _resultados.map((cliente) {
         final isSelected = cliente == _clienteSeleccionado; // Verificar si este cliente está seleccionado
@@ -103,7 +102,6 @@ class _BuscadorState extends State<Buscador> {
           cells: [
             DataCell(Text(cliente['ced_cli'] ?? 'N/A')),
             DataCell(Text('${cliente['nom_cli'] ?? 'N/A'} ${cliente['ape_cli'] ?? ''}')),
-            DataCell(Text(cliente['cor_cli'] ?? 'N/A')),
           ],
           selected: isSelected, // Establecer la fila como seleccionada si es el cliente seleccionado
           onSelectChanged: (isSelected) {
@@ -125,31 +123,8 @@ class _BuscadorState extends State<Buscador> {
 
   void _mostrarDetalleCliente(Map<String, dynamic> cliente) {
     if (widget.onClienteSeleccionado != null) {
-      widget.onClienteSeleccionado!(cliente);
+      widget.onClienteSeleccionado!(cliente); // Llama al callback con la información del cliente
     }
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Detalle del Cliente'),
-              SizedBox(height: 10),
-              Text('Cédula: ${cliente['ced_cli'] ?? 'N/A'}'),
-              Text('Cliente: ${cliente['nom_cli']} ${cliente['ape_cli'] ?? 'N/A'}'),
-              Text('Correo: ${cliente['cor_cli'] ?? 'N/A'}'),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // Cerrar la modal
-                },
-                child: Text('Cerrar'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
   }
+
 }
