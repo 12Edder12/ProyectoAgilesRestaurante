@@ -84,9 +84,34 @@ class PdfGenerator {
 
 
   // INFORMACION DE LOS PRODUCTOS
+    PdfGrid grid = PdfGrid();
+    grid.style= PdfGridStyle(
+      font: PdfStandardFont(PdfFontFamily.helvetica,12),
+      cellPadding: PdfPaddings(left: 5,right: 2,top: 2,bottom: 2)
+    );
 
+    grid.columns.add(count: 4);
+    grid.headers.add(1);
 
+    PdfGridRow header = grid.headers[0];
+    header.cells[0].value = 'Cantidad';
+    header.cells[1].value = 'Nombre del Producto';
+    header.cells[2].value = 'Precio Unitario';
+    header.cells[3].value = 'Total';
 
+    PdfGridRow row = grid.rows.add();
+    row.cells[0].value = '2';
+    row.cells[1].value = 'Pizza Con Queso';
+    row.cells[2].value = '15.00';
+    row.cells[3].value = '30.00';
+
+    grid.draw(page: page, bounds: ui.Rect.fromLTWH(0, 280, 0, 0));
+    //LINEA SEPARADORA DE LOS PRODUCTOS Y EL TOTAL
+    page.graphics.drawString(
+        "----------------------------------------------------------------------------------------------------",
+        PdfStandardFont(PdfFontFamily.timesRoman, 20),
+        bounds: ui.Rect.fromLTWH(0, 550, 0, 0)
+    );
   //PIE DE PAGINA DE LA FACTURA
 
     //LINEA SEPARADORA
