@@ -99,7 +99,7 @@ Future<Map<String, dynamic>> obtenerPedidosPorMesa(int numeroMesa) async {
     for (String idProducto in cantidadProductos.keys) {
       var producto = await productosRef.doc(idProducto).get();
       var precio = producto.data()?['precio'];
-      var nombreProducto = producto.data()?['nombre'];
+      String nombreProducto = producto.data()?['nombre'];
 
       double totalProducto = precio.toDouble() * cantidadProductos[idProducto];
       resultado['total'] += totalProducto;
@@ -107,7 +107,6 @@ Future<Map<String, dynamic>> obtenerPedidosPorMesa(int numeroMesa) async {
       resultado['productos'].add({
         'nombre': nombreProducto,
         'cantidad': cantidadProductos[idProducto],
-        'precioUnitario': precio,
         'precio': precio,
         'totalProducto': totalProducto,
       });

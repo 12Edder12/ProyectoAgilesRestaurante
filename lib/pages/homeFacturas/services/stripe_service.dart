@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Pizzeria_Guerrin/constants/globals.dart';
 import 'package:http/http.dart' as http;
 import 'package:stripe_checkout/stripe_checkout.dart';
 
@@ -18,6 +19,12 @@ class StripeService {
       int index = 0;
 
       productItems.forEach((val) {
+        print('Item actual: $val');
+  
+  // Imprimir el tipo de dato de cada valor en el mapa
+  print('Tipo de dato de productName: ${val["productName"].runtimeType}');
+  print('Tipo de dato de productPrice: ${val["productPrice"].runtimeType}');
+  print('Tipo de dato de qty: ${val["qty"].runtimeType}');
         var productPrice = (val["productPrice"] * 100).round().toString();
         lineItems +=
             "&line_items[$index][price_data][product_data][name]=${val["productName"]}";
@@ -73,6 +80,7 @@ class StripeService {
       final text = result.when(
           redirected: () => 'Redireccionando a Stripe',
           success: () {
+            getPaymentIntentId(sessionId);
             onSucces();
           },
           canceled: () => onCancel(),
@@ -103,90 +111,11 @@ class StripeService {
           '*****************************************Failed to retrieve session details');
     }
   }
+
+  void getPaymentIntentId(String sessionId) async {
+  Map<String, dynamic> sessionDetails = await getSessionDetails(sessionId);
+   idStripe.value = sessionDetails['payment_intent'];
+}
   
-  ///productos
-  static Future<List<dynamic>> getLineItems(String sessionId) async {
-    final url = Uri.parse(
-        'https://api.stripe.com/v1/checkout/sessions/$sessionId/line_items');
-    final response = await http.get(
-      url,
-      headers: {
-        'Authorization':
-            'Bearer sk_test_51OVR6tILXmRhmPFRXetwJXugUYnsAGU1zJqHRDKoQ4sHI2HmaevTrx0YF3pJpagk5rjGToC7fLIk20gzfrlGtbNi00EeE6PjQ9',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      print('Line items: ${data['data']}'); // Imprimir los ítems de línea
-      return data['data']; // Los ítems de línea están en el campo 'data'.
-    } else {
-      throw Exception('Failed to retrieve line items: ${response.body}');
-    }
-  }
-
-Future<void> createInvoiceForSession(Map<String, dynamic> session) async {
+}
  
-    var customerId = session['customer'];
-    List<dynamic> lineItems = await getLineItems(session['id']);
-    // Crear los ítems de la factura
-    for (var item in lineItems) {
-      int amount = item['amount_total'];
-      String currency = item['currency'] ?? 'usd';
-    
-      await http.post(
-        Uri.parse('https://api.stripe.com/v1/invoiceitems'),
-        headers: {
-          'Authorization': 'Bearer sk_test_51OVR6tILXmRhmPFRXetwJXugUYnsAGU1zJqHRDKoQ4sHI2HmaevTrx0YF3pJpagk5rjGToC7fLIk20gzfrlGtbNi00EeE6PjQ9',
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: {
-          'customer': customerId,
-          'amount': amount.toString(),
-          'currency': currency,
-        },
-      );
-    }
-  
-    // Crear la factura
-    final response = await http.post(
-      Uri.parse('https://api.stripe.com/v1/invoices'),
-      headers: {
-        'Authorization':
-            'Bearer sk_test_51OVR6tILXmRhmPFRXetwJXugUYnsAGU1zJqHRDKoQ4sHI2HmaevTrx0YF3pJpagk5rjGToC7fLIk20gzfrlGtbNi00EeE6PjQ9',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: {
-        'customer': customerId,
-        'auto_advance': 'true', // Para que la factura se pague automáticamente
-        'collection_method': 'charge_automatically',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      // Finalizar enviando la factura al cliente vía email
-      var invoice = json.decode(response.body);
-      sendInvoiceByEmail(invoice['id']);
-    }
-    
-}
-
-  // Función para enviar la factura por correo electrónico
-Future<void> sendInvoiceByEmail(String invoiceId) async {
-  final response = await http.post(
-    Uri.parse('https://api.stripe.com/v1/invoices/$invoiceId/send'),
-    headers: {
-      'Authorization':
-          'Bearer sk_test_51OVR6tILXmRhmPFRXetwJXugUYnsAGU1zJqHRDKoQ4sHI2HmaevTrx0YF3pJpagk5rjGToC7fLIk20gzfrlGtbNi00EeE6PjQ9',
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-  );
-
-  if (response.statusCode == 200) {
-    print('*****************************************La factura se envió correctamente al correo del cliente.');
-  } else {
-    print('**********************************Hubo un error al enviar la factura: ${response.body}');
-  }
-}
-}

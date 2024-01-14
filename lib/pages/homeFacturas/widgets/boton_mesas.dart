@@ -79,7 +79,6 @@ class Botones extends StatelessWidget {
                               titlePadding: const EdgeInsets.all(16.0),
                               title: const Row(
                                 children: [
-              
                                   SizedBox(width: 10),
                                   Text('Seleccionar método de pago',
                                       style: TextStyle(
@@ -89,25 +88,33 @@ class Botones extends StatelessWidget {
                               ),
                               children: <Widget>[
                                 ListTile(
-                                  leading:
-                                      const Icon(Icons.money, color: Colors.green),
+                                  leading: const Icon(Icons.money,
+                                      color: Colors.green),
                                   title: const Text("Efectivo"),
                                   onTap: () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => main_factura(
-                                            numeroMesa: data['num']),
+                                            numeroMesa: data['num'],
+                                            metodoPago: 0),
                                       ),
                                     );
                                   },
                                 ),
                                 ListTile(
-                                  leading: Icon(Icons.credit_card,
+                                  leading: const Icon(Icons.credit_card,
                                       color: Colors.blue),
                                   title: const Text("Stripe"),
                                   onTap: () {
-                                    // Aquí va tu código para manejar el pago con Stripe
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => main_factura(
+                                            numeroMesa: data['num'],
+                                            metodoPago: 1),
+                                      ),
+                                    );
                                   },
                                 ),
                               ],

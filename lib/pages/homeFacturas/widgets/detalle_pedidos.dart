@@ -1,13 +1,20 @@
 import 'package:Pizzeria_Guerrin/constants/globals.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/services/detalles_productos.dart';
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/services/stripe_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
+final ValueNotifier<bool> _pagoExitoso = ValueNotifier<bool>(false);
 class DetallePedidoWidget extends StatelessWidget {
   final int numeroMesa;
-
-  const DetallePedidoWidget({super.key, required this.numeroMesa});
+  final int parametro;
+  final bool mounted;
+  const DetallePedidoWidget(
+      {super.key,
+      required this.numeroMesa,
+      required this.parametro,
+      required this.mounted});
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +71,17 @@ class DetallePedidoWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Text('Mesero: $nombreUsuario $apellidoUsuario'),
               ),
+              if (parametro == 1) ...[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ValueListenableBuilder<String>(
+                    valueListenable: idStripe,
+                    builder: (context, value, child) {
+                      return Text('Id Stripe: $value');
+                    },
+                  ),
+                ),
+              ],
               const Divider(color: Colors.black), // Agrega una línea divisoria
               const Padding(
                 padding: EdgeInsets.all(8.0),
@@ -82,9 +100,9 @@ class DetallePedidoWidget extends StatelessWidget {
 
                     if (!pedido['nombre'].startsWith('Pizza')) {
                       precioSinIva = double.parse(
-                          (pedido['precioUnitario'] * 0.88).toStringAsFixed(2));
+                          (pedido['precio'] * 0.88).toStringAsFixed(2));
                       iva = double.parse(
-                          (pedido['precioUnitario'] * 0.12).toStringAsFixed(2));
+                          (pedido['precio'] * 0.12).toStringAsFixed(2));
                     }
 
                     // Verifica si es el primer producto o si el producto anterior era de un tipo diferente
@@ -147,8 +165,7 @@ class DetallePedidoWidget extends StatelessWidget {
                               children: [
                                 Text('Cantidad: ${pedido['cantidad']}',
                                     style: const TextStyle(fontSize: 14)),
-                                Text(
-                                    'Precio unitario: ${pedido['precioUnitario']}',
+                                Text('Precio unitario: ${pedido['precio']}',
                                     style: const TextStyle(fontSize: 14)),
                                 if (!pedido['nombre'].startsWith('Pizza')) ...[
                                   Text('Precio sin IVA: $precioSinIva',
@@ -167,28 +184,76 @@ class DetallePedidoWidget extends StatelessWidget {
                   },
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.symmetric(
-                    vertical: 20.0), // margen superior e inferior
-                child: Center(
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      // Aquí va el código que se ejecutará cuando se presione el botón
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue, // background
-                      onPrimary: Colors.white, // foreground
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      elevation: 5.0, // sombra
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 12), // padding
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  if (parametro == 1) ...[
+                    ValueListenableBuilder<bool>(
+                      valueListenable: _pagoExitoso,
+                      builder: (context, value, child) {
+                        return ElevatedButton.icon(
+                          onPressed: value
+                              ? null
+                              : () async {
+                                  var items = pedidos.map((pedido) {
+                                    return {
+                                      "productName": pedido['nombre'],
+                                      "productPrice": pedido['precio'],
+                                      "qty":
+                                          (pedido['cantidad'] as double).toInt()
+                                    };
+                                  }).toList();
+                                  var stripeService = StripeService();
+                                  await stripeService.stripePaymentCheckout(
+                                      items, total, context, mounted,
+                                      onSucces: () {
+                                    _pagoExitoso.value = true;
+                                  });
+                                },
+                          icon: Icon(Icons.payment),
+                          label: Text('Stripe'),
+                        );
+                      },
                     ),
-                    icon: Icon(Icons.receipt_long), // icono
-                    label: const Text('Facturar'),
-                  ),
-                ),
+                    ValueListenableBuilder<bool>(
+                      valueListenable: _pagoExitoso,
+                      builder: (context, value, child) {
+                        return ElevatedButton.icon(
+                          onPressed: value
+                              ? () {
+                                  _pagoExitoso.value = false;
+                                  print(idStripe);
+
+                                  //solo para test, reesete el id stripe
+                                  idStripe.value = '';
+                                }
+                              : null,
+                          icon: Icon(Icons.receipt_long),
+                          label: Text('Facturar'),
+                        );
+                      },
+                    ),
+                  ],
+                  if (parametro == 0) ...[
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        // Aquí va el código que se ejecutará cuando se presione el botón de Facturar
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue, // background
+                        onPrimary: Colors.white, // foreground
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        elevation: 5.0, // sombra
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 12), // padding
+                      ),
+                      icon: const Icon(Icons.receipt_long), // icono
+                      label: const Text('Facturar'),
+                    ),
+                  ],
+                ],
               ),
               Container(
                 padding: const EdgeInsets.all(8.0),
