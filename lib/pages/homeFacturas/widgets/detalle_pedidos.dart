@@ -1,6 +1,7 @@
 import 'package:Pizzeria_Guerrin/constants/globals.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/services/detalles_productos.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/services/stripe_service.dart';
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/GenerarFactura.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
@@ -19,8 +20,7 @@ class DetallePedidoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var uuid = const Uuid();
-    String numeroFactura =
-        uuid.v1().substring(0, 10); // Genera un UUID para el número de factura
+    numeroFactura = uuid.v1().substring(0, 10); // Genera un UUID para el número de factura
     String fechaHora = DateFormat('dd-MM-yyyy').format(DateTime
         .now()); // Obtiene la fecha y hora actual en el formato dd-MM-yyyy // Obtiene la fecha y hora actual
 
@@ -237,7 +237,53 @@ class DetallePedidoWidget extends StatelessWidget {
                   if (parametro == 0) ...[
                     ElevatedButton.icon(
                       onPressed: () {
-                        // Aquí va el código que se ejecutará cuando se presione el botón de Facturar
+                        if (clienteSeleccionado != null) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Center(
+                                child: Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  elevation: 5,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        // Contenido del botón para enviar factura
+                                        BotonEnviarFactura(numeroMesa: this.numeroMesa,),
+                                        // Espaciador
+                                        SizedBox(height: 20),
+
+                                        // Botón para cancelar
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pop(); // Cierra el Dialog
+                                          },
+                                          child: Text('Cancelar'),
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Colors.red,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }else {
+                          // Muestra un SnackBar indicando que no hay un cliente seleccionado
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('No hay cliente seleccionado para la Factura.'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.blue, // background

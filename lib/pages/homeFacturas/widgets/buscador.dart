@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:Pizzeria_Guerrin/constants/globals.dart';
 
 class Buscador extends StatefulWidget {
-
   final Function(Map<String, dynamic> cliente)? onClienteSeleccionado;
 
   Buscador({this.onClienteSeleccionado});
@@ -14,7 +14,7 @@ class Buscador extends StatefulWidget {
 class _BuscadorState extends State<Buscador> {
   String _cedula = '';
   List<Map<String, dynamic>> _resultados = [];
-  Map<String, dynamic>? _clienteSeleccionado; // Estado para rastrear el cliente seleccionado
+  Map<String, dynamic>? _clienteSeleccionado;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +25,7 @@ class _BuscadorState extends State<Buscador> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
+              keyboardType: TextInputType.number,
               onChanged: (value) {
                 setState(() {
                   _cedula = value.trim();
@@ -44,8 +45,8 @@ class _BuscadorState extends State<Buscador> {
               child: _resultados.isNotEmpty
                   ? _buildDataTable()
                   : Center(
-                child: Text('Ingrese una cédula para buscar clientes.'),
-              ),
+                      child: Text('Ingrese una cédula para buscar clientes.'),
+                    ),
             ),
           ],
         ),
@@ -65,7 +66,9 @@ class _BuscadorState extends State<Buscador> {
 
         if (querySnapshot.docs.isNotEmpty) {
           for (var doc in querySnapshot.docs) {
+            String idFirebase = doc.id;
             tempResultados.add({
+              'idFirebase': idFirebase,
               'ced_cli': doc['ced_cli'],
               'nom_cli': doc['nom_cli'],
               'cor_cli': doc['cor_cli'],
@@ -95,21 +98,23 @@ class _BuscadorState extends State<Buscador> {
       columns: [
         DataColumn(label: Text('Cédula')),
         DataColumn(label: Text('Cliente')),
-        DataColumn(label: Text('Correo')),
       ],
       rows: _resultados.map((cliente) {
-        final isSelected = cliente == _clienteSeleccionado; // Verificar si este cliente está seleccionado
+        final isSelected = cliente ==
+            _clienteSeleccionado; // Verificar si este cliente está seleccionado
         return DataRow(
           cells: [
             DataCell(Text(cliente['ced_cli'] ?? 'N/A')),
-            DataCell(Text('${cliente['nom_cli'] ?? 'N/A'} ${cliente['ape_cli'] ?? ''}')),
-            DataCell(Text(cliente['cor_cli'] ?? 'N/A')),
+            DataCell(Text(
+                '${cliente['nom_cli'] ?? 'N/A'} ${cliente['ape_cli'] ?? ''}')),
           ],
-          selected: isSelected, // Establecer la fila como seleccionada si es el cliente seleccionado
+          selected: isSelected,
+          // Establecer la fila como seleccionada si es el cliente seleccionado
           onSelectChanged: (isSelected) {
             if (isSelected == true) {
               setState(() {
-                _clienteSeleccionado = cliente; // Actualizar el cliente seleccionado
+                _clienteSeleccionado =
+                    cliente; // Actualizar el cliente seleccionado
                 _mostrarDetalleCliente(cliente);
               });
             } else {
@@ -125,31 +130,18 @@ class _BuscadorState extends State<Buscador> {
 
   void _mostrarDetalleCliente(Map<String, dynamic> cliente) {
     if (widget.onClienteSeleccionado != null) {
-      widget.onClienteSeleccionado!(cliente);
+      // Asigna los datos seleccionados a clienteSeleccionado en globals.dart
+      clienteSeleccionado = {
+        'idFirebase': cliente['idFirebase'],
+        'ced_cli': cliente['ced_cli'],
+        'nom_cli': cliente['nom_cli'],
+        'cor_cli': cliente['cor_cli'],
+        'ape_cli': cliente['ape_cli'],
+        // Agrega otros datos según sea necesario
+      };
+
+      widget.onClienteSeleccionado!(
+          cliente); // Llama al callback con la información del cliente
     }
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Detalle del Cliente'),
-              SizedBox(height: 10),
-              Text('Cédula: ${cliente['ced_cli'] ?? 'N/A'}'),
-              Text('Cliente: ${cliente['nom_cli']} ${cliente['ape_cli'] ?? 'N/A'}'),
-              Text('Correo: ${cliente['cor_cli'] ?? 'N/A'}'),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // Cerrar la modal
-                },
-                child: Text('Cerrar'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
   }
 }

@@ -1,5 +1,5 @@
-
-
+import 'dart:ffi';
+import 'package:Pizzeria_Guerrin/constants/globals.dart';
 import 'package:Pizzeria_Guerrin/constants/colors.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/main_factura.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/services/detalles_productos.dart';
@@ -91,6 +91,7 @@ class Botones extends StatelessWidget {
                                       color: Colors.green),
                                   title: const Text("Efectivo"),
                                   onTap: () {
+                                    inicializarClienteSeleccionado();
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -106,6 +107,7 @@ class Botones extends StatelessWidget {
                                       color: Colors.blue),
                                   title: const Text("Stripe"),
                                   onTap: () {
+                                    inicializarClienteSeleccionado();
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -128,5 +130,8 @@ class Botones extends StatelessWidget {
         );
       },
     );
+  }
+  void inicializarClienteSeleccionado() {
+      clienteSeleccionado = null;
   }
 }

@@ -1,7 +1,9 @@
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/EditarClienteModal.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/GenerarFactura.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/NewClient.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/buscador.dart';
 import 'package:flutter/material.dart';
+import 'package:Pizzeria_Guerrin/constants/globals.dart';
 
 class DetalleCliente extends StatefulWidget {
   final int numero;
@@ -24,16 +26,39 @@ class _DetalleClienteState extends State<DetalleCliente> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Flexible(flex: 5, child: Buscador()),
+            Flexible(
+              flex: 5,
+              child: Buscador(
+                onClienteSeleccionado: (cliente) {
+                  setState(() {
+                    clienteSeleccionado = cliente;
+                  });
+                },
+              ),
+            ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround, // Alineación para distribuir el espacio entre los widgets
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              // Alineación para distribuir el espacio entre los widgets
               children: [
                 Expanded(
                   child: (NuevoClienteModal()),
                 ),
-                SizedBox(width: 10), // Espaciador opcional entre botones
+                SizedBox(width: 10),
                 Expanded(
-                  child: (BotonEnviarFactura()),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (clienteSeleccionado != null) {
+                        print('Cliente seleccionado: ${clienteSeleccionado}');
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return EditarClienteModal(cliente: clienteSeleccionado);
+                          },
+                        );
+                      }
+                    },
+                    child: Text('Editar Cliente'),
+                  ),
                 ),
               ],
             ),

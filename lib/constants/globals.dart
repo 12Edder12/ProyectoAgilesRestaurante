@@ -7,5 +7,6 @@ List<Pedido> pedidos = [];
 String idUser = "";
 BuildContext? globalContext;
 Map<String, dynamic> datosUsuario = {};
-
+Map<String, dynamic>? clienteSeleccionado;
+String numeroFactura= "";
 ValueNotifier<String> idStripe = ValueNotifier<String>('');
