@@ -94,7 +94,7 @@ static Future<List<Pizza>> generateRecommendFoods() async {
   QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('productos').get();
   
   querySnapshot.docs.forEach((doc) {
-    if (!doc.id.startsWith('bebida')) {
+    if (!doc.id.startsWith('bebida')&& doc['est_pro'] == 1) {
       // Crear una lista de ingredientes por defecto
       List<Map<String, String>> ingredients;
 
@@ -149,7 +149,7 @@ static Future<List<Pizza>> getPizzasByIds() async {
 
   for (String id in ids) {
     DocumentSnapshot doc = await FirebaseFirestore.instance.collection('productos').doc(id).get();
-    if (doc.exists) {
+    if (doc.exists && doc['est_pro'] == 1 ) {
       List<Map<String, String>> ingredients;
 
       switch (doc.id) {
@@ -190,7 +190,7 @@ static Future<List<Pizza>> getBebidas() async {
 
   for (String id in ids) {
     DocumentSnapshot doc = await FirebaseFirestore.instance.collection('productos').doc(id).get();
-    if (doc.exists) {
+    if (doc.exists && doc['est_pro'] == 1) {
       bebidas.add(Pizza(
         id: doc.id,
         imgUrl: doc['img'],
