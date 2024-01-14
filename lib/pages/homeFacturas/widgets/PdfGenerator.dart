@@ -80,10 +80,44 @@ class PdfGenerator {
     );
 
 
-// Añadir la tabla al documento
+  // INFORMACION DE LOS PRODUCTOS
 
 
 
+  //PIE DE PAGINA DE LA FACTURA
+
+    //LINEA SEPARADORA
+    page.graphics.drawString(
+        "----------------------------------------------------------------------------------------------------",
+        PdfStandardFont(PdfFontFamily.timesRoman, 20),
+        bounds: ui.Rect.fromLTWH(0, 650, 0, 0)
+    );
+    page.graphics.drawString(
+        "PIZZERIA GUERRIN",
+        PdfStandardFont(PdfFontFamily.timesRoman, 12),
+        bounds: ui.Rect.fromLTWH(0, 0, 250, 0)
+    );
+    page.graphics.drawString(
+        "Direccion: Ennrique Segoviano",
+        PdfStandardFont(PdfFontFamily.timesRoman, 12),
+        bounds: ui.Rect.fromLTWH(0, 0, 250, 0)
+    );
+
+    page.graphics.drawString(
+        "Telefono 0963307063",
+        PdfStandardFont(PdfFontFamily.timesRoman, 12),
+        bounds: ui.Rect.fromLTWH(0, 0, 250, 0)
+    );
+    page.graphics.drawString(
+        "RUC: 0296537341001",
+        PdfStandardFont(PdfFontFamily.timesRoman, 12),
+        bounds: ui.Rect.fromLTWH(0, 0, 250, 0)
+    );
+    page.graphics.drawString(
+        "Correo: pizzeriaguerrin@gmail.com",
+        PdfStandardFont(PdfFontFamily.timesRoman, 12),
+        bounds: ui.Rect.fromLTWH(0, 0, 250, 0)
+    );
     //FIN DEL DOCUMENTO
     try {
       // Obtener el directorio de documentos (o cualquier otro directorio apropiado)
