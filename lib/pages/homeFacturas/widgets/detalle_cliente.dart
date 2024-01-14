@@ -1,7 +1,6 @@
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/GenerarFactura.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/NewClient.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/buscador.dart';
-import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/detalle_productos.dart';
 import 'package:flutter/material.dart';
 
 class DetalleCliente extends StatefulWidget {

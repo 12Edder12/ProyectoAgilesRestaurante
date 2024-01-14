@@ -1,12 +1,12 @@
 
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/services/detalles_productos.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/services/stripe_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class MesaDetalle extends StatefulWidget {
   final int numeroMesa;
 
-  MesaDetalle({required this.numeroMesa});
+  const MesaDetalle({required this.numeroMesa});
 
   @override
   _MesaDetalleState createState() => _MesaDetalleState();
@@ -45,7 +45,7 @@ class _MesaDetalleState extends State<MesaDetalle> {
               ),
               DropdownButton<String>(
                 value: metodoPago,
-                hint: Text('Selecciona un método de pago'),
+                hint: const Text('Selecciona un método de pago'),
                 items: <String>['Efectivo', 'Tarjeta de crédito']
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
@@ -85,45 +85,3 @@ class _MesaDetalleState extends State<MesaDetalle> {
   }
 }
 
-Future<Map<String, dynamic>> obtenerPedidosPorMesa(int numeroMesa) async {
-  var pedidosRef = FirebaseFirestore.instance.collection('pedidos');
-  var productosRef = FirebaseFirestore.instance.collection('productos');
-
-  Map<String, dynamic> resultado = {
-    'productos': [],
-    'total': 0.0,
-  };
-
-  try {
-    var pedidos = await pedidosRef
-        .where('num_mesa', isEqualTo: numeroMesa)
-        .where('pagado', isEqualTo: false)
-        .get();
-
-    for (var pedido in pedidos.docs) {
-      var detallePedido = pedido.data()['detalle_pedido'];
-
-      for (String idProducto in detallePedido.keys) {
-        var cantidad = detallePedido[idProducto]['cantidad'];
-
-        var producto = await productosRef.doc(idProducto).get();
-        var precio = producto.data()?['precio'];
-        var nombreProducto = producto.data()?['nombre'];
-
-        double totalProducto = precio * cantidad;
-        resultado['total'] += totalProducto;
-
-        resultado['productos'].add({
-          'nombre': nombreProducto,
-          'cantidad': cantidad,
-          'precio': precio,
-          'totalProducto': totalProducto,
-        });
-      }
-    }
-  } catch (e) {
-    print('Ocurrió un error: $e');
-  }
-
-  return resultado;
-}
