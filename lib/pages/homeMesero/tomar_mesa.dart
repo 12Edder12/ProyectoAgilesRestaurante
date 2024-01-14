@@ -1,7 +1,10 @@
+import 'package:Pizzeria_Guerrin/constants/globals.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/factura.dart';
 import 'package:Pizzeria_Guerrin/pages/mesas.dart';
 import 'package:Pizzeria_Guerrin/services/auth/auth_service.dart';
 import 'package:Pizzeria_Guerrin/services/auth/login_or_register.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +16,30 @@ class TomarMesa extends StatefulWidget {
 }
 
 class _TomarMesaState extends State<TomarMesa> {
+  @override
+  void initState() {
+    super.initState();
+    obtenerDatosUsuario();
+  }
+
+  void obtenerDatosUsuario() async {
+    User? usuario = FirebaseAuth.instance.currentUser;
+    final FirebaseFirestore db = FirebaseFirestore.instance;
+
+    QuerySnapshot usuarios = await db
+        .collection('users')
+        .where('email', isEqualTo: usuario!.email)
+        .get();
+
+    if (usuarios.docs.isNotEmpty) {
+      datosUsuario = usuarios.docs.first.data() as Map<String, dynamic>;
+    } else {
+      // Si no se encontró ningún usuario con el correo especificado, lanza una excepción
+      throw Exception(
+          'No se encontró ningún usuario con el correo especificado');
+    }
+  }
+
   Future<void> signOut() async {
     final authService = Provider.of<AuthService>(context, listen: false);
     await authService.signOut();
@@ -127,12 +154,13 @@ class _TomarMesaState extends State<TomarMesa> {
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const Factura()),
-                        );
-                      },
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Factura()),
+                          );
+                        },
                         style: elevatedButtonStyle,
                         child: SizedBox(
                           width: 100,
@@ -144,7 +172,6 @@ class _TomarMesaState extends State<TomarMesa> {
                                   'lib/img/factura.png', // Asegúrate de tener una imagen para facturar
                                 ),
                               ),
-                      
                               const Text(
                                 "Facturar",
                                 textAlign: TextAlign.center,

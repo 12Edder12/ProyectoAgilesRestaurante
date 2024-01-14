@@ -6,3 +6,6 @@ num orderCount = 0;
 List<Pedido> pedidos = [];
 String idUser = "";
 BuildContext? globalContext;
+Map<String, dynamic> datosUsuario = {};
+
+ValueNotifier<String> idStripe = ValueNotifier<String>('');

@@ -1,29 +1,37 @@
-
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/detalle_cliente.dart';
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/detalle_pedidos.dart';
 import 'package:flutter/material.dart';
 
-class main_factura extends StatelessWidget {
-  const main_factura({super.key});
+class main_factura extends StatefulWidget {
+  final int numeroMesa;
+  final int metodoPago;
 
+  const main_factura({Key? key, required this.numeroMesa, required this.metodoPago}) : super(key: key);
+
+  @override
+  _main_facturaState createState() => _main_facturaState();
+}
+
+class _main_facturaState extends State<main_factura> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2, // Número de pestañas
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Facturacion con Efectivo'),
+          title: Text('Facturacion Mesa Nº ${widget.numeroMesa}'),
           bottom: const TabBar(
             tabs: [
-              Tab(text: 'Informacion Cliente'), // Texto para la primera pestaña
-              Tab(text: 'Informacion Productos'), // Texto para la segunda pestaña
+              Tab(text: 'Información Cliente'), // Texto para la primera pestaña
+              Tab(text: 'Información Productos'), // Texto para la segunda pestaña
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
             // Los widgets que se mostrarán en cada pestaña
-            Center(child: DetalleCliente(numero: 1)),
-            Center(child: Text('Contenido de la pestaña Detalles Pedidos')),
+            DetalleCliente(numero: 1),
+            DetallePedidoWidget(numeroMesa: widget.numeroMesa, parametro: widget.metodoPago, mounted: this.mounted),
           ],
         ),
       ),
