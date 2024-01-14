@@ -19,10 +19,6 @@ class _Report3State extends State<Report3> {
   Map<DateTime, double> dailyTotals = {};
 
 
-
-
-
-
   @override
   void initState() {
     super.initState();
@@ -65,43 +61,49 @@ class _Report3State extends State<Report3> {
   }
 
   void _generateLineBars() {
-    List<LineChartBarData> lineBarsData = [];
-    List<FlSpot> spots = [];
+  List<LineChartBarData> lineBarsData = [];
+  List<FlSpot> spots = [];
 
-    // Convertir los datos de totales diarios a puntos para el gráfico
-    dailyTotals.forEach((date, total) {
-      spots.add(FlSpot(date.millisecondsSinceEpoch.toDouble(), total));
-    });
+  // Consolidar los totales por día y hora
+  Map<DateTime, double> consolidatedTotals = {};
 
-    // Ordenar los puntos por fecha
-    spots.sort((a, b) => a.x.compareTo(b.x));
+  dailyTotals.forEach((date, total) {
+    // Truncate la fecha a la hora para agrupar por día y hora
+    DateTime truncatedDate = DateTime(date.year, date.month, date.day);
 
-    // Crear la línea de datos del gráfico
-    LineChartBarData lineChartBarData = LineChartBarData(
-      spots: spots,
-      isCurved: false,
-      color: Colors.green,
-      barWidth: 4,
-      belowBarData: BarAreaData(show: false),
-      dotData: FlDotData(show: true, getDotPainter: (spot, percent, barData, index) {
-        return FlDotCirclePainter(
-          radius: 8,
-          color: Colors.green,
-          strokeWidth: 2,
-          strokeColor: Colors.white,
-        );
-      }),
-      isStrokeCapRound: true,
-      
-      // Puedes ajustar otros atributos según tus preferencias
-    );
+    consolidatedTotals[truncatedDate] = (consolidatedTotals[truncatedDate] ?? 0) + total;
+  });
 
-    lineBarsData.add(lineChartBarData);
+  // Convertir los datos de totales diarios a puntos para el gráfico
+  consolidatedTotals.forEach((date, total) {
+    spots.add(FlSpot(date.millisecondsSinceEpoch.toDouble(), total));
+  });
 
-    setState(() {
-      _lineBarsData = lineBarsData;
-    });
-  }
+  // Crear la línea de datos del gráfico
+  LineChartBarData lineChartBarData = LineChartBarData(
+    spots: spots,
+    isCurved: false,
+    color: Colors.green,
+    barWidth: 4,
+    belowBarData: BarAreaData(show: false),
+    dotData: FlDotData(show: true, getDotPainter: (spot, percent, barData, index) {
+      return FlDotCirclePainter(
+        radius: 8,
+        color: Colors.green,
+        strokeWidth: 2,
+        strokeColor: Colors.white,
+      );
+    }),
+    isStrokeCapRound: true,
+    // Puedes ajustar otros atributos según tus preferencias
+  );
+
+  lineBarsData.add(lineChartBarData);
+
+  setState(() {
+    _lineBarsData = lineBarsData;
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -127,8 +129,8 @@ class _Report3State extends State<Report3> {
             ),
             const SizedBox(height: 20),
             Container(
-              height: MediaQuery.of(context).size.height * 0.4,
-              padding: const EdgeInsets.all(8.0),
+              height: MediaQuery.of(context).size.height * 0.3,
+              padding: const EdgeInsets.only(left: 45, right: 16, top: 8, bottom: 8),
               child: LineChart(
                 LineChartData(
                   gridData: const FlGridData(show: true),
