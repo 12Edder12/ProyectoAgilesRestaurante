@@ -14,6 +14,8 @@ class PdfGenerator {
   static Future<void> generatePDF() async {
 
     await initializeDateFormatting('es');
+    DateTime currentDate = DateTime.now();
+    String formattedDate = DateFormat('EEEE, d MMMM y', 'es').format(currentDate);
     // Crear el documento PDF
     PdfDocument document = PdfDocument();
     PdfPage page = document.pages.add();
@@ -42,8 +44,7 @@ class PdfGenerator {
       bounds: ui.Rect.fromLTWH(0, 145, 0, 0)
     );
 
-    DateTime currentDate = DateTime.now();
-    String formattedDate = DateFormat('EEEE, d MMMM y', 'es').format(currentDate);
+
     page.graphics.drawString(
         "Fecha de Facturacion: $formattedDate",
         PdfStandardFont(PdfFontFamily.timesRoman, 15),
@@ -95,28 +96,28 @@ class PdfGenerator {
     page.graphics.drawString(
         "PIZZERIA GUERRIN",
         PdfStandardFont(PdfFontFamily.timesRoman, 12),
-        bounds: ui.Rect.fromLTWH(0, 0, 250, 0)
+        bounds: ui.Rect.fromLTWH(0, 665, 0, 0)
     );
     page.graphics.drawString(
         "Direccion: Ennrique Segoviano",
         PdfStandardFont(PdfFontFamily.timesRoman, 12),
-        bounds: ui.Rect.fromLTWH(0, 0, 250, 0)
+        bounds: ui.Rect.fromLTWH(0, 680, 0, 0)
     );
 
     page.graphics.drawString(
         "Telefono 0963307063",
         PdfStandardFont(PdfFontFamily.timesRoman, 12),
-        bounds: ui.Rect.fromLTWH(0, 0, 250, 0)
+        bounds: ui.Rect.fromLTWH(0, 695, 0, 0)
     );
     page.graphics.drawString(
         "RUC: 0296537341001",
         PdfStandardFont(PdfFontFamily.timesRoman, 12),
-        bounds: ui.Rect.fromLTWH(0, 0, 250, 0)
+        bounds: ui.Rect.fromLTWH(0, 710, 0, 0)
     );
     page.graphics.drawString(
         "Correo: pizzeriaguerrin@gmail.com",
         PdfStandardFont(PdfFontFamily.timesRoman, 12),
-        bounds: ui.Rect.fromLTWH(0, 0, 250, 0)
+        bounds: ui.Rect.fromLTWH(0, 725, 0, 0)
     );
     //FIN DEL DOCUMENTO
     try {
