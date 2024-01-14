@@ -1,6 +1,7 @@
 import 'package:Pizzeria_Guerrin/constants/globals.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/services/detalles_productos.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/services/stripe_service.dart';
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/GenerarFactura.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
@@ -237,7 +238,48 @@ class DetallePedidoWidget extends StatelessWidget {
                   if (parametro == 0) ...[
                     ElevatedButton.icon(
                       onPressed: () {
-                        // Aquí va el código que se ejecutará cuando se presione el botón de Facturar
+                        if (clienteSeleccionado != null) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Center(
+                                child: Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  elevation: 5,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        // Contenido del botón para enviar factura
+                                        BotonEnviarFactura(
+                                            clienteSeleccionado:
+                                            clienteSeleccionado),
+
+                                        // Espaciador
+                                        SizedBox(height: 20),
+
+                                        // Botón para cancelar
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pop(); // Cierra el Dialog
+                                          },
+                                          child: Text('Cancelar'),
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Colors.red,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.blue, // background

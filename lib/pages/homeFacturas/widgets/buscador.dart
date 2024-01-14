@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:Pizzeria_Guerrin/constants/globals.dart';
 
 class Buscador extends StatefulWidget {
 
@@ -25,6 +26,7 @@ class _BuscadorState extends State<Buscador> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
+              keyboardType: TextInputType.number,
               onChanged: (value) {
                 setState(() {
                   _cedula = value.trim();
@@ -123,6 +125,15 @@ class _BuscadorState extends State<Buscador> {
 
   void _mostrarDetalleCliente(Map<String, dynamic> cliente) {
     if (widget.onClienteSeleccionado != null) {
+      // Asigna los datos seleccionados a clienteSeleccionado en globals.dart
+      clienteSeleccionado = {
+        'ced_cli': cliente['ced_cli'],
+        'nom_cli': cliente['nom_cli'],
+        'cor_cli': cliente['cor_cli'],
+        'ape_cli': cliente['ape_cli'],
+        // Agrega otros datos según sea necesario
+      };
+
       widget.onClienteSeleccionado!(cliente); // Llama al callback con la información del cliente
     }
   }
