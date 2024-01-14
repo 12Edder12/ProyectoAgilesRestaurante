@@ -16,6 +16,8 @@ class PdfGenerator {
     await initializeDateFormatting('es');
     DateTime currentDate = DateTime.now();
     String formattedDate = DateFormat('EEEE, d MMMM y', 'es').format(currentDate);
+    String fechaNumerica = DateFormat('dd/MM/yyyy').format(currentDate);
+
     // Crear el documento PDF
     PdfDocument document = PdfDocument();
     PdfPage page = document.pages.add();
@@ -39,7 +41,7 @@ class PdfGenerator {
     );
     //INFORMACION DE LA FACTURA
     page.graphics.drawString(
-      "Factura Numero: ${clienteSeleccionado?['idFirebase']}",
+      "Factura Numero: ${clienteSeleccionado?['idFirebase']}${clienteSeleccionado?['ced_cli']}${fechaNumerica}",
       PdfStandardFont(PdfFontFamily.timesRoman, 15),
       bounds: ui.Rect.fromLTWH(0, 145, 0, 0)
     );
