@@ -108,9 +108,8 @@ class PdfGenerator {
       row.cells[0].value = producto['cantidad'].toString();
       row.cells[1].value = producto['nombre'];
       row.cells[2].value = producto['precio'].toString();
-      row.cells[3].value = producto['totalProducto'].toString();
+      row.cells[3].value = producto['totalProducto'].toStringAsFixed(2);
       totalFactura= totalFactura+producto['totalProducto'];
-      print(producto);
     }
 
     grid.draw(page: page, bounds: ui.Rect.fromLTWH(0, 280, 0, 0));
@@ -133,7 +132,7 @@ class PdfGenerator {
     PdfGridRow totalRow = totalGrid.rows.add();
 
     totalRow.cells[0].value = 'Total Factura';
-    totalRow.cells[1].value = totalFactura.toString();
+    totalRow.cells[1].value = totalFactura.toStringAsFixed(2);
 
 // Dibujar el grid en la página
     totalGrid.draw(page: page, bounds: ui.Rect.fromLTWH(300, 640, 500, 0));
@@ -176,7 +175,7 @@ class PdfGenerator {
       // Obtener el directorio de documentos (o cualquier otro directorio apropiado)
       final directory = await getApplicationDocumentsDirectory();
       final path =
-          '${directory.path}/example.pdf'; // Ruta completa al archivo PDF
+          '${directory.path}/ReciboFactura.pdf'; // Ruta completa al archivo PDF
 
       // Guardar el PDF en el directorio obtenido
       final List<int> bytes = await document.save();

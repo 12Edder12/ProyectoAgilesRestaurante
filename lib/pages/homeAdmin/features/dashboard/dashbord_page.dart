@@ -1,26 +1,24 @@
+import 'package:flutter/material.dart';
 import 'package:Pizzeria_Guerrin/pages/homeAdmin/features/dashboard/report_pages/report1.dart';
 import 'package:Pizzeria_Guerrin/pages/homeAdmin/features/dashboard/report_pages/report2.dart';
 import 'package:Pizzeria_Guerrin/pages/homeAdmin/features/dashboard/report_pages/report3.dart';
 import 'package:Pizzeria_Guerrin/pages/homeAdmin/features/dashboard/report_pages/report4.dart';
-import 'package:Pizzeria_Guerrin/pages/homeAdmin/features/dashboard/report_pages/report5.dart';
-import 'package:flutter/material.dart';
 
 class DashBoardPage extends StatelessWidget {
   DashBoardPage({super.key});
 
   final buttonTitles = [
     'Pizzas Más Vendidas',
-     'Bebida Más Comprada',
-    'Día que Más se Vende',
+    'Bebida Más Comprada',
     'Ingresos',
-    'Hora en que se Vende Más el Producto'
+    'Método de Pago',
   ];
+
   final buttonPages = [
     const Report1(),
     const Report2(),
     const Report3(),
     const Report4(),
-    const Report5()
   ];
 
   @override
@@ -36,36 +34,41 @@ class DashBoardPage extends StatelessWidget {
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 3,
-                children: List.generate(buttonTitles.length, (index) {
-                  return Container(
-                    margin: const EdgeInsets.all(10.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => buttonPages[index]),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: const  RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero, // Esto hace que el botón sea cuadrado
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment:  MainAxisAlignment.center,
-                        children: [
-                       const   Icon( Icons.assessment_rounded , size: 170), // Cambia el icono aquí
-                          Text(buttonTitles[index], 
-                          style: const TextStyle(
-    fontSize: 17, // Cambia esto al tamaño que desees
-  ),),
-                        ],
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 10.0,
+                  crossAxisSpacing: 10.0,
+                ),
+                itemCount: buttonTitles.length,
+                itemBuilder: (context, index) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => buttonPages[index]),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
                       ),
                     ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.assessment_rounded, size: 110), // Ajusta el tamaño del icono
+                        Text(
+                          buttonTitles[index],
+                          style: const TextStyle(
+                            fontSize: 14, // Ajusta el tamaño del texto
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   );
-                }),
+                },
               ),
             ),
           ],

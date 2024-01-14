@@ -114,6 +114,12 @@ final pizzaProducts = await FirebaseFirestore.instance
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pizzas Más Vendidas'),
+      actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _fetchData,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
