@@ -38,7 +38,7 @@ class Factura extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
+      body: const Column(
         children: [
           Expanded(
             child: Botones(),
