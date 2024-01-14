@@ -20,8 +20,7 @@ class DetallePedidoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var uuid = const Uuid();
-    String numeroFactura =
-        uuid.v1().substring(0, 10); // Genera un UUID para el número de factura
+    numeroFactura = uuid.v1().substring(0, 10); // Genera un UUID para el número de factura
     String fechaHora = DateFormat('dd-MM-yyyy').format(DateTime
         .now()); // Obtiene la fecha y hora actual en el formato dd-MM-yyyy // Obtiene la fecha y hora actual
 

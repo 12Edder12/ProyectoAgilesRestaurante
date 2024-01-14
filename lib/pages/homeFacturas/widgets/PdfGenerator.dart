@@ -13,13 +13,13 @@ import '../../../services/mobileFiles.dart';
 
 class PdfGenerator {
 
-  static Future<void> generatePDF(Future<Map<String, dynamic>> productosFuture) async {
+  static Future<void> generatePDF(Future<Map<String, dynamic>> productosFuture, Future<double> totalesDeLaMesa) async {
     Map<String, dynamic> detallesPedido = await productosFuture;
     await initializeDateFormatting('es');
     DateTime currentDate = DateTime.now();
     String formattedDate = DateFormat('EEEE, d MMMM y', 'es').format(currentDate);
     String fechaNumerica = DateFormat('yyyyMMdd').format(currentDate);
-
+    double totalFactura = 0;
     // Crear el documento PDF
     PdfDocument document = PdfDocument();
     PdfPage page = document.pages.add();
@@ -43,7 +43,7 @@ class PdfGenerator {
     );
     //INFORMACION DE LA FACTURA
     page.graphics.drawString(
-      "Factura Numero: ${fechaNumerica}${clienteSeleccionado?['idFirebase']}${clienteSeleccionado?['ced_cli']}",
+      "Factura: ${fechaNumerica}${numeroFactura}${clienteSeleccionado?['ced_cli']}001FP",
       PdfStandardFont(PdfFontFamily.timesRoman, 15),
       bounds: ui.Rect.fromLTWH(0, 145, 0, 0)
     );
@@ -109,6 +109,7 @@ class PdfGenerator {
       row.cells[1].value = producto['nombre'];
       row.cells[2].value = producto['precio'].toString();
       row.cells[3].value = producto['totalProducto'].toString();
+      totalFactura= totalFactura+producto['totalProducto'];
     }
 
     grid.draw(page: page, bounds: ui.Rect.fromLTWH(0, 280, 0, 0));
@@ -117,14 +118,26 @@ class PdfGenerator {
     page.graphics.drawString(
         "----------------------------------------------------------------------------------------------------",
         PdfStandardFont(PdfFontFamily.timesRoman, 20),
-        bounds: ui.Rect.fromLTWH(0, 550, 0, 0)
+        bounds: ui.Rect.fromLTWH(0, 620, 0, 0)
     );
 
+    // Crear el PdfGrid
+    PdfGrid totalGrid = PdfGrid();
+    totalGrid.style = PdfGridStyle(
+      font: PdfStandardFont(PdfFontFamily.helvetica, 12),
+      cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2),
+    );
 
+    totalGrid.columns.add(count: 2);
+    PdfGridRow totalRow = totalGrid.rows.add();
 
+    totalRow.cells[0].value = 'Total Factura';
+    totalRow.cells[1].value = totalFactura.toString();
 
+// Dibujar el grid en la página
+    totalGrid.draw(page: page, bounds: ui.Rect.fromLTWH(300, 640, 500, 0));
 
-  //PIE DE PAGINA DE LA FACTURA
+    //PIE DE PAGINA DE LA FACTURA
     //LINEA SEPARADORA
     page.graphics.drawString(
         "----------------------------------------------------------------------------------------------------",
