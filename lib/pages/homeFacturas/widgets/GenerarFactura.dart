@@ -1,4 +1,4 @@
-import 'package:Pizzeria_Guerrin/services/mobileFiles.dart';
+import 'package:Pizzeria_Guerrin/constants/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/PdfGenerator.dart'; // Asegúrate de importar la ubicación correcta de tu archivo PdfGenerator.dart
 
@@ -18,8 +18,8 @@ class BotonEnviarFactura extends StatelessWidget {
           onPressed: () async {
             if (clienteSeleccionado != null) {
               // Invocar al método para generar el PDF
-              await PdfGenerator.generatePDF();
-
+              //await PdfGenerator.generatePDF();
+              print(clienteSeleccionado);
               // Mostrar un modal con un mensaje
               _mostrarMensaje(context);
             } else {

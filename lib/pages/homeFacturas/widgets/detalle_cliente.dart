@@ -27,16 +27,15 @@ class _DetalleClienteState extends State<DetalleCliente> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Flexible(
-                flex: 5,
-                child: Buscador(
-                  onClienteSeleccionado: (cliente) {
-                    setState(() {
-                      clienteSeleccionado = cliente;
-                    });
-                    print(
-                        'Cliente seleccionado: ${cliente['nom_cli']} ${cliente['ape_cli']}');
-                  },
-                )),
+              flex: 5,
+              child: Buscador(
+                onClienteSeleccionado: (cliente) {
+                  setState(() {
+                    clienteSeleccionado = cliente;
+                  });
+                },
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               // Alineación para distribuir el espacio entre los widgets
@@ -49,6 +48,7 @@ class _DetalleClienteState extends State<DetalleCliente> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (clienteSeleccionado != null) {
+                        print('Cliente seleccionado: ${clienteSeleccionado}');
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
