@@ -252,12 +252,9 @@ class DetallePedidoWidget extends StatelessWidget {
                                     padding: const EdgeInsets.all(16.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      children: [
+                                      children: <Widget>[
                                         // Contenido del botón para enviar factura
-                                        BotonEnviarFactura(
-                                            clienteSeleccionado:
-                                            clienteSeleccionado),
-
+                                        BotonEnviarFactura(numeroMesa: this.numeroMesa,),
                                         // Espaciador
                                         SizedBox(height: 20),
 

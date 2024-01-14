@@ -7,12 +7,14 @@ import 'dart:ui' as ui;
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:Pizzeria_Guerrin/constants/globals.dart';
-
 import '../../../services/mobileFiles.dart';
 
-class PdfGenerator {
-  static Future<void> generatePDF() async {
 
+
+class PdfGenerator {
+
+  static Future<void> generatePDF(Future<Map<String, dynamic>> productosFuture) async {
+    Map<String, dynamic> detallesPedido = await productosFuture;
     await initializeDateFormatting('es');
     DateTime currentDate = DateTime.now();
     String formattedDate = DateFormat('EEEE, d MMMM y', 'es').format(currentDate);
@@ -85,9 +87,9 @@ class PdfGenerator {
 
   // INFORMACION DE LOS PRODUCTOS
     PdfGrid grid = PdfGrid();
-    grid.style= PdfGridStyle(
-      font: PdfStandardFont(PdfFontFamily.helvetica,12),
-      cellPadding: PdfPaddings(left: 5,right: 2,top: 2,bottom: 2)
+    grid.style = PdfGridStyle(
+      font: PdfStandardFont(PdfFontFamily.helvetica, 12),
+      cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2),
     );
 
     grid.columns.add(count: 4);
@@ -99,21 +101,30 @@ class PdfGenerator {
     header.cells[2].value = 'Precio Unitario';
     header.cells[3].value = 'Total';
 
-    PdfGridRow row = grid.rows.add();
-    row.cells[0].value = '2';
-    row.cells[1].value = 'Pizza Con Queso';
-    row.cells[2].value = '15.00';
-    row.cells[3].value = '30.00';
+    // FOR PARA CONTABILIZAR LOS PRODUCTOS
+    List<Map<String, dynamic>> productose = (detallesPedido['productos'] as List).cast<Map<String, dynamic>>();
+    for (var producto in productose) {
+      PdfGridRow row = grid.rows.add();
+      row.cells[0].value = producto['cantidad'];
+      row.cells[1].value = producto['nombre'];
+      row.cells[2].value = producto['precio'].toString();
+      row.cells[3].value = producto['totalProducto'].toString();
+    }
 
     grid.draw(page: page, bounds: ui.Rect.fromLTWH(0, 280, 0, 0));
+
     //LINEA SEPARADORA DE LOS PRODUCTOS Y EL TOTAL
     page.graphics.drawString(
         "----------------------------------------------------------------------------------------------------",
         PdfStandardFont(PdfFontFamily.timesRoman, 20),
         bounds: ui.Rect.fromLTWH(0, 550, 0, 0)
     );
-  //PIE DE PAGINA DE LA FACTURA
 
+
+
+
+
+  //PIE DE PAGINA DE LA FACTURA
     //LINEA SEPARADORA
     page.graphics.drawString(
         "----------------------------------------------------------------------------------------------------",

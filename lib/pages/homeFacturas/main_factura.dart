@@ -30,7 +30,7 @@ class _main_facturaState extends State<main_factura> {
         body: TabBarView(
           children: [
             // Los widgets que se mostrarán en cada pestaña
-            DetalleCliente(numero: 1),
+            DetalleCliente(numero: widget.numeroMesa),
             DetallePedidoWidget(numeroMesa: widget.numeroMesa, parametro: widget.metodoPago, mounted: this.mounted),
           ],
         ),
