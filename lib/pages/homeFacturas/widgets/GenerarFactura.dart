@@ -1,13 +1,13 @@
 import 'package:Pizzeria_Guerrin/constants/globals.dart';
 import 'package:flutter/material.dart';
-import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/PdfGenerator.dart'; // Asegúrate de importar la ubicación correcta de tu archivo PdfGenerator.dart
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:Pizzeria_Guerrin/pages/homeFacturas/widgets/PdfGenerator.dart'; // Asegúrate de
 import 'package:Pizzeria_Guerrin/pages/homeFacturas/services/detalles_productos.dart';
 
 class BotonEnviarFactura extends StatelessWidget {
-  int numeroMesa; // Asegúrate de tener este campo definido
+  int numeroMesa;
+  int metodoPago; // Asegúrate de tener este campo definido
 
-  BotonEnviarFactura({required this.numeroMesa});
+  BotonEnviarFactura({super.key, required this.numeroMesa, required this.metodoPago});
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +32,7 @@ class BotonEnviarFactura extends StatelessWidget {
           onPressed: () async {
             if (clienteSeleccionado != null) {
               // Invocar al método para generar el PDF
+              datosFactura['num_mes'] = this.numeroMesa;
               Future<Map<String, dynamic>> productosDeLaMesa = obtenerPedidosPorMesa(this.numeroMesa);
               Future<double> totalesDeLaMesa = obtenerTotalPorMesa(this.numeroMesa);
               await PdfGenerator.generatePDF(productosDeLaMesa, totalesDeLaMesa);

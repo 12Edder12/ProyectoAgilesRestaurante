@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 final ValueNotifier<bool> _pagoExitoso = ValueNotifier<bool>(false);
+
 class DetallePedidoWidget extends StatelessWidget {
   final int numeroMesa;
   final int parametro;
@@ -20,7 +21,8 @@ class DetallePedidoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var uuid = const Uuid();
-    numeroFactura = uuid.v1().substring(0, 10); // Genera un UUID para el número de factura
+    numeroFactura =
+        uuid.v1().substring(0, 10); // Genera un UUID para el número de factura
     String fechaHora = DateFormat('dd-MM-yyyy').format(DateTime
         .now()); // Obtiene la fecha y hora actual en el formato dd-MM-yyyy // Obtiene la fecha y hora actual
 
@@ -187,6 +189,7 @@ class DetallePedidoWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  //stripe
                   if (parametro == 1) ...[
                     ValueListenableBuilder<bool>(
                       valueListenable: _pagoExitoso,
@@ -210,8 +213,8 @@ class DetallePedidoWidget extends StatelessWidget {
                                     _pagoExitoso.value = true;
                                   });
                                 },
-                          icon: Icon(Icons.payment),
-                          label: Text('Stripe'),
+                          icon: const Icon(Icons.payment),
+                          label: const Text('Stripe'),
                         );
                       },
                     ),
@@ -222,10 +225,61 @@ class DetallePedidoWidget extends StatelessWidget {
                           onPressed: value
                               ? () {
                                   _pagoExitoso.value = false;
-                                  print(idStripe);
+                                  if (clienteSeleccionado != null) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Center(
+                                          child: Dialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                            ),
+                                            elevation: 5,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  // Contenido del botón para enviar factura
+                                                  BotonEnviarFactura(
+                                                      numeroMesa:
+                                                          this.numeroMesa,
+                                                      metodoPago: 0),
+                                                  // Espaciador
+                                                  SizedBox(height: 20),
 
-                                  //solo para test, reesete el id stripe
-                                  idStripe.value = '';
+                                                  // Botón para cancelar
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop(); // Cierra el Dialog
+                                                    },
+                                                    child:
+                                                        const Text('Cancelar'),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: Colors.red,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    // Muestra un SnackBar indicando que no hay un cliente seleccionado
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'No hay cliente seleccionado para la Factura.'),
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
                                 }
                               : null,
                           icon: Icon(Icons.receipt_long),
@@ -234,6 +288,7 @@ class DetallePedidoWidget extends StatelessWidget {
                       },
                     ),
                   ],
+                  //efectivo
                   if (parametro == 0) ...[
                     ElevatedButton.icon(
                       onPressed: () {
@@ -253,7 +308,9 @@ class DetallePedidoWidget extends StatelessWidget {
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
                                         // Contenido del botón para enviar factura
-                                        BotonEnviarFactura(numeroMesa: this.numeroMesa,),
+                                        BotonEnviarFactura(
+                                            numeroMesa: this.numeroMesa,
+                                            metodoPago: 0),
                                         // Espaciador
                                         SizedBox(height: 20),
 
@@ -263,7 +320,7 @@ class DetallePedidoWidget extends StatelessWidget {
                                             Navigator.of(context)
                                                 .pop(); // Cierra el Dialog
                                           },
-                                          child: Text('Cancelar'),
+                                          child: const Text('Cancelar'),
                                           style: ElevatedButton.styleFrom(
                                             primary: Colors.red,
                                           ),
@@ -275,11 +332,12 @@ class DetallePedidoWidget extends StatelessWidget {
                               );
                             },
                           );
-                        }else {
+                        } else {
                           // Muestra un SnackBar indicando que no hay un cliente seleccionado
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('No hay cliente seleccionado para la Factura.'),
+                            const SnackBar(
+                              content: Text(
+                                  'No hay cliente seleccionado para la Factura.'),
                               duration: Duration(seconds: 2),
                             ),
                           );

@@ -264,7 +264,7 @@ Future<void> obtenerPedidosPorMesa(int numeroMesa) async {
                               left: 25.0,
                             ),
                             child: Text(
-                              'ASIGNAR MESA',
+                              'Asignar Mesa',
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
@@ -309,7 +309,7 @@ Future<void> obtenerPedidosPorMesa(int numeroMesa) async {
                           left: 10.0,
                         ),
                         child: Text(
-                          'ATRÁS Mesas ',
+                          'Atrás',
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
