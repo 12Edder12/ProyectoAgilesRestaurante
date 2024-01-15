@@ -207,6 +207,24 @@ class DetallePedidoWidget extends StatelessWidget {
                                       items, total, context, mounted,
                                       onSucces: () {
                                     _pagoExitoso.value = true;
+                                  }, onCancel: () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'El pago no se pudo procesar. Por favor, inténtalo de nuevo.'),
+                                        backgroundColor:
+                                            Colors.red, // Color de fondo rojo
+                                      ),
+                                    );
+                                  }, onError: (e) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            'El pago no se pudo procesar. Por favor, inténtalo de nuevo.' + e.toString()),
+                                        backgroundColor:
+                                            Colors.red, // Color de fondo rojo
+                                      ),
+                                    );
                                   });
                                 },
                           icon: const Icon(Icons.payment),
@@ -249,8 +267,6 @@ class DetallePedidoWidget extends StatelessWidget {
                                                   // Botón para cancelar
                                                   ElevatedButton(
                                                     onPressed: () {
-                                                      _pagoExitoso.value =
-                                                          false;
                                                       Navigator.of(context)
                                                           .pop(); // Cierra el Dialog
                                                     },
