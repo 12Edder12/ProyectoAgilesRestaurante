@@ -171,8 +171,5 @@ flutter:
 flutter clean
 flutter pub get
 
-Agradecemos su colaboración y quedamos a su disposición para cualquier consulta.
-
-Por favor, no dude en contactarnos si tiene alguna duda o necesita asistencia adicional.
 
 ¡Feliz desarrollo!
