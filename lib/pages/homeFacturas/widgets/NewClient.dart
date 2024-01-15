@@ -96,7 +96,8 @@ class NuevoClienteModal extends StatelessWidget {
                         .where('ced_cli', isEqualTo: cedula)
                         .get();
 
-                    if (query.docs.isEmpty) {
+                    if (query.docs.isEmpty && _validarDatos(cedula, nombre,apellido,correo,context)) {
+
                       // Si 'ced_cli' no existe en la base de datos, puedes enviar los datos
                       FirebaseFirestore.instance.collection('clientes').add({
                         'ced_cli': cedula,
@@ -108,7 +109,6 @@ class NuevoClienteModal extends StatelessWidget {
                       Navigator.pop(
                           context); // Cerrar el modal después de enviar
                     } else {
-                      // Si 'ced_cli' ya existe en la base de datos, puedes mostrar un mensaje de error
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
@@ -139,5 +139,86 @@ class NuevoClienteModal extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  bool _validarDatos(String cedula, String nombre, String apellido,
+      String correo, BuildContext context) {
+    // Validar la cédula ecuatoriana
+    if (!validarCedulaEcuatoriana(cedula)) {
+      _mostrarMensajeError(context, 'La cédula ingresada no es válida.');
+      return false;
+    }
+
+    // Validar el correo electrónico
+    final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
+    if (!emailRegex.hasMatch(correo)) {
+      _mostrarMensajeError(
+          context, 'El correo electrónico no tiene un formato válido.');
+      return false;
+    }
+
+    // Validar que los otros campos no estén vacíos
+    if (nombre.isEmpty || apellido.isEmpty || correo.isEmpty) {
+      _mostrarMensajeError(context, 'Todos los campos son obligatorios.');
+      return false;
+    }
+    return true;
+  }
+
+  void _mostrarMensajeError(BuildContext context, String mensaje) {
+    // Muestra un modal temporal con el mensaje de error
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(mensaje),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
+
+  bool validarCedulaEcuatoriana(String cedula) {
+    // Verificar longitud
+    if (cedula.length != 10) {
+      return false;
+    }
+
+    // Verificar formato numérico
+    if (!RegExp(r'^[0-9]+$').hasMatch(cedula)) {
+      return false;
+    }
+
+    // Verificar provincia
+    int provincia = int.parse(cedula.substring(0, 2));
+    if (provincia < 1 || provincia > 24) {
+      return false;
+    }
+
+    // Verificar tercer dígito
+    int tercerDigito = int.parse(cedula[2]);
+    if (tercerDigito < 0 || tercerDigito > 6) {
+      return false;
+    }
+
+    // Algoritmo de verificación del último dígito
+    List<int> coeficientes = [2, 1, 2, 1, 2, 1, 2, 1, 2];
+    int suma = 0;
+
+    for (int i = 0; i < 9; i++) {
+      int digito = int.parse(cedula[i]);
+      int producto = digito * coeficientes[i];
+
+      if (producto > 9) {
+        producto -= 9;
+      }
+
+      suma += producto;
+    }
+
+    int resultado = 10 - (suma % 10);
+    if (resultado == 10) {
+      resultado = 0;
+    }
+
+    int ultimoDigito = int.parse(cedula[9]);
+    return resultado == ultimoDigito;
   }
 }
