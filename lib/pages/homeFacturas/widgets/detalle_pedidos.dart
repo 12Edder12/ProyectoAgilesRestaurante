@@ -239,7 +239,7 @@ class DetallePedidoWidget extends StatelessWidget {
                           onPressed: value
                               ? () {
                                   if (clienteSeleccionado != null) {
-                                    _pagoExitoso.value = false;
+                                    
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -299,6 +299,7 @@ class DetallePedidoWidget extends StatelessWidget {
                                       },
                                     );
                                   } else {
+                                    
                                     // Muestra un SnackBar indicando que no hay un cliente seleccionado
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
