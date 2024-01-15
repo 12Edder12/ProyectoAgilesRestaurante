@@ -71,14 +71,14 @@ class _Report4State extends State<Report4> {
       PieChartSectionData(
         color: Colors.green,
          value: countMetPag0 > 0 ? countMetPag0.toDouble() : 0.1,
-        title: '$countMetPag0\n(Directo)',
+        title: '$countMetPag0\n(Efectivo)',
         radius: 150,
         titleStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
       ),
       PieChartSectionData(
         color: Colors.amber,
         value: countMetPag1 > 0 ? countMetPag1.toDouble() : 0.1,
-        title: '$countMetPag1\n(STRIPE)',
+        title: '$countMetPag1\n(Stripe)',
         radius: 150,
         titleStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
       ),
