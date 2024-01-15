@@ -67,10 +67,6 @@ class DetallePedidoWidget extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('Número de factura: $numeroFactura'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
                 child: Text('Mesero: $nombreUsuario $apellidoUsuario'),
               ),
               if (parametro == 1) ...[
@@ -224,8 +220,8 @@ class DetallePedidoWidget extends StatelessWidget {
                         return ElevatedButton.icon(
                           onPressed: value
                               ? () {
-                                  _pagoExitoso.value = false;
                                   if (clienteSeleccionado != null) {
+                                    _pagoExitoso.value = false;
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -253,6 +249,8 @@ class DetallePedidoWidget extends StatelessWidget {
                                                   // Botón para cancelar
                                                   ElevatedButton(
                                                     onPressed: () {
+                                                      _pagoExitoso.value =
+                                                          false;
                                                       Navigator.of(context)
                                                           .pop(); // Cierra el Dialog
                                                     },
@@ -260,7 +258,21 @@ class DetallePedidoWidget extends StatelessWidget {
                                                         const Text('Cancelar'),
                                                     style: ElevatedButton
                                                         .styleFrom(
-                                                      primary: Colors.red,
+                                                      primary: Colors
+                                                          .red, // Color de fondo rojo
+                                                      onPrimary: Colors
+                                                          .white, // Color de texto blanco
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 20,
+                                                              vertical:
+                                                                  12), // Padding
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10), // Bordes redondeados
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
@@ -322,7 +334,18 @@ class DetallePedidoWidget extends StatelessWidget {
                                           },
                                           child: const Text('Cancelar'),
                                           style: ElevatedButton.styleFrom(
-                                            primary: Colors.red,
+                                            primary: Colors
+                                                .red, // Color de fondo rojo
+                                            onPrimary: Colors
+                                                .white, // Color de texto blanco
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20,
+                                                vertical: 12), // Padding
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      10), // Bordes redondeados
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -344,8 +367,8 @@ class DetallePedidoWidget extends StatelessWidget {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blue, // background
-                        onPrimary: Colors.white, // foreground
+                        primary: Colors.grey, // background
+                        onPrimary: Colors.black, // foreground
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -360,6 +383,7 @@ class DetallePedidoWidget extends StatelessWidget {
                 ],
               ),
               Container(
+                margin: EdgeInsets.only(top: 10.0),
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   color: Colors.green[50],
