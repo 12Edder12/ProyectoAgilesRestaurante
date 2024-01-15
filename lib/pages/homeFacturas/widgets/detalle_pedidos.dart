@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
-final ValueNotifier<bool> _pagoExitoso = ValueNotifier<bool>(false);
+final ValueNotifier<bool> _pagoExitoso = ValueNotifier<bool>(estado_stripe);
+
 
 class DetallePedidoWidget extends StatelessWidget {
   final int numeroMesa;
@@ -20,6 +21,7 @@ class DetallePedidoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     var uuid = const Uuid();
     numeroFactura =
         uuid.v1().substring(0, 10); // Genera un UUID para el número de factura
@@ -239,7 +241,7 @@ class DetallePedidoWidget extends StatelessWidget {
                           onPressed: value
                               ? () {
                                   if (clienteSeleccionado != null) {
-                                    
+                                    _pagoExitoso.value = true;
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -261,9 +263,10 @@ class DetallePedidoWidget extends StatelessWidget {
                                                       numeroMesa:
                                                           this.numeroMesa,
                                                       metodoPago: 0),
+                                                  
                                                   // Espaciador
                                                   SizedBox(height: 20),
-
+                                                  
                                                   // Botón para cancelar
                                                   ElevatedButton(
                                                     onPressed: () {
@@ -298,8 +301,9 @@ class DetallePedidoWidget extends StatelessWidget {
                                         );
                                       },
                                     );
+                                    _pagoExitoso.value = false;
                                   } else {
-                                    
+                                    _pagoExitoso.value = true;
                                     // Muestra un SnackBar indicando que no hay un cliente seleccionado
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(

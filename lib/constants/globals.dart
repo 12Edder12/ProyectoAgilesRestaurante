@@ -11,7 +11,7 @@ Map<String, dynamic> datosUsuario = {};
 Map<String, dynamic>? clienteSeleccionado;
 String numeroFactura= "";
 ValueNotifier<String> idStripe = ValueNotifier<String>('');
-
+bool estado_stripe = false;
 Map<String, dynamic> datosFactura = {
   'num_mes': 0,
   'met_pag': 0,
