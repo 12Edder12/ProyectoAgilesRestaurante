@@ -280,9 +280,6 @@ class DetallePedidoWidget extends StatelessWidget {
                                       ),
                                     );
                                   }
-
-                                  //solo para test, reesete el id stripe
-                                  //idStripe.value = '';
                                 }
                               : null,
                           icon: Icon(Icons.receipt_long),

@@ -91,8 +91,10 @@ class Botones extends StatelessWidget {
                                       color: Colors.green),
                                   title: const Text("Efectivo"),
                                   onTap: () {
+                                    datosFactura['met_pag'] = 0;
                                     inicializarClienteSeleccionado();
                                     Navigator.push(
+
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => main_factura(
@@ -107,6 +109,7 @@ class Botones extends StatelessWidget {
                                       color: Colors.blue),
                                   title: const Text("Stripe"),
                                   onTap: () {
+                                    datosFactura['met_pag'] = 1;
                                     inicializarClienteSeleccionado();
                                     Navigator.push(
                                       context,

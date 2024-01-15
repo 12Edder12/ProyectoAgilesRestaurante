@@ -74,7 +74,7 @@ class PdfGenerator {
         bounds: ui.Rect.fromLTWH(0, 200, 0, 0)
     );
     page.graphics.drawString(
-        "Direccion: ",
+        "Direccion: Av. los Guaytambos, Ambato 180101",
         PdfStandardFont(PdfFontFamily.timesRoman, 15),
         bounds: ui.Rect.fromLTWH(0, 215, 0, 0)
     );
@@ -185,13 +185,14 @@ class PdfGenerator {
       // Manejar el error según tus necesidades
     }
   }
-
+double totalNormal = totalFactura; // Tu cálculo del total normal aquí
+double total = datosFactura['met_pag'] == 0 ? totalNormal : double.parse((totalNormal * 0.9677).toStringAsFixed(2));
 
 Map<String, dynamic> facturaData = {
       'id_fac': IDFactura1,
       'fec_emi_fac': Timestamp.now(), 
       'num_mes_per': datosFactura['num_mes'], //cambiar
-      'total': totalFactura,
+      'total': total,
       'id_cli_fac': clienteSeleccionado?['ced_cli'],
       'met_pag': datosFactura['met_pag'], ///cambiar
       'productos': detallesPedido['productos'],
