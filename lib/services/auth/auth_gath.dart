@@ -1,7 +1,8 @@
-import 'package:bbb/pages/homeCocinero/homecocinero.dart';
-import 'package:bbb/pages/homeMesero/tomar_mesa.dart';
-import 'package:bbb/services/auth/home_page.dart';
-import 'package:bbb/services/auth/login_or_register.dart';
+import 'package:Pizzeria_Guerrin/pages/homeAdmin/home_admin.dart';
+import 'package:Pizzeria_Guerrin/pages/homeCocinero/homecocinero.dart';
+import 'package:Pizzeria_Guerrin/pages/homeMesero/tomar_mesa.dart';
+import 'package:Pizzeria_Guerrin/pages/home_page.dart';
+import 'package:Pizzeria_Guerrin/services/auth/login_or_register.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,10 @@ class AuthGate extends StatelessWidget {
                     return const HomeCocinero();
                   } else if (cargo == 'Mesero') {
                     return const TomarMesa();
-                  } else {
+                  } else if (cargo == 'admin') {
+                    return const AdminScreen();
+                  }
+                  else {
                     return const HomePage();
                   }
                 } else if (snapshot.hasError) {

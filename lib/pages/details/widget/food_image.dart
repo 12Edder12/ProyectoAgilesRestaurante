@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bbb/constants/colors.dart';
-import 'package:bbb/models/pizza.dart';
+import 'package:Pizzeria_Guerrin/constants/colors.dart';
+import 'package:Pizzeria_Guerrin/models/producto.dart';
 
 class FoodImg extends StatelessWidget {
   final Pizza? food;
@@ -8,7 +8,7 @@ class FoodImg extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 230,
       child: Stack(
         children: [

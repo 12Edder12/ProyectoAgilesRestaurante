@@ -5,10 +5,9 @@ class CustomAppBar extends StatelessWidget {
   final Function()? leftCallback;
 
   const CustomAppBar(
-      {Key? key,
+      {super.key,
       required this.leftIcon,
-      this.leftCallback})
-      : super(key: key);
+      this.leftCallback});
 
   @override
   Widget build(BuildContext context) {

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:bbb/constants/colors.dart';
+import 'package:Pizzeria_Guerrin/constants/colors.dart';
 
-import 'package:bbb/models/restaurant.dart';
+import 'package:Pizzeria_Guerrin/models/restaurant.dart';
 
 class FoodList extends StatelessWidget {
   final int? selected;
   final Function? callback;
   final Restaurant? restaurant;
   const FoodList({
-    Key? key,
+    super.key,
     this.selected,
     this.callback,
     this.restaurant,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

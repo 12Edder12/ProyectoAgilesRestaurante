@@ -1,20 +1,18 @@
-import 'package:bbb/services/auth/auth_service.dart';
-import 'package:bbb/services/auth/login_or_register.dart';
+import 'package:Pizzeria_Guerrin/services/auth/auth_service.dart';
+import 'package:Pizzeria_Guerrin/services/auth/login_or_register.dart';
 import 'package:flutter/material.dart';
-import 'package:bbb/pages/homeMesero/widget/custom_dialog.dart';
-import 'package:bbb/pages/homeMesero/widget/food_list.dart';
-import 'package:bbb/pages/homeMesero/widget/food_list_view.dart';
-import 'package:bbb/pages/homeMesero/widget/restaurant_info.dart';
-import 'package:bbb/constants/colors.dart';
-import 'package:bbb/constants/globals.dart';
-import 'package:bbb/models/restaurant.dart';
-import 'package:bbb/pages/components/custom_app_bar.dart';
+import 'package:Pizzeria_Guerrin/pages/homeMesero/widget/custom_dialog.dart';
+import 'package:Pizzeria_Guerrin/pages/homeMesero/widget/food_list.dart';
+import 'package:Pizzeria_Guerrin/pages/homeMesero/widget/food_list_view.dart';
+import 'package:Pizzeria_Guerrin/pages/homeMesero/widget/restaurant_info.dart';
+import 'package:Pizzeria_Guerrin/constants/colors.dart';
+import 'package:Pizzeria_Guerrin/constants/globals.dart' as globals;
+import 'package:Pizzeria_Guerrin/models/restaurant.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-
 class HomeMesero2 extends StatefulWidget {
-  const HomeMesero2({Key? key}) : super(key: key);
+  const HomeMesero2({super.key});
 
   @override
   State<HomeMesero2> createState() => _HomeMesero2State();
@@ -25,47 +23,43 @@ class _HomeMesero2State extends State<HomeMesero2> {
   final pageController = PageController();
   final Future<Restaurant> restaurant = Restaurant.generateRestaurant();
 
-  
-Future <void> signOut() async {
-  final authService = Provider.of<AuthService>(context, listen: false);
-   await authService.signOut();
+  Future<void> signOut() async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    await authService.signOut();
 
     Navigator.of(context).pushReplacement(
-    MaterialPageRoute(builder: (context) => const LoginOrRegister()),
-  );
-}
+      MaterialPageRoute(builder: (context) => const LoginOrRegister()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    
     return FutureBuilder<Restaurant>(
       future: restaurant,
       builder: (BuildContext context, AsyncSnapshot<Restaurant> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator(); // Mostrar un indicador de carga mientras se espera el resultado
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}'); // Mostrar un mensaje de error si el Future falla
+          return Text(
+              'Error: ${snapshot.error}'); // Mostrar un mensaje de error si el Future falla
         } else {
-          Restaurant restaurant = snapshot.data!; // Acceder a los datos del Future una vez que se ha completado
+          Restaurant restaurant = snapshot
+              .data!; // Acceder a los datos del Future una vez que se ha completado
           return Scaffold(
             appBar: AppBar(
-        title: const Text('Home Mesero'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.exit_to_app),
-            onPressed: () async {
-               await signOut();
-               }
-                ),
-        ],
-      ),
+              title: const Text('Home Mesero'),
+              actions: [
+                IconButton(
+                    icon: const Icon(Icons.exit_to_app),
+                    onPressed: () async {
+                      await signOut();
+                    }),
+              ],
+            ),
             backgroundColor: kBackground,
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              const  CustomAppBar(
-                  leftIcon: Icons.arrow_back,
-                ),
                 RestaurantInfo(),
                 FoodList(
                   selected: selected,
@@ -90,7 +84,7 @@ Future <void> signOut() async {
                   ),
                 ),
                 Container(
-                  padding: const  EdgeInsets.symmetric(horizontal: 25),
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
                   height: 60,
                   child: SmoothPageIndicator(
                     controller: pageController,
@@ -121,14 +115,16 @@ Future <void> signOut() async {
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return CustomDialog(pedidos: pedidos);
-                  },
-                );
+                if (globals.pedidos.length > 0) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomDialog(pedidos: globals.pedidos);
+                    },
+                  );
+                }
               },
-              child: Icon(Icons.add),
+              child:  const  Icon(Icons.add, color: kBackground,),
               backgroundColor: kPrimaryColor,
             ),
           );

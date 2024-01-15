@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:bbb/models/pizza.dart';
+import 'package:Pizzeria_Guerrin/models/producto.dart';
 
 class FoodItem extends StatelessWidget {
   final Pizza food;
   const FoodItem({
-    Key? key,
+    super.key,
     required this.food,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

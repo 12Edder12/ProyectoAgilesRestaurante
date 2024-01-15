@@ -1,16 +1,18 @@
-import 'package:bbb/pages/homeCocinero/homecocinero.dart';
-import 'package:bbb/pages/homeMesero/tomar_mesa.dart';
+import 'package:Pizzeria_Guerrin/constants/globals.dart';
+import 'package:Pizzeria_Guerrin/pages/homeCocinero/homecocinero.dart';
+import 'package:Pizzeria_Guerrin/pages/homeMesero/tomar_mesa.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:bbb/pages/components/my_button.dart';
-import 'package:bbb/pages/components/my_text_field.dart';
-import 'package:bbb/services/auth/auth_service.dart';
+import 'package:Pizzeria_Guerrin/pages/components/my_button.dart';
+import 'package:Pizzeria_Guerrin/pages/components/my_text_field.dart';
+import 'package:Pizzeria_Guerrin/services/auth/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
 
-  const LoginPage({Key? key, required this.onTap}) : super(key: key);
+  const LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -21,15 +23,18 @@ class _LoginPageState extends State<LoginPage> {
   final passController = TextEditingController();
 
 void showError(String error) {
+  if (mounted) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(error),
       ),
     );
   }
-
+}
 
 void navigateToPage(String cargo) {
+  if (!mounted) return; // Asegúrate de que el widget esté montado
+
   if (cargo == 'Cocinero') {
     Navigator.push(
       context,
@@ -43,20 +48,22 @@ void navigateToPage(String cargo) {
   }
 }
 
-
   void signIn() async {
-    final authService = Provider.of<AuthService>(context, listen: false);
+  final authService = Provider.of<AuthService>(context, listen: false);
+//  final firebaseApi = FirebaseApi();
 
-    try {
-    DocumentSnapshot userDoc =   await authService.signInWithEmailPassword(
-          emailController.text, passController.text);
+  try {
+    DocumentSnapshot userDoc = await authService.signInWithEmailPassword(
+      emailController.text, 
+      passController.text
+    );
 
     String cargo = userDoc['cargo'];
     navigateToPage(cargo);
-    } catch (e) {
-      showError(e.toString());
-    }
+  } catch (e) {
+    showError(e.toString());
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -66,23 +73,25 @@ void navigateToPage(String cargo) {
         child: Stack(
           children: [
             // Fondo de pantalla
-            Opacity(opacity: 0.2,
-             child: Image.asset(
-              "lib/img/xd.jpeg", 
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
+            Opacity(
+              opacity: 0.2,
+              child: Image.asset(
+                "lib/img/xd.jpeg",
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+              ),
             ),
-        ),
             Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
-                      Icons.message,
-                      size: 80,
+                    Image.asset(
+                      "lib/img/res_logo.png",
+                       width: 150,  // Ancho de la imagen
+                       height: 150,
                     ),
                     const Text(
                       "Hola, le saluda la pizzería Guerrín",
