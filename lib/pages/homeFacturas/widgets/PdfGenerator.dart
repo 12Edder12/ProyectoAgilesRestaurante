@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:Pizzeria_Guerrin/pages/homeMesero/tomar_mesa.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -188,13 +190,13 @@ class PdfGenerator {
 Map<String, dynamic> facturaData = {
       'id_fac': IDFactura1,
       'fec_emi_fac': Timestamp.now(), 
-      'num_mes_per': 1, //cambiar
+      'num_mes_per': datosFactura['num_mes'], //cambiar
       'total': totalFactura,
       'id_cli_fac': clienteSeleccionado?['ced_cli'],
-      'met_pag': 0, ///cambiar
+      'met_pag': datosFactura['met_pag'], ///cambiar
       'productos': detallesPedido['productos'],
-      'id_emp_fac': 18054, //cambiar 
-      'id_stripe': 0,//cambiar
+      'id_emp_fac': datosUsuario['ced_user'], //cambiar 
+      'id_stripe': idStripe.value,//cambiar
     };
 
     await saveFacturaToFirebase(facturaData);
@@ -218,22 +220,15 @@ Map<String, dynamic> facturaData = {
       //ENVIO DEL PDF VIA EMAIL
       sendEmail('$emailpath', IDFactura);
       //saveAndLaunchFile(bytes, "Output.pdf");
-
+      actualizarTodo(datosFactura['num_mes']);
       // Cierra el documento
       document.dispose();
     } catch (error) {
       print('Error al guardar el archivo PDF: $error');
     }
 
-
-
-
   }
 }
-
-
-
-
 
 Future<Uint8List> _readImageData(String name) async {
   final data = await rootBundle.load('lib/img/$name');
@@ -251,3 +246,61 @@ sendEmail(String emailpath, String IDFactura) async {
   );
   await FlutterEmailSender.send(email);
 }
+
+Future<void> actualizarTodo(int numMesa) async {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // Actualizar pedidos
+  QuerySnapshot pedidosSnapshot = await _firestore
+      .collection('pedidos')
+      .where('num_mesa', isEqualTo: numMesa)
+      .where('pagado', isEqualTo: false)
+      .get();
+
+  for (QueryDocumentSnapshot pedidoDoc in pedidosSnapshot.docs) {
+    await _firestore
+        .collection('pedidos')
+        .doc(pedidoDoc.id)
+        .update({'pagado': true});
+  }
+
+  // Actualizar facturas
+  QuerySnapshot facturasSnapshot = await _firestore
+      .collection('facturas')
+      .where('num_mes_per', isEqualTo: numMesa)
+      .get();
+
+  for (QueryDocumentSnapshot facturaDoc in facturasSnapshot.docs) {
+    await _firestore
+        .collection('facturas')
+        .doc(facturaDoc.id)
+        .update({'pagado': true});
+  }
+
+  // Actualizar tables
+  QuerySnapshot tablesSnapshot = await _firestore
+      .collection('tables')
+      .where('num', isEqualTo: numMesa)
+      .get();
+
+  for (QueryDocumentSnapshot tableDoc in tablesSnapshot.docs) {
+    await _firestore.collection('tables').doc(tableDoc.id).update({
+      'est_tab': true,
+      'pagado': true,
+    });
+  }
+
+  // Actualizar mesas 
+  datosFactura = {
+  'num_mes': 0,
+  'met_pag': 0,
+  };
+
+  idStripe.value = '';
+
+  Navigator.push(
+  tomarMesa!,
+  MaterialPageRoute(builder: (context) => TomarMesa()),
+);
+}
+

@@ -64,6 +64,7 @@ class _TomarMesaState extends State<TomarMesa> {
 
   @override
   Widget build(BuildContext context) {
+    tomarMesa = context;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Mesero'),
