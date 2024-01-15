@@ -7,7 +7,8 @@ class BotonEnviarFactura extends StatelessWidget {
   int numeroMesa;
   int metodoPago; // Asegúrate de tener este campo definido
 
-  BotonEnviarFactura({super.key, required this.numeroMesa, required this.metodoPago});
+  BotonEnviarFactura(
+      {super.key, required this.numeroMesa, required this.metodoPago});
 
   @override
   Widget build(BuildContext context) {
@@ -15,34 +16,64 @@ class BotonEnviarFactura extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       // Para distribuir el espacio entre los botones
       children: [
-        Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('      CLIENTE DE LA FACTURA'),
-              Text('Cedula/RUC: ${clienteSeleccionado?['ced_cli']}'),
-              Text('Nombre: ${clienteSeleccionado?['nom_cli']}'),
-              Text('Apellido: ${clienteSeleccionado?['ape_cli']}'),
-              Text('Correo: ${clienteSeleccionado?['cor_cli']}'),
-            ],
+        const Padding(
+          padding: EdgeInsets.only(bottom: 10),
+          child: Center(
+            // Centra el contenido
+            child: Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.center, // Centra los elementos de la fila
+              children: [
+                Icon(Icons.person, color: Colors.grey), // Icono de persona
+                SizedBox(width: 10), // Espacio horizontal
+                Text('CLIENTE DE LA FACTURA',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              ],
+            ),
           ),
         ),
-        ElevatedButton(
-          onPressed: () async {
-            if (clienteSeleccionado != null) {
-              // Invocar al método para generar el PDF
-              datosFactura['num_mes'] = this.numeroMesa;
-              Future<Map<String, dynamic>> productosDeLaMesa = obtenerPedidosPorMesa(this.numeroMesa);
-              Future<double> totalesDeLaMesa = obtenerTotalPorMesa(this.numeroMesa);
-              await PdfGenerator.generatePDF(productosDeLaMesa, totalesDeLaMesa);
-              _mostrarMensaje(context);
-            } else {
-              // Mostrar un mensaje de error si no hay cliente seleccionado
-              _mostrarError(context);
-            }
-          },
-          child: Text('Confirmar Factura'),
+        Text('Cedula/RUC: ${clienteSeleccionado?['ced_cli']}',
+            style: TextStyle(fontSize: 14)),
+        SizedBox(height: 5), // Espacio vertical
+        Text('Nombre: ${clienteSeleccionado?['nom_cli']}',
+            style: TextStyle(fontSize: 14)),
+        SizedBox(height: 5), // Espacio vertical
+        Text('Apellido: ${clienteSeleccionado?['ape_cli']}',
+            style: TextStyle(fontSize: 14)),
+        SizedBox(height: 5), // Espacio vertical
+        Text('Correo: ${clienteSeleccionado?['cor_cli']}',
+            style: TextStyle(fontSize: 14)),
+        Padding(
+          padding: EdgeInsets.only(top: 20), // Espacio superior de 20 píxeles
+          child: ElevatedButton(
+            onPressed: () async {
+              if (clienteSeleccionado != null) {
+                // Invocar al método para generar el PDF
+                datosFactura['num_mes'] = this.numeroMesa;
+                Future<Map<String, dynamic>> productosDeLaMesa =
+                    obtenerPedidosPorMesa(this.numeroMesa);
+                Future<double> totalesDeLaMesa =
+                    obtenerTotalPorMesa(this.numeroMesa);
+                await PdfGenerator.generatePDF(
+                    productosDeLaMesa, totalesDeLaMesa);
+                _mostrarMensaje(context);
+              } else {
+                // Mostrar un mensaje de error si no hay cliente seleccionado
+                _mostrarError(context);
+              }
+            },
+            child: Text('Confirmar Factura'),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.blue, // Color de fondo azul
+              onPrimary: Colors.white, // Color de texto blanco
+              padding:
+                  EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Padding
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10), // Bordes redondeados
+              ),
+            ),
+          ),
         ),
       ],
     );
@@ -111,5 +142,4 @@ class BotonEnviarFactura extends StatelessWidget {
       },
     );
   }
-
 }

@@ -298,7 +298,7 @@ Future<void> actualizarTodo(int numMesa) async {
   };
 
   idStripe.value = '';
-
+  estado_stripe = false;
   Navigator.push(
   tomarMesa!,
   MaterialPageRoute(builder: (context) => TomarMesa()),

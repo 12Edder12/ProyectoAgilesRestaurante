@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
-final ValueNotifier<bool> _pagoExitoso = ValueNotifier<bool>(false);
+final ValueNotifier<bool> _pagoExitoso = ValueNotifier<bool>(estado_stripe);
+
 
 class DetallePedidoWidget extends StatelessWidget {
   final int numeroMesa;
@@ -20,6 +21,7 @@ class DetallePedidoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     var uuid = const Uuid();
     numeroFactura =
         uuid.v1().substring(0, 10); // Genera un UUID para el número de factura
@@ -64,10 +66,6 @@ class DetallePedidoWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text('Fecha: $fechaHora'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('Número de factura: $numeroFactura'),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -211,6 +209,24 @@ class DetallePedidoWidget extends StatelessWidget {
                                       items, total, context, mounted,
                                       onSucces: () {
                                     _pagoExitoso.value = true;
+                                  }, onCancel: () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'El pago no se pudo procesar. Por favor, inténtalo de nuevo.'),
+                                        backgroundColor:
+                                            Colors.red, // Color de fondo rojo
+                                      ),
+                                    );
+                                  }, onError: (e) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            'El pago no se pudo procesar. Por favor, inténtalo de nuevo.' + e.toString()),
+                                        backgroundColor:
+                                            Colors.red, // Color de fondo rojo
+                                      ),
+                                    );
                                   });
                                 },
                           icon: const Icon(Icons.payment),
@@ -224,8 +240,8 @@ class DetallePedidoWidget extends StatelessWidget {
                         return ElevatedButton.icon(
                           onPressed: value
                               ? () {
-                                  _pagoExitoso.value = false;
                                   if (clienteSeleccionado != null) {
+                                    _pagoExitoso.value = true;
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -247,9 +263,10 @@ class DetallePedidoWidget extends StatelessWidget {
                                                       numeroMesa:
                                                           this.numeroMesa,
                                                       metodoPago: 0),
+                                                  
                                                   // Espaciador
                                                   SizedBox(height: 20),
-
+                                                  
                                                   // Botón para cancelar
                                                   ElevatedButton(
                                                     onPressed: () {
@@ -260,7 +277,21 @@ class DetallePedidoWidget extends StatelessWidget {
                                                         const Text('Cancelar'),
                                                     style: ElevatedButton
                                                         .styleFrom(
-                                                      primary: Colors.red,
+                                                      primary: Colors
+                                                          .red, // Color de fondo rojo
+                                                      onPrimary: Colors
+                                                          .white, // Color de texto blanco
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 20,
+                                                              vertical:
+                                                                  12), // Padding
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10), // Bordes redondeados
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
@@ -270,7 +301,9 @@ class DetallePedidoWidget extends StatelessWidget {
                                         );
                                       },
                                     );
+                                    _pagoExitoso.value = false;
                                   } else {
+                                    _pagoExitoso.value = true;
                                     // Muestra un SnackBar indicando que no hay un cliente seleccionado
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
@@ -322,7 +355,18 @@ class DetallePedidoWidget extends StatelessWidget {
                                           },
                                           child: const Text('Cancelar'),
                                           style: ElevatedButton.styleFrom(
-                                            primary: Colors.red,
+                                            primary: Colors
+                                                .red, // Color de fondo rojo
+                                            onPrimary: Colors
+                                                .white, // Color de texto blanco
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20,
+                                                vertical: 12), // Padding
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      10), // Bordes redondeados
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -344,8 +388,8 @@ class DetallePedidoWidget extends StatelessWidget {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blue, // background
-                        onPrimary: Colors.white, // foreground
+                        primary: Colors.grey, // background
+                        onPrimary: Colors.black, // foreground
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -360,6 +404,7 @@ class DetallePedidoWidget extends StatelessWidget {
                 ],
               ),
               Container(
+                margin: EdgeInsets.only(top: 10.0),
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   color: Colors.green[50],
