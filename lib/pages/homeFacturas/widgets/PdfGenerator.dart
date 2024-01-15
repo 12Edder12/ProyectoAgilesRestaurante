@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -20,6 +21,8 @@ class PdfGenerator {
     String formattedDate = DateFormat('EEEE, d MMMM y', 'es').format(currentDate);
     String fechaNumerica = DateFormat('yyyyMMdd').format(currentDate);
     double totalFactura = 0;
+    String IDFactura = "Factura: ${fechaNumerica}${numeroFactura}${clienteSeleccionado?['ced_cli']}001FP";
+
     // Crear el documento PDF
     PdfDocument document = PdfDocument();
     PdfPage page = document.pages.add();
@@ -43,7 +46,7 @@ class PdfGenerator {
     );
     //INFORMACION DE LA FACTURA
     page.graphics.drawString(
-      "Factura: ${fechaNumerica}${numeroFactura}${clienteSeleccionado?['ced_cli']}001FP",
+      IDFactura,
       PdfStandardFont(PdfFontFamily.timesRoman, 15),
       bounds: ui.Rect.fromLTWH(0, 145, 0, 0)
     );
@@ -134,7 +137,6 @@ class PdfGenerator {
     totalRow.cells[0].value = 'Total Factura';
     totalRow.cells[1].value = totalFactura.toStringAsFixed(2);
 
-// Dibujar el grid en la página
     totalGrid.draw(page: page, bounds: ui.Rect.fromLTWH(300, 640, 500, 0));
 
     //PIE DE PAGINA DE LA FACTURA
@@ -174,17 +176,21 @@ class PdfGenerator {
     try {
       // Obtener el directorio de documentos (o cualquier otro directorio apropiado)
       final directory = await getApplicationDocumentsDirectory();
-      final path =
+      final emailpath =
           '${directory.path}/ReciboFactura.pdf'; // Ruta completa al archivo PDF
 
       // Guardar el PDF en el directorio obtenido
       final List<int> bytes = await document.save();
-      final File file = File(path);
+      final File file = File(emailpath);
       await file.writeAsBytes(bytes);
 
       // Mostrar un mensaje (esto es opcional, puedes eliminarlo si lo deseas)
-      print('PDF generado en $path');
-      saveAndLaunchFile(bytes, "Output.pdf");
+      print('PDF generado en $emailpath');
+
+      //ENVIO DEL PDF VIA EMAIL
+      sendEmail('$emailpath', IDFactura);
+      //saveAndLaunchFile(bytes, "Output.pdf");
+
       // Cierra el documento
       document.dispose();
     } catch (error) {
@@ -197,4 +203,16 @@ class PdfGenerator {
 Future<Uint8List> _readImageData(String name) async {
   final data = await rootBundle.load('lib/img/$name');
   return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+}
+sendEmail(String emailpath, String IDFactura) async {
+  final Email email = Email(
+    body: 'Factura Recibida con el ID $IDFactura',
+    subject: 'Factura - Pizzeria Guerrin',
+    recipients: ['${clienteSeleccionado?['cor_cli']}'],
+    //cc: ['cc@example.com'],
+    //bcc: ['bcc@example.com'],
+    attachmentPaths: [emailpath],
+    isHTML: false,
+  );
+  await FlutterEmailSender.send(email);
 }

@@ -34,10 +34,7 @@ class BotonEnviarFactura extends StatelessWidget {
               // Invocar al método para generar el PDF
               Future<Map<String, dynamic>> productosDeLaMesa = obtenerPedidosPorMesa(this.numeroMesa);
               Future<double> totalesDeLaMesa = obtenerTotalPorMesa(this.numeroMesa);
-              print(totalesDeLaMesa.toString());
               await PdfGenerator.generatePDF(productosDeLaMesa, totalesDeLaMesa);
-              print(clienteSeleccionado);
-              // Mostrar un modal con un mensaje
               _mostrarMensaje(context);
             } else {
               // Mostrar un mensaje de error si no hay cliente seleccionado
