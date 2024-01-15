@@ -1,5 +1,4 @@
-Pizzeria_Guerrin Flutter App
-Este repositorio contiene el código fuente de la aplicación Flutter "Pizzeria_Guerrin". A continuación, se proporcionan instrucciones detalladas para configurar y ejecutar el proyecto localmente.
+
 
 # Instrucciones para configurar el proyecto
 
@@ -9,27 +8,19 @@ Estimado colaborador, le agradecemos su interés en contribuir a este proyecto. 
 
 2. Clone el repositorio de GitHub:
 
-Bash
-git clone https://github.com/12Edder12/LosPasadosEnAgiles3.git
-Use code with caution. Learn more
+https://github.com/12Edder12/ProyectoAgilesRestaurante.git
 
 3. Ingrese a la carpeta del repositorio:
 
-Bash
-cd LosPasadosEnAgiles3
-Use code with caution. Learn more
+cd LProyectoAgilesRestaurante
 
 4. Cree un proyecto vacío de Flutter con el nombre 'Pizzeria_Guerrin':
 
-Bash
 flutter create Pizzeria_Guerrin
-Use code with caution. Learn more
 
 5. Acceda a la carpeta del proyecto vacío:
 
-Bash
 cd Pizzeria_Guerrin
-Use code with caution. Learn more
 
 6. Elimine el archivo README.md, el archivo .gitignore y la carpeta 'lib' del proyecto vacío.
 
@@ -43,10 +34,8 @@ Use code with caution. Learn more
 
 11. Ejecute los siguientes comandos para instalar las dependencias:
 
-Bash
 flutter pub get
 flutter pub add firebase_core
-Use code with caution. Learn more
 
 12. Asegúrese de que las dependencias en el archivo 'pubspec.yaml' coincidan con las siguientes:
 
@@ -128,10 +117,8 @@ flutter:
 
 13. Ejecute los siguientes comandos para limpiar y actualizar las dependencias:
 
-Bash
 flutter clean
 flutter pub get
-Use code with caution. Learn more
 
 Agradecemos su colaboración y quedamos a su disposición para cualquier consulta.
 
