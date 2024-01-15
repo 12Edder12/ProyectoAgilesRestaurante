@@ -8,8 +8,8 @@ class DashBoardPage extends StatelessWidget {
   DashBoardPage({super.key});
 
   final buttonTitles = [
-    'Pizzas Más Vendidas',
-    'Bebida Más Comprada',
+    'Pizzas Más Pedidas',
+    'Bebidas Más Pedidas',
     'Ingresos',
     'Método de Pago',
   ];

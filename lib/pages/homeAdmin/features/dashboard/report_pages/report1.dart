@@ -113,7 +113,7 @@ final pizzaProducts = await FirebaseFirestore.instance
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pizzas Más Vendidas'),
+        title: const Text('Pizzas Más Pedidas'),
       actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.refresh),

@@ -104,7 +104,7 @@ final pizzaProducts = await FirebaseFirestore.instance
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bebida Más Comprada'),
+        title: const Text('Bebidas Más Pedidas'),
       ),
       body: SingleChildScrollView(
         child: Column(
