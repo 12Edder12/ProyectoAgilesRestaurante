@@ -92,6 +92,7 @@ class Botones extends StatelessWidget {
                                   title: const Text("Efectivo"),
                                   onTap: () {
                                     datosFactura['met_pag'] = 0;
+                                    print(datosFactura['met_pag']);
                                     inicializarClienteSeleccionado();
                                     Navigator.push(
 
@@ -110,6 +111,7 @@ class Botones extends StatelessWidget {
                                   title: const Text("Stripe"),
                                   onTap: () {
                                     datosFactura['met_pag'] = 1;
+                                    print(datosFactura['met_pag']);
                                     inicializarClienteSeleccionado();
                                     Navigator.push(
                                       context,
