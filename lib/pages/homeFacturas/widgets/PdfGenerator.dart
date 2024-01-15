@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -22,6 +23,7 @@ class PdfGenerator {
     String fechaNumerica = DateFormat('yyyyMMdd').format(currentDate);
     double totalFactura = 0;
     String IDFactura = "Factura: ${fechaNumerica}${numeroFactura}${clienteSeleccionado?['ced_cli']}001FP";
+    String IDFactura1 = "${fechaNumerica}${numeroFactura}${clienteSeleccionado?['ced_cli']}001FP";
 
     // Crear el documento PDF
     PdfDocument document = PdfDocument();
@@ -172,6 +174,32 @@ class PdfGenerator {
         PdfStandardFont(PdfFontFamily.timesRoman, 12),
         bounds: ui.Rect.fromLTWH(0, 725, 0, 0)
     );
+
+  Future<void> saveFacturaToFirebase(Map<String, dynamic> facturaData) async {
+    try {
+      await FirebaseFirestore.instance.collection('facturas').add(facturaData);
+    } catch (error) {
+      print('Error al guardar la factura en Firebase: $error');
+      // Manejar el error según tus necesidades
+    }
+  }
+
+
+Map<String, dynamic> facturaData = {
+      'id_fac': IDFactura1,
+      'fec_emi_fac': Timestamp.now(), 
+      'num_mes_per': 1, //cambiar
+      'total': totalFactura,
+      'id_cli_fac': clienteSeleccionado?['ced_cli'],
+      'met_pag': 0, ///cambiar
+      'productos': detallesPedido['productos'],
+      'id_emp_fac': 18054, //cambiar 
+      'id_stripe': 0,//cambiar
+    };
+
+    await saveFacturaToFirebase(facturaData);
+
+
     //FIN DEL DOCUMENTO
     try {
       // Obtener el directorio de documentos (o cualquier otro directorio apropiado)
@@ -196,8 +224,15 @@ class PdfGenerator {
     } catch (error) {
       print('Error al guardar el archivo PDF: $error');
     }
+
+
+
+
   }
 }
+
+
+
 
 
 Future<Uint8List> _readImageData(String name) async {
