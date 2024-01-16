@@ -29,6 +29,7 @@ class PdfGenerator {
     double PreciosinIVA = 0;
     double iva = 0;
     double totalIva = 0;
+    double ivapersonal = 0;
 
     // Crear el documento PDF
     PdfDocument document = PdfDocument();
@@ -116,19 +117,21 @@ class PdfGenerator {
 
       // Verificar si el tipo es "bebida" para aplicar el IVA
       if (producto['nombre'].toLowerCase().contains('pizza')) {
+        iva = 0.00;
         row.cells[3].value = '0.00';
       } else {
         // Si el nombre no contiene "Pizza", poner 0 en la celda de IVA
-        iva = (producto['precio'] * (12 / 100));
+        iva = (producto['totalProducto'] * (12 / 100));
+        ivapersonal = (producto['precio'] * (12 / 100));
         row.cells[3].value = iva.toStringAsFixed(2);
       }
 
-      PreciosinIVA= producto['precio']-iva;
-      row.cells[2].value = PreciosinIVA.toString();
+      PreciosinIVA= (producto['precio']-iva);
+      row.cells[2].value = (producto['precio']-ivapersonal).toString();
 
       totalIva=totalIva+iva;
-      row.cells[4].value = (producto['totalProducto']-iva).toStringAsFixed(2);
-      totalFactura= totalFactura+producto['totalProducto'];
+      row.cells[4].value = (producto['totalProducto']).toStringAsFixed(2);
+      totalFactura= totalFactura+producto['totalProducto']-iva;
     }
 
     grid.draw(page: page, bounds: ui.Rect.fromLTWH(0, 280, 0, 0));
