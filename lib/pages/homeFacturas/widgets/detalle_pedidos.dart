@@ -97,12 +97,13 @@ class DetallePedidoWidget extends StatelessWidget {
                     var pedido = pedidos[index];
                     double precioSinIva = 0.0;
                     double iva = 0.0;
-
+                    double ivaActual = (ivaGlobal/100.0);
+                    double sinIva = (1.0 - ivaActual);
                     if (!pedido['nombre'].startsWith('Pizza')) {
                       precioSinIva = double.parse(
-                          (pedido['precio'] * 0.88).toStringAsFixed(2));
+                          (pedido['precio'] * sinIva).toStringAsFixed(2));
                       iva = double.parse(
-                          (pedido['precio'] * 0.12).toStringAsFixed(2));
+                          (pedido['precio'] * ivaActual).toStringAsFixed(2));
                     }
 
                     // Verifica si es el primer producto o si el producto anterior era de un tipo diferente
@@ -244,6 +245,7 @@ class DetallePedidoWidget extends StatelessWidget {
                                     _pagoExitoso.value = true;
                                     showDialog(
                                       context: context,
+                                      barrierDismissible: false,
                                       builder: (BuildContext context) {
                                         return Center(
                                           child: Dialog(
@@ -270,6 +272,7 @@ class DetallePedidoWidget extends StatelessWidget {
                                                   // Botón para cancelar
                                                   ElevatedButton(
                                                     onPressed: () {
+                                                      _pagoExitoso.value = true;
                                                       Navigator.of(context)
                                                           .pop(); // Cierra el Dialog
                                                     },

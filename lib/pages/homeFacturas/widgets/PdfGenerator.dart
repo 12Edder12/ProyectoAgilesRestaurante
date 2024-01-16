@@ -66,8 +66,8 @@ class PdfGenerator {
         bounds: ui.Rect.fromLTWH(0, 160, 0, 0)
     );
 
-    /*
-    if(condicion){
+    
+    if(datosFactura['met_pag']==0){
       page.graphics.drawString(
           "Metodo de pago: Pago en Efectivo",
           PdfStandardFont(PdfFontFamily.timesRoman, 15),
@@ -75,12 +75,12 @@ class PdfGenerator {
       );
     }else{
       page.graphics.drawString(
-          "Metodo de pago: Pasarela de Pago",
+          "Metodo de pago: Stripe",
           PdfStandardFont(PdfFontFamily.timesRoman, 15),
           bounds: ui.Rect.fromLTWH(0, 225, 0, 0)
       );
     }
-    */
+    
     //INFORMACION DEL CLIENTE
     page.graphics.drawString(
         "Cedula/RUC: ${clienteSeleccionado?['ced_cli']}",
@@ -136,8 +136,8 @@ class PdfGenerator {
         row.cells[3].value = '0.00';
       } else {
         // Si el nombre no contiene "Pizza", poner 0 en la celda de IVA
-        iva = (producto['totalProducto'] * (12 / 100));
-        ivapersonal = (producto['precio'] * (12 / 100));
+        iva = (producto['totalProducto'] * (ivaGlobal / 100));
+        ivapersonal = (producto['precio'] * (ivaGlobal / 100));
         row.cells[3].value = iva.toStringAsFixed(2);
       }
 
@@ -257,13 +257,10 @@ Map<String, dynamic> facturaData = {
       final File file = File(emailpath);
       await file.writeAsBytes(bytes);
 
-      // Mostrar un mensaje (esto es opcional, puedes eliminarlo si lo deseas)
-      print('PDF generado en $emailpath');
-
       //ENVIO DEL PDF VIA EMAIL
-      //sendEmail('$emailpath', IDFactura);
+      sendEmail('$emailpath', IDFactura);
       saveAndLaunchFile(bytes, "Output.pdf");
-      //actualizarTodo(datosFactura['num_mes']);
+      actualizarTodo(datosFactura['num_mes']);
       // Cierra el documento
       document.dispose();
     } catch (error) {

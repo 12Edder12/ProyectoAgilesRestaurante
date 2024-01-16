@@ -1,3 +1,4 @@
+import 'package:Pizzeria_Guerrin/constants/globals.dart';
 import 'package:Pizzeria_Guerrin/pages/homeMesero/home_Mesero.dart';
 import 'package:Pizzeria_Guerrin/pages/homeMesero/tomar_mesa.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -280,7 +281,7 @@ Future<void> obtenerPedidosPorMesa(int numeroMesa) async {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  // Acción al presionar el botón "ATRAS"
+                  print (ivaGlobal);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const TomarMesa()),
