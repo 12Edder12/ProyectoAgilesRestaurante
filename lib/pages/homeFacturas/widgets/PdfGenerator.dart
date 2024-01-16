@@ -258,9 +258,9 @@ Map<String, dynamic> facturaData = {
       await file.writeAsBytes(bytes);
 
       //ENVIO DEL PDF VIA EMAIL
-      //sendEmail('$emailpath', IDFactura);
-      saveAndLaunchFile(bytes, "Output.pdf");
-      //actualizarTodo(datosFactura['num_mes']);
+      sendEmail('$emailpath', IDFactura);
+      //saveAndLaunchFile(bytes, "Output.pdf");
+      actualizarTodo(datosFactura['num_mes']);
       // Cierra el documento
       document.dispose();
     } catch (error) {
