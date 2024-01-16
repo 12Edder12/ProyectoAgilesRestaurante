@@ -8,7 +8,7 @@ class NuevoClienteModal extends StatelessWidget {
       onPressed: () {
         _mostrarFormularioNuevoCliente(context);
       },
-      child: Text('Añadir Cliente'),
+      child: const Text('Añadir Cliente'),
     );
   }
 
@@ -19,7 +19,7 @@ class NuevoClienteModal extends StatelessWidget {
         return Center(
           child: SingleChildScrollView(
             child: AlertDialog(
-              title: Text('Añadir Cliente'),
+              title: const Text('Añadir Cliente'),
               content: _formularioNuevoCliente(context),
             ),
           ),
@@ -43,7 +43,7 @@ class NuevoClienteModal extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextFormField(
-            decoration: InputDecoration(labelText: 'Cédula'),
+            decoration: const InputDecoration(labelText: 'Cédula'),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Por favor, ingrese la cédula';
@@ -53,7 +53,7 @@ class NuevoClienteModal extends StatelessWidget {
             onSaved: (value) => cedula = value!,
           ),
           TextFormField(
-            decoration: InputDecoration(labelText: 'Nombre'),
+            decoration:const  InputDecoration(labelText: 'Nombre'),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Por favor, ingrese el Nombre';
@@ -63,7 +63,7 @@ class NuevoClienteModal extends StatelessWidget {
             onSaved: (value) => nombre = value!,
           ),
           TextFormField(
-            decoration: InputDecoration(labelText: 'Apellido'),
+            decoration:const  InputDecoration(labelText: 'Apellido'),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Por favor, ingrese el apellido';
@@ -73,7 +73,7 @@ class NuevoClienteModal extends StatelessWidget {
             onSaved: (value) => apellido = value!,
           ),
           TextFormField(
-            decoration: InputDecoration(labelText: 'Correo'),
+            decoration:const  InputDecoration(labelText: 'Correo'),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Por favor, ingrese la correo';
@@ -110,10 +110,10 @@ class NuevoClienteModal extends StatelessWidget {
                           context); // Cerrar el modal después de enviar
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
+                     const    SnackBar(
+                          content:  Text(
                             'El cliente ya está registrado',
-                            style: TextStyle(
+                            style:  TextStyle(
                                 color: Colors.white), // Color de texto blanco
                           ),
                           backgroundColor: Colors.red, // Color de fondo rojo
@@ -125,14 +125,14 @@ class NuevoClienteModal extends StatelessWidget {
                     }
                   }
                 },
-                child: Text('Guardar'),
+                child:const  Text('Guardar'),
               ),
               ElevatedButton(
                 onPressed: () {
                   // Cerrar el modal sin hacer nada
                   Navigator.pop(context);
                 },
-                child: Text('Cancelar'),
+                child: const Text('Cancelar'),
               ),
             ],
           ),
@@ -170,7 +170,7 @@ class NuevoClienteModal extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(mensaje),
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
       ),
     );
   }

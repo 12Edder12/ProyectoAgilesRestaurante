@@ -76,8 +76,9 @@ class _Report3State extends State<Report3> {
 
   // Convertir los datos de totales diarios a puntos para el gráfico
   consolidatedTotals.forEach((date, total) {
-    spots.add(FlSpot(date.millisecondsSinceEpoch.toDouble(), total));
-  });
+  double truncatedTotal = double.parse(total.toStringAsFixed(2));
+  spots.add(FlSpot(date.millisecondsSinceEpoch.toDouble(), truncatedTotal));
+});
 
   // Crear la línea de datos del gráfico
   LineChartBarData lineChartBarData = LineChartBarData(
