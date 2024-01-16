@@ -71,13 +71,13 @@ class PdfGenerator {
       page.graphics.drawString(
           "Metodo de pago: Pago en Efectivo",
           PdfStandardFont(PdfFontFamily.timesRoman, 15),
-          bounds: ui.Rect.fromLTWH(0, 225, 0, 0)
+          bounds: ui.Rect.fromLTWH(0, 185, 0, 0)
       );
     }else{
       page.graphics.drawString(
           "Metodo de pago: Stripe",
           PdfStandardFont(PdfFontFamily.timesRoman, 15),
-          bounds: ui.Rect.fromLTWH(0, 225, 0, 0)
+          bounds: ui.Rect.fromLTWH(0, 185, 0, 0)
       );
     }
     
@@ -85,24 +85,24 @@ class PdfGenerator {
     page.graphics.drawString(
         "Cedula/RUC: ${clienteSeleccionado?['ced_cli']}",
         PdfStandardFont(PdfFontFamily.timesRoman, 15),
-        bounds: ui.Rect.fromLTWH(0, 225, 0, 0)
+        bounds: ui.Rect.fromLTWH(0, 200, 0, 0)
     );
     page.graphics.drawString(
         "Cliente: ${clienteSeleccionado?['nom_cli']} ${clienteSeleccionado?['ape_cli']}",
         PdfStandardFont(PdfFontFamily.timesRoman, 15),
-        bounds: ui.Rect.fromLTWH(0, 240, 0, 0)
+        bounds: ui.Rect.fromLTWH(0, 215, 0, 0)
     );
     page.graphics.drawString(
         "Correo Electronico: ${clienteSeleccionado?['cor_cli']}",
         PdfStandardFont(PdfFontFamily.timesRoman, 15),
-        bounds: ui.Rect.fromLTWH(0, 255, 0, 0)
+        bounds: ui.Rect.fromLTWH(0, 230, 0, 0)
     );
 
     //LINEA SEPARADORA
     page.graphics.drawString(
         "----------------------------------------------------------------------------------------------------",
         PdfStandardFont(PdfFontFamily.timesRoman, 20),
-        bounds: ui.Rect.fromLTWH(0, 235, 0, 0)
+        bounds: ui.Rect.fromLTWH(0, 237, 0, 0)
     );
 
 
@@ -149,7 +149,7 @@ class PdfGenerator {
       totalFactura= totalFactura+producto['totalProducto']-iva;
     }
 
-    grid.draw(page: page, bounds: ui.Rect.fromLTWH(0, 280, 0, 0));
+    grid.draw(page: page, bounds: ui.Rect.fromLTWH(0, 255, 0, 0));
 
     //LINEA SEPARADORA DE LOS PRODUCTOS Y EL TOTAL
     page.graphics.drawString(
@@ -258,9 +258,9 @@ Map<String, dynamic> facturaData = {
       await file.writeAsBytes(bytes);
 
       //ENVIO DEL PDF VIA EMAIL
-      sendEmail('$emailpath', IDFactura);
+      //sendEmail('$emailpath', IDFactura);
       saveAndLaunchFile(bytes, "Output.pdf");
-      actualizarTodo(datosFactura['num_mes']);
+      //actualizarTodo(datosFactura['num_mes']);
       // Cierra el documento
       document.dispose();
     } catch (error) {
