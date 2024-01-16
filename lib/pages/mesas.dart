@@ -241,10 +241,18 @@ Future<void> obtenerPedidosPorMesa(int numeroMesa) async {
                   alignment: Alignment.bottomCenter,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeMesero2()));
+                      if (selectedMesa == 0) {
+      // Si ninguna mesa ha sido seleccionada, muestra un mensaje de error
+      ScaffoldMessenger.of(context).showSnackBar(
+       const SnackBar(content: Text('Por favor, selecciona una mesa primero')),
+      );
+    } else {
+      // Si una mesa ha sido seleccionada, navega a la siguiente pestaña
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeMesero2()),
+      );
+    }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,

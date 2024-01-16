@@ -39,31 +39,31 @@ class PdfGenerator {
     page.graphics.drawString(
         "PIZZERIA GUERRIN",
         PdfStandardFont(PdfFontFamily.timesRoman, 50),
-        bounds: ui.Rect.fromLTWH(0, 0, 250, 0)
+        bounds: const ui.Rect.fromLTWH(0, 0, 250, 0)
     );
     //LOGO DEL RESTAURANTE
     page.graphics.drawImage(
       PdfBitmap(await _readImageData('res_logo.png')),
-      ui.Rect.fromLTWH(350,0,130,130)
+     const  ui.Rect.fromLTWH(350,0,130,130)
     );
     //LINEA DIVISORA 1
     page.graphics.drawString(
       "----------------------------------------------------------------------------------------------------",
       PdfStandardFont(PdfFontFamily.timesRoman, 20),
-      bounds: ui.Rect.fromLTWH(0, 130, 0, 0)
+      bounds:const  ui.Rect.fromLTWH(0, 130, 0, 0)
     );
     //INFORMACION DE LA FACTURA
     page.graphics.drawString(
       IDFactura,
       PdfStandardFont(PdfFontFamily.timesRoman, 15),
-      bounds: ui.Rect.fromLTWH(0, 145, 0, 0)
+      bounds:const  ui.Rect.fromLTWH(0, 145, 0, 0)
     );
 
 
     page.graphics.drawString(
         "Fecha de Facturacion: $formattedDate",
         PdfStandardFont(PdfFontFamily.timesRoman, 15),
-        bounds: ui.Rect.fromLTWH(0, 160, 0, 0)
+        bounds: const ui.Rect.fromLTWH(0, 160, 0, 0)
     );
 
     
@@ -71,13 +71,13 @@ class PdfGenerator {
       page.graphics.drawString(
           "Metodo de pago: Pago en Efectivo",
           PdfStandardFont(PdfFontFamily.timesRoman, 15),
-          bounds: ui.Rect.fromLTWH(0, 185, 0, 0)
+          bounds: const  ui.Rect.fromLTWH(0, 185, 0, 0)
       );
     }else{
       page.graphics.drawString(
           "Metodo de pago: Stripe",
           PdfStandardFont(PdfFontFamily.timesRoman, 15),
-          bounds: ui.Rect.fromLTWH(0, 185, 0, 0)
+          bounds:const  ui.Rect.fromLTWH(0, 185, 0, 0)
       );
     }
     
@@ -85,24 +85,24 @@ class PdfGenerator {
     page.graphics.drawString(
         "Cedula/RUC: ${clienteSeleccionado?['ced_cli']}",
         PdfStandardFont(PdfFontFamily.timesRoman, 15),
-        bounds: ui.Rect.fromLTWH(0, 200, 0, 0)
+        bounds:const  ui.Rect.fromLTWH(0, 200, 0, 0)
     );
     page.graphics.drawString(
         "Cliente: ${clienteSeleccionado?['nom_cli']} ${clienteSeleccionado?['ape_cli']}",
         PdfStandardFont(PdfFontFamily.timesRoman, 15),
-        bounds: ui.Rect.fromLTWH(0, 215, 0, 0)
+        bounds: const ui.Rect.fromLTWH(0, 215, 0, 0)
     );
     page.graphics.drawString(
         "Correo Electronico: ${clienteSeleccionado?['cor_cli']}",
         PdfStandardFont(PdfFontFamily.timesRoman, 15),
-        bounds: ui.Rect.fromLTWH(0, 230, 0, 0)
+        bounds: const ui.Rect.fromLTWH(0, 230, 0, 0)
     );
 
     //LINEA SEPARADORA
     page.graphics.drawString(
         "----------------------------------------------------------------------------------------------------",
         PdfStandardFont(PdfFontFamily.timesRoman, 20),
-        bounds: ui.Rect.fromLTWH(0, 237, 0, 0)
+        bounds: const ui.Rect.fromLTWH(0, 237, 0, 0)
     );
 
 
@@ -149,13 +149,13 @@ class PdfGenerator {
       totalFactura= totalFactura+producto['totalProducto']-iva;
     }
 
-    grid.draw(page: page, bounds: ui.Rect.fromLTWH(0, 255, 0, 0));
+    grid.draw(page: page, bounds: const ui.Rect.fromLTWH(0, 255, 0, 0));
 
     //LINEA SEPARADORA DE LOS PRODUCTOS Y EL TOTAL
     page.graphics.drawString(
         "----------------------------------------------------------------------------------------------------",
         PdfStandardFont(PdfFontFamily.timesRoman, 20),
-        bounds: ui.Rect.fromLTWH(0, 570, 0, 0)
+        bounds: const ui.Rect.fromLTWH(0, 570, 0, 0)
     );
 
     // Crear el PdfGrid
@@ -183,40 +183,40 @@ class PdfGenerator {
     totalRow.cells[0].value = 'Total Factura';
     totalRow.cells[1].value = (totalFactura+totalIva).toStringAsFixed(2);
 
-    totalGrid.draw(page: page, bounds: ui.Rect.fromLTWH(300, 590, 500, 0));
+    totalGrid.draw(page: page, bounds: const  ui.Rect.fromLTWH(300, 590, 500, 0));
 
     //PIE DE PAGINA DE LA FACTURA
     //LINEA SEPARADORA
     page.graphics.drawString(
         "----------------------------------------------------------------------------------------------------",
         PdfStandardFont(PdfFontFamily.timesRoman, 20),
-        bounds: ui.Rect.fromLTWH(0, 650, 0, 0)
+        bounds: const ui.Rect.fromLTWH(0, 650, 0, 0)
     );
     page.graphics.drawString(
         "PIZZERIA GUERRIN",
         PdfStandardFont(PdfFontFamily.timesRoman, 12),
-        bounds: ui.Rect.fromLTWH(0, 665, 0, 0)
+        bounds: const  ui.Rect.fromLTWH(0, 665, 0, 0)
     );
     page.graphics.drawString(
         "Direccion: Av. los Guaytambos, Ambato 180101",
         PdfStandardFont(PdfFontFamily.timesRoman, 12),
-        bounds: ui.Rect.fromLTWH(0, 680, 0, 0)
+        bounds: const  ui.Rect.fromLTWH(0, 680, 0, 0)
     );
 
     page.graphics.drawString(
         "Telefono 0963307063",
         PdfStandardFont(PdfFontFamily.timesRoman, 12),
-        bounds: ui.Rect.fromLTWH(0, 695, 0, 0)
+        bounds: const  ui.Rect.fromLTWH(0, 695, 0, 0)
     );
     page.graphics.drawString(
         "RUC: 0296537341001",
         PdfStandardFont(PdfFontFamily.timesRoman, 12),
-        bounds: ui.Rect.fromLTWH(0, 710, 0, 0)
+        bounds: const  ui.Rect.fromLTWH(0, 710, 0, 0)
     );
     page.graphics.drawString(
         "Correo: pizzeriaguerrin@gmail.com",
         PdfStandardFont(PdfFontFamily.timesRoman, 12),
-        bounds: ui.Rect.fromLTWH(0, 725, 0, 0)
+        bounds: const  ui.Rect.fromLTWH(0, 725, 0, 0)
     );
 
   Future<void> saveFacturaToFirebase(Map<String, dynamic> facturaData) async {
@@ -264,7 +264,7 @@ Map<String, dynamic> facturaData = {
       // Cierra el documento
       document.dispose();
     } catch (error) {
-      print('Error al guardar el archivo PDF: $error');
+    //  print('Error al guardar el archivo PDF: $error');
     }
 
   }
@@ -340,7 +340,7 @@ Future<void> actualizarTodo(int numMesa) async {
   estado_stripe = false;
   Navigator.push(
   tomarMesa!,
-  MaterialPageRoute(builder: (context) => TomarMesa()),
+  MaterialPageRoute(builder: (context) => const  TomarMesa()),
 );
 }
 
