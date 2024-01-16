@@ -28,6 +28,6 @@ Future<void> fetchIvaFromFirebase() async {
     ivaGlobal = (valorIva is int) ? valorIva.toDouble() : (valorIva ?? 0.0);
   
   } catch (e) {
-    print('Error al obtener el IVA de Firebase: $e');
+   // print('Error al obtener el IVA de Firebase: $e');
   }
 }
