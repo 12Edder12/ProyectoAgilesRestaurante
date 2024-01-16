@@ -66,21 +66,36 @@ class PdfGenerator {
         bounds: ui.Rect.fromLTWH(0, 160, 0, 0)
     );
 
+    /*
+    if(condicion){
+      page.graphics.drawString(
+          "Metodo de pago: Pago en Efectivo",
+          PdfStandardFont(PdfFontFamily.timesRoman, 15),
+          bounds: ui.Rect.fromLTWH(0, 225, 0, 0)
+      );
+    }else{
+      page.graphics.drawString(
+          "Metodo de pago: Pasarela de Pago",
+          PdfStandardFont(PdfFontFamily.timesRoman, 15),
+          bounds: ui.Rect.fromLTWH(0, 225, 0, 0)
+      );
+    }
+    */
     //INFORMACION DEL CLIENTE
     page.graphics.drawString(
         "Cedula/RUC: ${clienteSeleccionado?['ced_cli']}",
         PdfStandardFont(PdfFontFamily.timesRoman, 15),
-        bounds: ui.Rect.fromLTWH(0, 185, 0, 0)
+        bounds: ui.Rect.fromLTWH(0, 225, 0, 0)
     );
     page.graphics.drawString(
         "Cliente: ${clienteSeleccionado?['nom_cli']} ${clienteSeleccionado?['ape_cli']}",
         PdfStandardFont(PdfFontFamily.timesRoman, 15),
-        bounds: ui.Rect.fromLTWH(0, 200, 0, 0)
+        bounds: ui.Rect.fromLTWH(0, 240, 0, 0)
     );
     page.graphics.drawString(
         "Correo Electronico: ${clienteSeleccionado?['cor_cli']}",
         PdfStandardFont(PdfFontFamily.timesRoman, 15),
-        bounds: ui.Rect.fromLTWH(0, 215, 0, 0)
+        bounds: ui.Rect.fromLTWH(0, 255, 0, 0)
     );
 
     //LINEA SEPARADORA
