@@ -9,6 +9,7 @@ class DetalleCliente extends StatefulWidget {
   final int numero;
   final Map<String, dynamic>? paymenItem;
 
+
   const DetalleCliente({Key? key, required this.numero, this.paymenItem})
       : super(key: key);
 
@@ -67,4 +68,5 @@ class _DetalleClienteState extends State<DetalleCliente> {
       ),
     );
   }
+
 }
