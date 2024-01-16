@@ -26,6 +26,10 @@ class PdfGenerator {
     double totalFactura = 0;
     String IDFactura = "Factura: ${fechaNumerica}${numeroFactura}${clienteSeleccionado?['ced_cli']}001FP";
     String IDFactura1 = "${fechaNumerica}${numeroFactura}${clienteSeleccionado?['ced_cli']}001FP";
+    double PreciosinIVA = 0;
+    double iva = 0;
+    double totalIva = 0;
+    double ivapersonal = 0;
 
     // Crear el documento PDF
     PdfDocument document = PdfDocument();
@@ -62,33 +66,43 @@ class PdfGenerator {
         bounds: ui.Rect.fromLTWH(0, 160, 0, 0)
     );
 
+    /*
+    if(condicion){
+      page.graphics.drawString(
+          "Metodo de pago: Pago en Efectivo",
+          PdfStandardFont(PdfFontFamily.timesRoman, 15),
+          bounds: ui.Rect.fromLTWH(0, 225, 0, 0)
+      );
+    }else{
+      page.graphics.drawString(
+          "Metodo de pago: Pasarela de Pago",
+          PdfStandardFont(PdfFontFamily.timesRoman, 15),
+          bounds: ui.Rect.fromLTWH(0, 225, 0, 0)
+      );
+    }
+    */
     //INFORMACION DEL CLIENTE
     page.graphics.drawString(
         "Cedula/RUC: ${clienteSeleccionado?['ced_cli']}",
         PdfStandardFont(PdfFontFamily.timesRoman, 15),
-        bounds: ui.Rect.fromLTWH(0, 185, 0, 0)
+        bounds: ui.Rect.fromLTWH(0, 225, 0, 0)
     );
     page.graphics.drawString(
         "Cliente: ${clienteSeleccionado?['nom_cli']} ${clienteSeleccionado?['ape_cli']}",
         PdfStandardFont(PdfFontFamily.timesRoman, 15),
-        bounds: ui.Rect.fromLTWH(0, 200, 0, 0)
-    );
-    page.graphics.drawString(
-        "Direccion: Av. los Guaytambos, Ambato 180101",
-        PdfStandardFont(PdfFontFamily.timesRoman, 15),
-        bounds: ui.Rect.fromLTWH(0, 215, 0, 0)
+        bounds: ui.Rect.fromLTWH(0, 240, 0, 0)
     );
     page.graphics.drawString(
         "Correo Electronico: ${clienteSeleccionado?['cor_cli']}",
         PdfStandardFont(PdfFontFamily.timesRoman, 15),
-        bounds: ui.Rect.fromLTWH(0, 230, 0, 0)
+        bounds: ui.Rect.fromLTWH(0, 255, 0, 0)
     );
 
     //LINEA SEPARADORA
     page.graphics.drawString(
         "----------------------------------------------------------------------------------------------------",
         PdfStandardFont(PdfFontFamily.timesRoman, 20),
-        bounds: ui.Rect.fromLTWH(0, 250, 0, 0)
+        bounds: ui.Rect.fromLTWH(0, 235, 0, 0)
     );
 
 
@@ -99,14 +113,15 @@ class PdfGenerator {
       cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2),
     );
 
-    grid.columns.add(count: 4);
+    grid.columns.add(count: 5);
     grid.headers.add(1);
 
     PdfGridRow header = grid.headers[0];
     header.cells[0].value = 'Cantidad';
     header.cells[1].value = 'Nombre del Producto';
     header.cells[2].value = 'Precio Unitario';
-    header.cells[3].value = 'Total';
+    header.cells[3].value = 'IVA';
+    header.cells[4].value = 'Total';
 
     // FOR PARA CONTABILIZAR LOS PRODUCTOS
     List<Map<String, dynamic>> productose = (detallesPedido['productos'] as List).cast<Map<String, dynamic>>();
@@ -114,9 +129,24 @@ class PdfGenerator {
       PdfGridRow row = grid.rows.add();
       row.cells[0].value = producto['cantidad'].toString();
       row.cells[1].value = producto['nombre'];
-      row.cells[2].value = producto['precio'].toString();
-      row.cells[3].value = producto['totalProducto'].toStringAsFixed(2);
-      totalFactura= totalFactura+producto['totalProducto'];
+
+      // Verificar si el tipo es "bebida" para aplicar el IVA
+      if (producto['nombre'].toLowerCase().contains('pizza')) {
+        iva = 0.00;
+        row.cells[3].value = '0.00';
+      } else {
+        // Si el nombre no contiene "Pizza", poner 0 en la celda de IVA
+        iva = (producto['totalProducto'] * (12 / 100));
+        ivapersonal = (producto['precio'] * (12 / 100));
+        row.cells[3].value = iva.toStringAsFixed(2);
+      }
+
+      PreciosinIVA= (producto['precio']-iva);
+      row.cells[2].value = (producto['precio']-ivapersonal).toString();
+
+      totalIva=totalIva+iva;
+      row.cells[4].value = (producto['totalProducto']).toStringAsFixed(2);
+      totalFactura= totalFactura+producto['totalProducto']-iva;
     }
 
     grid.draw(page: page, bounds: ui.Rect.fromLTWH(0, 280, 0, 0));
@@ -125,9 +155,10 @@ class PdfGenerator {
     page.graphics.drawString(
         "----------------------------------------------------------------------------------------------------",
         PdfStandardFont(PdfFontFamily.timesRoman, 20),
-        bounds: ui.Rect.fromLTWH(0, 620, 0, 0)
+        bounds: ui.Rect.fromLTWH(0, 570, 0, 0)
     );
 
+    // Crear el PdfGrid
     // Crear el PdfGrid
     PdfGrid totalGrid = PdfGrid();
     totalGrid.style = PdfGridStyle(
@@ -136,12 +167,23 @@ class PdfGenerator {
     );
 
     totalGrid.columns.add(count: 2);
+
+// Fila para el Subtotal
+    PdfGridRow subtotalRow = totalGrid.rows.add();
+    subtotalRow.cells[0].value = 'Subtotal';
+    subtotalRow.cells[1].value = totalFactura.toStringAsFixed(2);
+
+// Fila para el IVA
+    PdfGridRow ivaRow = totalGrid.rows.add();
+    ivaRow.cells[0].value = 'IVA';
+    ivaRow.cells[1].value = totalIva.toStringAsFixed(2);
+
+// Fila para el Total Factura
     PdfGridRow totalRow = totalGrid.rows.add();
-
     totalRow.cells[0].value = 'Total Factura';
-    totalRow.cells[1].value = totalFactura.toStringAsFixed(2);
+    totalRow.cells[1].value = (totalFactura+totalIva).toStringAsFixed(2);
 
-    totalGrid.draw(page: page, bounds: ui.Rect.fromLTWH(300, 640, 500, 0));
+    totalGrid.draw(page: page, bounds: ui.Rect.fromLTWH(300, 590, 500, 0));
 
     //PIE DE PAGINA DE LA FACTURA
     //LINEA SEPARADORA
@@ -156,7 +198,7 @@ class PdfGenerator {
         bounds: ui.Rect.fromLTWH(0, 665, 0, 0)
     );
     page.graphics.drawString(
-        "Direccion: Ennrique Segoviano",
+        "Direccion: Av. los Guaytambos, Ambato 180101",
         PdfStandardFont(PdfFontFamily.timesRoman, 12),
         bounds: ui.Rect.fromLTWH(0, 680, 0, 0)
     );
@@ -219,9 +261,9 @@ Map<String, dynamic> facturaData = {
       print('PDF generado en $emailpath');
 
       //ENVIO DEL PDF VIA EMAIL
-      sendEmail('$emailpath', IDFactura);
-      //saveAndLaunchFile(bytes, "Output.pdf");
-      actualizarTodo(datosFactura['num_mes']);
+      //sendEmail('$emailpath', IDFactura);
+      saveAndLaunchFile(bytes, "Output.pdf");
+      //actualizarTodo(datosFactura['num_mes']);
       // Cierra el documento
       document.dispose();
     } catch (error) {
@@ -238,7 +280,7 @@ Future<Uint8List> _readImageData(String name) async {
 sendEmail(String emailpath, String IDFactura) async {
   final Email email = Email(
     body: 'Factura Recibida con el ID $IDFactura',
-    subject: 'Factura - Pizzeria Guerrin',
+    subject: 'Factura - Pizzeria Guerrin $IDFactura',
     recipients: ['${clienteSeleccionado?['cor_cli']}'],
     //cc: ['cc@example.com'],
     //bcc: ['bcc@example.com'],
