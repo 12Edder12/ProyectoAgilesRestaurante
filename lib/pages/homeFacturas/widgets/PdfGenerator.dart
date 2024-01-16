@@ -21,7 +21,7 @@ class PdfGenerator {
     Map<String, dynamic> detallesPedido = await productosFuture;
     await initializeDateFormatting('es');
     DateTime currentDate = DateTime.now();
-    String formattedDate = DateFormat('EEEE, d MMMM y', 'es').format(currentDate);
+    String formattedDate = DateFormat('EEEE, d MMMM y, H:mm', 'es').format(currentDate);
     String fechaNumerica = DateFormat('yyyyMMdd').format(currentDate);
     double totalFactura = 0;
     String IDFactura = "Factura: ${fechaNumerica}${numeroFactura}${clienteSeleccionado?['ced_cli']}001FP";
