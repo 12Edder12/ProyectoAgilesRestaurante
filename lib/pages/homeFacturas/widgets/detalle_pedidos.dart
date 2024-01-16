@@ -32,7 +32,7 @@ class DetallePedidoWidget extends StatelessWidget {
       future: obtenerPedidosPorMesa(numeroMesa),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Ocurrió un error: ${snapshot.error}');
         } else {
@@ -267,7 +267,7 @@ class DetallePedidoWidget extends StatelessWidget {
                                                       metodoPago: 0),
                                                   
                                                   // Espaciador
-                                                  SizedBox(height: 20),
+                                               const    SizedBox(height: 20),
                                                   
                                                   // Botón para cancelar
                                                   ElevatedButton(
@@ -285,7 +285,7 @@ class DetallePedidoWidget extends StatelessWidget {
                                                       onPrimary: Colors
                                                           .white, // Color de texto blanco
                                                       padding:
-                                                          EdgeInsets.symmetric(
+                                                       const    EdgeInsets.symmetric(
                                                               horizontal: 20,
                                                               vertical:
                                                                   12), // Padding
@@ -318,8 +318,8 @@ class DetallePedidoWidget extends StatelessWidget {
                                   }
                                 }
                               : null,
-                          icon: Icon(Icons.receipt_long),
-                          label: Text('Facturar'),
+                          icon: const Icon(Icons.receipt_long),
+                          label: const Text('Facturar'),
                         );
                       },
                     ),
@@ -348,7 +348,7 @@ class DetallePedidoWidget extends StatelessWidget {
                                             numeroMesa: this.numeroMesa,
                                             metodoPago: 0),
                                         // Espaciador
-                                        SizedBox(height: 20),
+                                      const   SizedBox(height: 20),
 
                                         // Botón para cancelar
                                         ElevatedButton(
@@ -362,7 +362,7 @@ class DetallePedidoWidget extends StatelessWidget {
                                                 .red, // Color de fondo rojo
                                             onPrimary: Colors
                                                 .white, // Color de texto blanco
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 20,
                                                 vertical: 12), // Padding
                                             shape: RoundedRectangleBorder(
@@ -407,7 +407,7 @@ class DetallePedidoWidget extends StatelessWidget {
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(top: 10.0),
+                margin: const EdgeInsets.only(top: 10.0),
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   color: Colors.green[50],

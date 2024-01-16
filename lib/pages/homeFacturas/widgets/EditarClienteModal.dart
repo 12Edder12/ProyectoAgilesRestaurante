@@ -42,31 +42,31 @@ class _EditarClienteModalState extends State<EditarClienteModal> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+           const  Text(
               'Editar Cliente',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 20),
+         const    SizedBox(height: 20),
             TextField(
               controller: _cedulaController,
-              decoration: InputDecoration(labelText: 'Cedula'),
+              decoration: const InputDecoration(labelText: 'Cedula'),
             ),
             TextField(
               controller: _nombreController,
-              decoration: InputDecoration(labelText: 'Nombre'),
+              decoration: const InputDecoration(labelText: 'Nombre'),
             ),
             TextField(
               controller: _apellidoController,
-              decoration: InputDecoration(labelText: 'Apellido'),
+              decoration:const  InputDecoration(labelText: 'Apellido'),
             ),
             TextField(
               controller: _correoController,
-              decoration: InputDecoration(labelText: 'Correo'),
+              decoration: const InputDecoration(labelText: 'Correo'),
             ),
-            SizedBox(height: 20),
+           const  SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -75,7 +75,7 @@ class _EditarClienteModalState extends State<EditarClienteModal> {
                     // Cerrar el modal sin guardar cambios
                     Navigator.of(context).pop();
                   },
-                  child: Text('Cancelar'),
+                  child: const Text('Cancelar'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -86,10 +86,10 @@ class _EditarClienteModalState extends State<EditarClienteModal> {
                       Navigator.of(context).pop();
                     } else {
                       // Mostrar mensaje de error o hacer algo en caso de datos no válidos
-                      print('Datos no válidos');
+                    //  print('Datos no válidos');
                     }
                   },
-                  child: Text('Guardar'),
+                  child:const  Text('Guardar'),
                 ),
               ],
             ),
@@ -109,9 +109,9 @@ class _EditarClienteModalState extends State<EditarClienteModal> {
     final clientService = ClientService();
     try {
       await clientService.updateClient(clienteSeleccionado?['idFirebase'], newUserData);
-      print("Cliente actualizado");
+   //   print("Cliente actualizado");
     } catch (e) {
-      print("Cliente fallo");
+   //   print("Cliente fallo");
     }
   }
 
@@ -120,7 +120,7 @@ class _EditarClienteModalState extends State<EditarClienteModal> {
     String cedula = _cedulaController.text;
     if (!validarCedulaEcuatoriana(cedula)) {
       _mostrarMensajeError('La cédula ingresada no es válida.');
-      print(cedula);
+    //  print(cedula);
       return false;
     }
 
@@ -146,7 +146,7 @@ class _EditarClienteModalState extends State<EditarClienteModal> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(mensaje),
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
       ),
     );
   }
