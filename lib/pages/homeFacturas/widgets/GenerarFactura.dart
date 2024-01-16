@@ -34,18 +34,18 @@ class BotonEnviarFactura extends StatelessWidget {
           ),
         ),
         Text('Cedula/RUC: ${clienteSeleccionado?['ced_cli']}',
-            style: TextStyle(fontSize: 14)),
-        SizedBox(height: 5), // Espacio vertical
+            style: const TextStyle(fontSize: 14)),
+      const   SizedBox(height: 5), // Espacio vertical
         Text('Nombre: ${clienteSeleccionado?['nom_cli']}',
-            style: TextStyle(fontSize: 14)),
-        SizedBox(height: 5), // Espacio vertical
+            style:const  TextStyle(fontSize: 14)),
+       const  SizedBox(height: 5), // Espacio vertical
         Text('Apellido: ${clienteSeleccionado?['ape_cli']}',
-            style: TextStyle(fontSize: 14)),
-        SizedBox(height: 5), // Espacio vertical
+            style:const  TextStyle(fontSize: 14)),
+     const    SizedBox(height: 5), // Espacio vertical
         Text('Correo: ${clienteSeleccionado?['cor_cli']}',
-            style: TextStyle(fontSize: 14)),
+            style: const TextStyle(fontSize: 14)),
         Padding(
-          padding: EdgeInsets.only(top: 20), // Espacio superior de 20 píxeles
+          padding: const EdgeInsets.only(top: 20), // Espacio superior de 20 píxeles
           child: ElevatedButton(
             onPressed: () async {
               if (clienteSeleccionado != null) {
@@ -63,12 +63,12 @@ class BotonEnviarFactura extends StatelessWidget {
                 _mostrarError(context);
               }
             },
-            child: Text('Confirmar Factura'),
+            child: const Text('Confirmar Factura'),
             style: ElevatedButton.styleFrom(
               primary: Colors.blue, // Color de fondo azul
               onPrimary: Colors.white, // Color de texto blanco
               padding:
-                  EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Padding
+               const    EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Padding
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10), // Bordes redondeados
               ),
@@ -85,11 +85,11 @@ class BotonEnviarFactura extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Acción Cancelada'),
-          content: Text('La acción ha sido cancelada.'),
+          title:const  Text('Acción Cancelada'),
+          content: const Text('La acción ha sido cancelada.'),
           actions: <Widget>[
             TextButton(
-              child: Text('Aceptar'),
+              child:const  Text('Aceptar'),
               onPressed: () {
                 Navigator.of(context).pop(); // Cierra el modal
               },
@@ -106,11 +106,11 @@ class BotonEnviarFactura extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Factura Generada y Enviada'),
-          content: Text('La factura ha sido generada y enviada exitosamente.'),
+          title: const Text('Factura Generada y Enviada'),
+          content:const  Text('La factura ha sido generada y enviada exitosamente.'),
           actions: <Widget>[
             TextButton(
-              child: Text('Cerrar'),
+              child:const  Text('Cerrar'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -127,12 +127,12 @@ class BotonEnviarFactura extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error'),
-          content: Text(
+          title:const  Text('Error'),
+          content:const  Text(
               'Por favor, selecciona un cliente antes de enviar la factura.'),
           actions: <Widget>[
             TextButton(
-              child: Text('Cerrar'),
+              child:const  Text('Cerrar'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

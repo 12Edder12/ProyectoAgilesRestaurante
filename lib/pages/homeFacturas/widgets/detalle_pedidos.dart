@@ -8,7 +8,6 @@ import 'package:uuid/uuid.dart';
 
 final ValueNotifier<bool> _pagoExitoso = ValueNotifier<bool>(estado_stripe);
 
-
 class DetallePedidoWidget extends StatelessWidget {
   final int numeroMesa;
   final int parametro;
@@ -21,7 +20,6 @@ class DetallePedidoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     var uuid = const Uuid();
     numeroFactura =
         uuid.v1().substring(0, 10); // Genera un UUID para el número de factura
@@ -32,7 +30,7 @@ class DetallePedidoWidget extends StatelessWidget {
       future: obtenerPedidosPorMesa(numeroMesa),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Ocurrió un error: ${snapshot.error}');
         } else {
@@ -97,12 +95,13 @@ class DetallePedidoWidget extends StatelessWidget {
                     var pedido = pedidos[index];
                     double precioSinIva = 0.0;
                     double iva = 0.0;
-
+                    double ivaActual = (ivaGlobal / 100.0);
+                    double sinIva = (1.0 - ivaActual);
                     if (!pedido['nombre'].startsWith('Pizza')) {
                       precioSinIva = double.parse(
-                          (pedido['precio'] * 0.88).toStringAsFixed(2));
+                          (pedido['precio'] * sinIva).toStringAsFixed(2));
                       iva = double.parse(
-                          (pedido['precio'] * 0.12).toStringAsFixed(2));
+                          (pedido['precio'] * ivaActual).toStringAsFixed(2));
                     }
 
                     // Verifica si es el primer producto o si el producto anterior era de un tipo diferente
@@ -222,7 +221,8 @@ class DetallePedidoWidget extends StatelessWidget {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                            'El pago no se pudo procesar. Por favor, inténtalo de nuevo.' + e.toString()),
+                                            'El pago no se pudo procesar. Por favor, inténtalo de nuevo.' +
+                                                e.toString()),
                                         backgroundColor:
                                             Colors.red, // Color de fondo rojo
                                       ),
@@ -244,6 +244,7 @@ class DetallePedidoWidget extends StatelessWidget {
                                     _pagoExitoso.value = true;
                                     showDialog(
                                       context: context,
+                                      barrierDismissible: false,
                                       builder: (BuildContext context) {
                                         return Center(
                                           child: Dialog(
@@ -263,13 +264,14 @@ class DetallePedidoWidget extends StatelessWidget {
                                                       numeroMesa:
                                                           this.numeroMesa,
                                                       metodoPago: 0),
-                                                  
+
                                                   // Espaciador
-                                                  SizedBox(height: 20),
-                                                  
+                                                  const SizedBox(height: 20),
+
                                                   // Botón para cancelar
                                                   ElevatedButton(
                                                     onPressed: () {
+                                                      _pagoExitoso.value = true;
                                                       Navigator.of(context)
                                                           .pop(); // Cierra el Dialog
                                                     },
@@ -281,11 +283,11 @@ class DetallePedidoWidget extends StatelessWidget {
                                                           .red, // Color de fondo rojo
                                                       onPrimary: Colors
                                                           .white, // Color de texto blanco
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 20,
-                                                              vertical:
-                                                                  12), // Padding
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 20,
+                                                          vertical:
+                                                              12), // Padding
                                                       shape:
                                                           RoundedRectangleBorder(
                                                         borderRadius:
@@ -315,8 +317,8 @@ class DetallePedidoWidget extends StatelessWidget {
                                   }
                                 }
                               : null,
-                          icon: Icon(Icons.receipt_long),
-                          label: Text('Facturar'),
+                          icon: const Icon(Icons.receipt_long),
+                          label: const Text('Facturar'),
                         );
                       },
                     ),
@@ -345,7 +347,7 @@ class DetallePedidoWidget extends StatelessWidget {
                                             numeroMesa: this.numeroMesa,
                                             metodoPago: 0),
                                         // Espaciador
-                                        SizedBox(height: 20),
+                                        const SizedBox(height: 20),
 
                                         // Botón para cancelar
                                         ElevatedButton(
@@ -359,7 +361,7 @@ class DetallePedidoWidget extends StatelessWidget {
                                                 .red, // Color de fondo rojo
                                             onPrimary: Colors
                                                 .white, // Color de texto blanco
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 20,
                                                 vertical: 12), // Padding
                                             shape: RoundedRectangleBorder(
@@ -404,7 +406,7 @@ class DetallePedidoWidget extends StatelessWidget {
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(top: 10.0),
+                margin: const EdgeInsets.only(top: 10.0),
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   color: Colors.green[50],
@@ -415,11 +417,12 @@ class DetallePedidoWidget extends StatelessWidget {
                   children: [
                     const Icon(Icons.attach_money, color: Colors.green),
                     Text(
-                      'Total: $total',
+                      'Total: ${total.toStringAsFixed(2)}',
                       style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
                     ),
                   ],
                 ),

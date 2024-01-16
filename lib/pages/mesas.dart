@@ -1,3 +1,4 @@
+import 'package:Pizzeria_Guerrin/constants/globals.dart';
 import 'package:Pizzeria_Guerrin/pages/homeMesero/home_Mesero.dart';
 import 'package:Pizzeria_Guerrin/pages/homeMesero/tomar_mesa.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -240,10 +241,18 @@ Future<void> obtenerPedidosPorMesa(int numeroMesa) async {
                   alignment: Alignment.bottomCenter,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeMesero2()));
+                      if (selectedMesa == 0) {
+      // Si ninguna mesa ha sido seleccionada, muestra un mensaje de error
+      ScaffoldMessenger.of(context).showSnackBar(
+       const SnackBar(content: Text('Por favor, selecciona una mesa primero')),
+      );
+    } else {
+      // Si una mesa ha sido seleccionada, navega a la siguiente pestaña
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeMesero2()),
+      );
+    }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
@@ -280,7 +289,7 @@ Future<void> obtenerPedidosPorMesa(int numeroMesa) async {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  // Acción al presionar el botón "ATRAS"
+                  print (ivaGlobal);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const TomarMesa()),

@@ -1,3 +1,4 @@
+import 'package:Pizzeria_Guerrin/constants/globals.dart';
 import 'package:Pizzeria_Guerrin/firebase_options.dart';
 import 'package:Pizzeria_Guerrin/services/auth/auth_gath.dart';
 import 'package:Pizzeria_Guerrin/services/auth/auth_service.dart';
@@ -16,6 +17,7 @@ void main() async {
 
   if (!kIsWeb) {
     try {
+      
       OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
       OneSignal.initialize("96221739-4b13-46a8-825b-2987269a801b");
       OneSignal.Notifications.requestPermission(true);
@@ -26,7 +28,7 @@ void main() async {
   }
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  //await FirebaseApi().initNotifications();
+  fetchIvaFromFirebase();
   runApp(
     ChangeNotifierProvider(
       create: (context) => AuthService(),

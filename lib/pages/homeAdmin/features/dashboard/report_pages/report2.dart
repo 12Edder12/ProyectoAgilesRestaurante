@@ -96,7 +96,7 @@ final pizzaProducts = await FirebaseFirestore.instance
         _barGroups = barGroups;
       });
     } catch (error) {
-      print('Error fetching data: $error');
+    //  print('Error fetching data: $error');
     }
   }
 

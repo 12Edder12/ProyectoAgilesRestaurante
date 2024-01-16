@@ -13,6 +13,8 @@ class HomeCocinero extends StatefulWidget {
 
 class _HomeCocineroState extends State<HomeCocinero> {
   Map<String, dynamic>? selectedPedido;
+    String? firstUncompletedPedidoId; // Variable para almacenar el ID del primer pedido no completado
+
 
 // Variable para controlar si se muestra el cuadro de diálogo.
   bool showDialogBox = false;
@@ -257,6 +259,9 @@ void showPedidoDetailsDialog(Map<String, dynamic> pedidoData) async {
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
+              }  
+              if (snapshot.data!.docs.isNotEmpty) {
+                firstUncompletedPedidoId = snapshot.data!.docs.first.id; // Actualizar el ID del primer pedido no completado
               }
               return ListView(
                 children: snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -265,11 +270,18 @@ void showPedidoDetailsDialog(Map<String, dynamic> pedidoData) async {
                   return PedidoTile(
                     pedidoData: data,
                     onTap: () {
-                      setState(() {
-                        selectedPedido = data;
-                        selectedPedido?['id'] = document.id;
-                      });
-                      showPedidoDetailsDialog(data);
+                    if (document.id == firstUncompletedPedidoId) { // Comprobar si el pedido seleccionado es el primer pedido no completado
+                        setState(() {
+                          selectedPedido = data;
+                          selectedPedido?['id'] = document.id;
+                        });
+                        showPedidoDetailsDialog(data);
+                      } else {
+                        // Mostrar un mensaje indicando que el primer pedido debe ser seleccionado primero
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Por favor, selecciona el primer pedido primero.'))
+                        );
+                      }
                     },
                     onCompleted: () {
                       marcarPedidoComoCompletado(document.id);

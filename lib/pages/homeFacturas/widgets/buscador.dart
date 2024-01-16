@@ -36,15 +36,15 @@ class _BuscadorState extends State<Buscador> {
                 labelText: 'Ingrese Cédula',
                 suffixIcon: IconButton(
                   onPressed: _buscarCliente,
-                  icon: Icon(Icons.search),
+                  icon: const Icon(Icons.search),
                 ),
               ),
             ),
-            SizedBox(height: 20),
+          const   SizedBox(height: 20),
             Expanded(
               child: _resultados.isNotEmpty
                   ? _buildDataTable()
-                  : Center(
+                  :const  Center(
                       child: Text('Ingrese una cédula para buscar clientes.'),
                     ),
             ),
@@ -76,28 +76,28 @@ class _BuscadorState extends State<Buscador> {
             });
           }
         } else {
-          print('No se encontraron clientes con esa cédula.');
+        //  print('No se encontraron clientes con esa cédula.');
         }
 
         setState(() {
           _resultados = tempResultados;
         });
       } catch (e) {
-        print('Error al buscar clientes: $e');
+       // print('Error al buscar clientes: $e');
       }
     } else {
       setState(() {
         _resultados.clear();
       });
-      print('Por favor, ingrese una cédula.');
+     // print('Por favor, ingrese una cédula.');
     }
   }
 
   Widget _buildDataTable() {
     return DataTable(
-      columns: [
-        DataColumn(label: Text('Cédula')),
-        DataColumn(label: Text('Cliente')),
+      columns: const [
+         DataColumn(label: Text('Cédula')),
+         DataColumn(label: Text('Cliente')),
       ],
       rows: _resultados.map((cliente) {
         final isSelected = cliente ==
