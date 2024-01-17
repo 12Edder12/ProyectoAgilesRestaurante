@@ -54,7 +54,7 @@ final pizzaProducts = await FirebaseFirestore.instance
 
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('pedidos')
-          .where('pagado', isEqualTo: false)
+          .where('pagado', isEqualTo: true)
           .where('fecha', isGreaterThan: Timestamp.fromDate(_startRange))
           .where('fecha', isLessThan: Timestamp.fromDate(_endRange.add(const Duration(days: 1))))
           .get();
