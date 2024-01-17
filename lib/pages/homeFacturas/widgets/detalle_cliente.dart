@@ -9,6 +9,7 @@ class DetalleCliente extends StatefulWidget {
   final int numero;
   final Map<String, dynamic>? paymenItem;
 
+
   const DetalleCliente({Key? key, required this.numero, this.paymenItem})
       : super(key: key);
 
@@ -43,7 +44,7 @@ class _DetalleClienteState extends State<DetalleCliente> {
                 Expanded(
                   child: (NuevoClienteModal()),
                 ),
-                SizedBox(width: 10),
+               const SizedBox(width: 10),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
@@ -57,7 +58,7 @@ class _DetalleClienteState extends State<DetalleCliente> {
                         );
                       }
                     },
-                    child: Text('Editar Cliente'),
+                    child:const  Text('Editar Cliente'),
                   ),
                 ),
               ],
@@ -67,4 +68,5 @@ class _DetalleClienteState extends State<DetalleCliente> {
       ),
     );
   }
+
 }

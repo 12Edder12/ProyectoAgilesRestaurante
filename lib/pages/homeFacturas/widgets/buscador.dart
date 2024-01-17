@@ -12,9 +12,15 @@ class Buscador extends StatefulWidget {
 }
 
 class _BuscadorState extends State<Buscador> {
-  String _cedula = '';
+  TextEditingController _cedulaController = TextEditingController();
   List<Map<String, dynamic>> _resultados = [];
   Map<String, dynamic>? _clienteSeleccionado;
+
+  @override
+  void initState() {
+    super.initState();
+    _cedulaController.addListener(_buscarCliente);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +31,8 @@ class _BuscadorState extends State<Buscador> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
+              controller: _cedulaController,
               keyboardType: TextInputType.number,
-              onChanged: (value) {
-                setState(() {
-                  _cedula = value.trim();
-                });
-                _buscarCliente();
-              },
               decoration: InputDecoration(
                 labelText: 'Ingrese Cédula',
                 suffixIcon: IconButton(
@@ -55,11 +56,14 @@ class _BuscadorState extends State<Buscador> {
   }
 
   Future<void> _buscarCliente() async {
-    if (_cedula.isNotEmpty) {
+    String cedula = _cedulaController.text.trim();
+
+    if (cedula.isNotEmpty) {
       try {
         QuerySnapshot querySnapshot = await FirebaseFirestore.instance
             .collection('clientes')
-            .where('ced_cli', isGreaterThanOrEqualTo: _cedula)
+            .where('ced_cli', isGreaterThanOrEqualTo: cedula)
+            .where('ced_cli', isLessThan: cedula + 'z')
             .get();
 
         List<Map<String, dynamic>> tempResultados = [];
@@ -89,9 +93,9 @@ class _BuscadorState extends State<Buscador> {
       setState(() {
         _resultados.clear();
       });
-     // print('Por favor, ingrese una cédula.');
     }
   }
+
 
   Widget _buildDataTable() {
     return DataTable(
